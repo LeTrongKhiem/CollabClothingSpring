@@ -37,4 +37,6 @@ public class Product extends BaseEntity implements Serializable {
     private Set<ProductMapColor> productMapColors;
     @OneToMany(mappedBy = "product")
     private Set<Promotion> promotions;
+    @OneToMany(mappedBy = "product")
+    private Set<ProductImage> productImages;
 }
