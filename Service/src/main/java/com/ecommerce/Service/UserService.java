@@ -1,18 +1,18 @@
-package com.ecommerce.DAO;
+package com.ecommerce.Service;
 
 import com.ecommerce.Abstractions.IUserDAO;
+import com.ecommerce.Abstractions.IUserService;
 import com.ecommerce.Entities.User;
-import com.ecommerce.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserDAO implements IUserDAO {
-    UserRepository userRepository;
+public class UserService implements IUserService {
 
+    @Autowired
+    private IUserDAO userDAO;
     @Override
     public boolean saveUser(User user) {
-        userRepository.save(user);
         return false;
     }
 }

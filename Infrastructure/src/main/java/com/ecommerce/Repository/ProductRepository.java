@@ -1,11 +1,10 @@
 package com.ecommerce.Repository;
-
-import com.ecommerce.Entities.User;
+import com.ecommerce.Entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 @Repository
+public interface ProductRepository extends JpaRepository<Product, UUID> {
 
-public interface UserRepository extends JpaRepository<User, UUID> {
 }
