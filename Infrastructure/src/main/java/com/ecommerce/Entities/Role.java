@@ -17,7 +17,6 @@ public class Role implements Serializable {
     @Id
     @Getter
     @Setter
-    @GeneratedValue(generator = "uuid-gen")
     @Column(columnDefinition = "uniqueidentifier")
     private UUID id;
     @Getter
@@ -32,4 +31,13 @@ public class Role implements Serializable {
     @Setter
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private Set<UserRole> user_roles = new HashSet<>(0);
+
+    public Role() {
+    }
+
+    public Role(UUID id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 }
