@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository repository;
+//    private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -33,6 +35,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         UUID uuid = UUID.randomUUID();
         var user = User.builder()
+                .id(uuid)
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
@@ -41,12 +44,19 @@ public class AuthenticationService {
                 .phoneNumber(request.getPhoneNumber())
                 .userName(request.getUserName())
                 .gender(request.getGender())
+                .createdBy(uuid)
+                .isBlock(false)
+                .createdDate(new Date(System.currentTimeMillis()))
+                .isDeleted(false)
+                .userType(1)
+                .isEmailVerified(false)
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .build();
         Role role = roleRepository.findById(RoleConstants.USER_ID).get();
-        user.setUser_roles(new HashSet<UserRole>() {{
-            add(new UserRole(user, role));
-        }});
+//        user.setUser_roles(new HashSet<UserRole>() {{
+//            add(new UserRole(user, role));
+//        }});
+        UserRole userRole = new UserRole(user, role);
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
@@ -55,7 +65,11 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid username or password");
+        }
         var user = repository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

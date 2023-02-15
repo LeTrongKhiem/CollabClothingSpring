@@ -34,7 +34,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     private Date dob;
     private int gender;
     private boolean isBlock;
-    @Nullable
+    @Column(name = "user_type", nullable = true)
     private int userType;
     @Nullable
     private Date lastLogin;
