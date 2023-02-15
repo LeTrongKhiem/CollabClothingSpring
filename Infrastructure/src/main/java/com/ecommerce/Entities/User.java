@@ -1,9 +1,13 @@
 package com.ecommerce.Entities;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Nationalized;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,7 +15,12 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity implements Serializable {
+@Getter
+@Setter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+public class User extends BaseEntity implements Serializable, UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
     private String userName;
@@ -34,110 +43,40 @@ public class User extends BaseEntity implements Serializable {
     @Setter
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> user_roles;
-    public User() {
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String userRole = user_roles.stream().findFirst().get().getRole().getName();
+        return List.of(new SimpleGrantedAuthority(userRole));
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPasswordHash() {
+    @Override
+    public String getPassword() {
         return passwordHash;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getEmail() {
+    @Override
+    public String getUsername() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public boolean isEmailVerified() {
-        return isEmailVerified;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setEmailVerified(boolean emailVerified) {
-        isEmailVerified = emailVerified;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public boolean isBlock() {
-        return isBlock;
-    }
-
-    public void setBlock(boolean block) {
-        isBlock = block;
-    }
-
-    public int getUserType() {
-        return userType;
-    }
-
-    public void setUserType(int userType) {
-        this.userType = userType;
-    }
-
-    public Date getLastLogin() {
-        return lastLogin;
-    }
-
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

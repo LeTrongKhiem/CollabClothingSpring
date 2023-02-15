@@ -9,11 +9,20 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Service</artifactId>
+    <artifactId>CollabClothing.API</artifactId>
+
+    <properties>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springfox.version>3.0.0</springfox.version>
+        <json.web.token.version>0.11.5</json.web.token.version>
+        <lombok.version>1.18.24</lombok.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.ecommerce</groupId>
-            <artifactId>Infrastructure</artifactId>
+            <artifactId>Service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -53,13 +62,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <properties>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springfox.version>3.0.0</springfox.version>
-        <json.web.token.version>0.11.5</json.web.token.version>
-        <lombok.version>1.18.24</lombok.version>
-    </properties>
 
 </project>
