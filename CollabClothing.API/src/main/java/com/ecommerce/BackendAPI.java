@@ -11,6 +11,11 @@ public class BackendAPI {
     private static ConfigurableApplicationContext applicationContext;
     private final static Logger logger = LoggerFactory.getLogger(BackendAPI.class);
     public static void main(String[] args) {
-        BackendAPI.applicationContext = SpringApplication.run(BackendAPI.class, args);
+        try {
+            SpringApplication.run(BackendAPI.class, args);
+        }
+        catch (Exception e) {
+            logger.error("Error: " + e.getMessage());
+        }
     }
 }
