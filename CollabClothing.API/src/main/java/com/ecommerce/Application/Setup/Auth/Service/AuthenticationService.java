@@ -1,0 +1,80 @@
+package com.ecommerce.Application.Setup.Auth.Service;
+
+import com.ecommerce.Application.Abstractions.IRoleService;
+import com.ecommerce.Application.Abstractions.IUserService;
+import com.ecommerce.Application.Setup.Auth.Model.AuthenticationRequest;
+import com.ecommerce.Application.Setup.Auth.Model.AuthenticationResponse;
+import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
+import com.ecommerce.Entities.Role;
+import com.ecommerce.Entities.User;
+import com.ecommerce.Entities.UserRole;
+import com.ecommerce.Model.Constants.RoleConstants;
+import com.ecommerce.Application.Setup.Config.JwtService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationService {
+//    private final UserRepository repository;
+    @Autowired
+    private final IUserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+//    private final RoleRepository roleRepository;
+    @Autowired
+    private final IRoleService roleService;
+    public AuthenticationResponse register(RegisterRequest request) {
+        UUID uuid = UUID.randomUUID();
+        var user = User.builder()
+                .id(uuid)
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .address(request.getAddress())
+                .dob(request.getDob())
+                .phoneNumber(request.getPhoneNumber())
+                .userName(request.getUserName())
+                .gender(request.getGender())
+                .isBlock(false)
+                .createdDate(new Date(System.currentTimeMillis()))
+                .isDeleted(false)
+                .userType(1)
+                .isEmailVerified(false)
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .build();
+        user.setCreatedBy(user.getId());
+        Role role = roleService.findById(RoleConstants.USER_ID).get();
+//        user.setUser_roles(new HashSet<UserRole>() {{
+//            add(new UserRole(user, role));
+//        }});
+        UserRole userRole = new UserRole(user, role);
+        userService.saveUser(user);
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid username or password");
+        }
+        var user = userService.findByEmail(request.getEmail()).orElseThrow();
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+}

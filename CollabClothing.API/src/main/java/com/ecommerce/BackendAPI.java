@@ -14,9 +14,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
+//@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 //@ComponentScan({"com.ecommerce.*"})
-@EnableJpaRepositories("com.ecommerce.Repository")
+//@EnableJpaRepositories("com.ecommerce.Repository")
 //@EnableAutoConfiguration
 public class BackendAPI {
     private final static Logger logger = LoggerFactory.getLogger(BackendAPI.class);

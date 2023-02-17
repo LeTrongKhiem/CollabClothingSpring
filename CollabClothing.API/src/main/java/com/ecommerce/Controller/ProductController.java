@@ -1,6 +1,6 @@
 package com.ecommerce.Controller;
 
-import com.ecommerce.Abstractions.IProductService;
+import com.ecommerce.Application.Abstractions.IProductService;
 import com.ecommerce.Entities.Product;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
