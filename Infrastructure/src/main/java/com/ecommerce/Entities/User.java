@@ -1,4 +1,5 @@
 package com.ecommerce.Entities;
+
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -44,10 +46,73 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> user_roles;
 
+    //    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        String userRole = user_roles.stream().findFirst().get().getRole().getName();
+//        return List.of(new SimpleGrantedAuthority(userRole));
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return passwordHash;
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return email;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
+    @Transient
+    private Collection<? extends GrantedAuthority> authorities;
+
+    public User(UUID id, String username, String email, String password,
+                Collection<? extends GrantedAuthority> authorities) {
+        super(id);
+        this.userName = username;
+        this.email = email;
+        this.passwordHash = password;
+        this.authorities = authorities;
+    }
+
+    public static User build(User user) {
+        List<GrantedAuthority> authorities = user.getUser_roles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole().getName()))
+                .collect(Collectors.toList());
+
+        return new User(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPasswordHash(),
+                authorities);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String userRole = user_roles.stream().findFirst().get().getRole().getName();
-        return List.of(new SimpleGrantedAuthority(userRole));
+        return authorities;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -78,5 +143,15 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
     }
 }
