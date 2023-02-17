@@ -15,9 +15,11 @@ import java.util.UUID;
 
 @Component
 public class SeedUser implements CommandLineRunner {
+    @Autowired
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+
     @Override
     public void run(String... args) throws Exception {
         seedRole();
