@@ -20,9 +20,9 @@ public class ProductController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
-        boolean result = productService.AddProduct(product);
+        Product result = productService.AddProduct(product);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Product", "api/product/" + product.getId().toString());
+        headers.add("Product", "api/products/" + product.getId().toString());
         return new ResponseEntity<>(product, headers, HttpStatus.CREATED);
     }
 

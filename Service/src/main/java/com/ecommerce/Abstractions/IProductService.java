@@ -5,6 +5,6 @@ import com.ecommerce.Entities.Product;
 import java.util.List;
 
 public interface IProductService {
-    boolean AddProduct(Product product);
+    Product AddProduct(Product product);
     List<Product> getAllProducts();
 }
