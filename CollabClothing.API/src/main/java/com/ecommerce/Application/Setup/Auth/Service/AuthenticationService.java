@@ -2,6 +2,8 @@ package com.ecommerce.Application.Setup.Auth.Service;
 
 import com.ecommerce.Application.Abstractions.IRoleService;
 import com.ecommerce.Application.Abstractions.IUserService;
+import com.ecommerce.Application.Exceptions.AppException;
+import com.ecommerce.Application.Mappings.UserMapping;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationRequest;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationResponse;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
@@ -18,45 +20,32 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-//    private final UserRepository repository;
     @Autowired
     private final IUserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-//    private final RoleRepository roleRepository;
     @Autowired
     private final IRoleService roleService;
-    public AuthenticationResponse register(RegisterRequest request) {
-        UUID uuid = UUID.randomUUID();
-        var user = User.builder()
-                .id(uuid)
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .address(request.getAddress())
-                .dob(request.getDob())
-                .phoneNumber(request.getPhoneNumber())
-                .userName(request.getUserName())
-                .gender(request.getGender())
-                .isBlock(false)
-                .createdDate(new Date(System.currentTimeMillis()))
-                .isDeleted(false)
-                .userType(1)
-                .isEmailVerified(false)
-                .passwordHash(passwordEncoder.encode(request.getPassword()))
-                .build();
+    public AuthenticationResponse register(RegisterRequest request) throws Exception {
+        Optional<User> checkUser = userService.findByEmail(request.getEmail());
+        if (checkUser.isPresent()) {
+            throw new AppException(400, "User already exists");
+        }
+        User user = UserMapping.mapToUser(request, passwordEncoder.encode(request.getPassword()));
         user.setCreatedBy(user.getId());
         Role role = roleService.findById(RoleConstants.USER_ID).get();
-//        user.setUser_roles(new HashSet<UserRole>() {{
-//            add(new UserRole(user, role));
-//        }});
         UserRole userRole = new UserRole(user, role);
+        user.setUser_roles(new HashSet<UserRole>() {{
+            add(userRole);
+        }});
         userService.saveUser(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
