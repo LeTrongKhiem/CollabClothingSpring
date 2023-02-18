@@ -1,11 +1,14 @@
 package com.ecommerce.Application.Setup.Config;
 
+import com.ecommerce.Application.Exceptions.AppException;
+import com.ecommerce.Entities.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
