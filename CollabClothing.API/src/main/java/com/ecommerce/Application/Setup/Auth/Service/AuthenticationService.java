@@ -14,10 +14,12 @@ import com.ecommerce.Model.Constants.RoleConstants;
 import com.ecommerce.Application.Setup.Config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -34,7 +36,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     @Autowired
     private final IRoleService roleService;
-    public AuthenticationResponse register(RegisterRequest request) throws Exception {
+    public AuthenticationResponse register(RegisterRequest request) {
         Optional<User> checkUser = userService.findByEmail(request.getEmail());
         if (checkUser.isPresent()) {
             throw new AppException(400, "User already exists");
@@ -57,13 +59,15 @@ public class AuthenticationService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         } catch (Exception e) {
-            throw new RuntimeException("Invalid username or password");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid username or password");
         }
         var user = userService.findByEmail(request.getEmail()).orElseThrow();
+        if (!user.isEmailVerified()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled");
+        }
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
-
 }
