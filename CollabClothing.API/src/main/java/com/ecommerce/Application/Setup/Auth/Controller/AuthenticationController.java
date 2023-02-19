@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "localhost:3000")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
