@@ -45,42 +45,6 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     @Setter
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> user_roles;
-
-    //    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        String userRole = user_roles.stream().findFirst().get().getRole().getName();
-//        return List.of(new SimpleGrantedAuthority(userRole));
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return passwordHash;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -142,7 +106,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEmailVerified;
     }
 
     @Override
