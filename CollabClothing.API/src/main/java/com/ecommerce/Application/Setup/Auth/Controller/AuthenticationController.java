@@ -4,10 +4,14 @@ import com.ecommerce.Application.Setup.Auth.Model.AuthenticationRequest;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationResponse;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Application.Setup.Auth.Service.AuthenticationService;
+import com.ecommerce.Model.AppSettings;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,18 +32,26 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     @Autowired
     private Environment environment;
+    @Autowired
+    private AppSettings appSettings;
 
     @PostMapping("/register")
-    @ExceptionHandler
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request");
-        ResponseEntity.status(400).body("User already exists");
-        return ResponseEntity.ok(authenticationService.register(request));
+    public String register(@RequestBody RegisterRequest request, HttpServletRequest httpServletRequest) {
+        String result = "User registered successfully";
+        try {
+            authenticationService.register(request, getSiteURL(httpServletRequest));
+        } catch (HttpClientErrorException.BadRequest e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 
     @PostMapping("/authenticate")
-    @ExceptionHandler
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request");
@@ -44,6 +59,15 @@ public class AuthenticationController {
             return ResponseEntity.ok(authenticationService.authenticate(request));
         } catch (Exception e) {
             return ResponseEntity.status(400).body(new AuthenticationResponse());
+        }
+    }
+
+    @GetMapping("/verify")
+    public String verifyUser(@Param("code") String code) {
+        if (authenticationService.verify(code)) {
+            return "Verification successful";
+        } else {
+            return "Verification failed";
         }
     }
 }
