@@ -39,7 +39,7 @@ public class AuthenticationController {
     public String register(@RequestBody RegisterRequest request, HttpServletRequest httpServletRequest) {
         String result = "User registered successfully";
         try {
-            authenticationService.register(request, getSiteURL(httpServletRequest));
+            authenticationService.register(request, appSettings.getPath());
         } catch (HttpClientErrorException.BadRequest e) {
             result = e.getMessage();
         }
