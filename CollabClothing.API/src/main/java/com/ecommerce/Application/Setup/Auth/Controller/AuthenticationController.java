@@ -27,7 +27,7 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000/"})
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     @Autowired
