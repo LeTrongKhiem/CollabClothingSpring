@@ -47,7 +47,7 @@ public class SendMailService implements ISendMailService {
 
         content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
         VerificationToken token = verificationService.findByUser(user);
-        String verifyURL = siteURL + "/verify?code=" + token.getToken();
+        String verifyURL = siteURL + "verify?code=" + token.getToken();
 
         content = content.replace("[[URL]]", verifyURL);
 

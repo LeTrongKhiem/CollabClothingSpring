@@ -27,7 +27,7 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000/"})
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     @Autowired
@@ -39,7 +39,7 @@ public class AuthenticationController {
     public String register(@RequestBody RegisterRequest request, HttpServletRequest httpServletRequest) {
         String result = "User registered successfully";
         try {
-            authenticationService.register(request, getSiteURL(httpServletRequest));
+            authenticationService.register(request, appSettings.getPath());
         } catch (HttpClientErrorException.BadRequest e) {
             result = e.getMessage();
         }
