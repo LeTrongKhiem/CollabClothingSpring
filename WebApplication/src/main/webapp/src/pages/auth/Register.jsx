@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "../../components/UI/Card";
 import styles from "./auth.module.scss";
-import registerImg from "../../assets/images/register.png";
+// import registerImg from "../../assets/images/register.png";
 import Helmet from "../../components/Helmet";
 import { toast } from "react-toastify";
-import Select from "react-select";
 import UserService from "../../services/UserService";
 const Register = () => {
   const initialState = {
@@ -17,7 +16,6 @@ const Register = () => {
     address: "",
     email: "",
     password: "",
-    gender: "",
   };
   const [user, setUser] = useState({
     ...initialState,
@@ -69,74 +67,44 @@ const Register = () => {
       <section className={` container ${styles.auth}`}>
         <Card>
           <div className={styles.form}>
-            <h2>Đăng ký</h2>
+            <h2>Register</h2>
             <form onSubmit={registerUser}>
               <input
                 type="text"
-                placeholder="Tên tài khoản"
+                placeholder="user name"
                 required
                 name="userName"
                 value={user.user_name}
                 onChange={(e) => {
                   handleInputChange(e);
                 }}
-                style={{ marginBottom: "0px" }}
               />
-              <div className={styles.group}>
-                <input
-                  type="text"
-                  placeholder="Họ"
-                  required
-                  name="firstName"
-                  value={user.frist_name}
-                  onChange={(e) => {
-                    handleInputChange(e);
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="Tên"
-                  required
-                  name="lastName"
-                  value={user.last_name}
-                  onChange={(e) => {
-                    handleInputChange(e);
-                  }}
-                />
-              </div>
-
               <input
                 type="text"
-                name="dob"
-                value={dob}
-                style={{ marginTop: "0px", color: "#777" }}
+                placeholder="frist name"
+                required
+                name="firstName"
+                value={user.firstName}
                 onChange={(e) => {
-                  handleDateChange(e);
-                }}
-                placeholder="Ngày sinh"
-                onFocus={(e) => {
-                  e.target.type = "date";
+                  handleInputChange(e);
                 }}
               />
-              <Select
-                styles={{
-                  control: (baseStyles, state) => ({
-                    ...baseStyles,
-                    borderColor: state.isFocused ? "" : "#777",
-                    color: "#777",
-                    fontSize: "16px",
-                  }),
-                }}
-                options={[
-                  { value: "0", label: "Nam" },
-                  { value: "1", label: "Nữ" },
-                ]}
-                placeholder="Giới tính"
+              <input
+                type="text"
+                placeholder="last name"
+                required
+                name="lastName"
+                value={user.last_name}
                 onChange={(e) => {
-                  setUser({
-                    ...user,
-                    gender: e.value,
-                  });
+                  handleInputChange(e);
+                }}
+              />
+              <input
+                type="date"
+                name="dob"
+                value={dob}
+                onChange={(e) => {
+                  handleDateChange(e);
                 }}
               />
               <input
@@ -151,7 +119,7 @@ const Register = () => {
               />
               <input
                 type="text"
-                placeholder="Điện thoại"
+                placeholder="Phone"
                 required
                 name="phoneNumber"
                 value={user.phone}
@@ -161,7 +129,7 @@ const Register = () => {
               />
               <input
                 type="text"
-                placeholder="Địa chỉ"
+                placeholder="Address"
                 required
                 name="address"
                 value={user.address}
@@ -172,7 +140,7 @@ const Register = () => {
 
               <input
                 type="password"
-                placeholder="Mật khẩu"
+                placeholder="Password"
                 required
                 name="password"
                 value={user.password}
@@ -182,7 +150,7 @@ const Register = () => {
               />
               <input
                 type="password"
-                placeholder="Nhập lại mật khẩu"
+                placeholder=" Confirm Password"
                 required
                 name="confirmPassword"
                 value={confirmPassword}
@@ -192,22 +160,22 @@ const Register = () => {
               />
 
               <button type="submit" className="--btn --btn-primary --btn-block">
-                Đăng ký
+                Register
               </button>
             </form>
 
             <span className={styles.register}>
               <p>
-                Bạn đã có tài khoản ?{" "}
+                Already have an account?{" "}
                 <Link to="/login">
-                  <b>Đăng nhập</b>
+                  <b>Login</b>
                 </Link>
               </p>
             </span>
           </div>
         </Card>
         <div className={styles.img}>
-          <img src={registerImg} alt="Register" width="400" />
+          {/* <img src={registerImg} alt="Register" width="400" /> */}
         </div>
       </section>
     </Helmet>

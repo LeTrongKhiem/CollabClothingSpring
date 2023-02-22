@@ -3,7 +3,6 @@ package com.ecommerce.Application.Setup.Auth.Model;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import net.bytebuddy.implementation.bind.annotation.Empty;
 import org.hibernate.validator.constraints.Range;
 
 import java.util.Date;

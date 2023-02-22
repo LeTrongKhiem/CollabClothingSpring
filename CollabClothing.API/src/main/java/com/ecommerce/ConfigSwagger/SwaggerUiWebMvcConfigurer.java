@@ -1,4 +1,4 @@
-//package com.ecommerce.Config;
+//package com.ecommerce.ConfigSwagger;
 //
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.stereotype.Component;
