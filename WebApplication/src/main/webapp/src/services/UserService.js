@@ -6,7 +6,10 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 const API_URL = "http://localhost:6666/api/auth";
 class UserService {
   saveUser(user) {
-    return axios.post("http://localhost:6666/api/auth/register", user);
+    return axios.post("http://localhost:6868/api/auth/register", user);
+  }
+  verify(){
+    return axios.get("http://localhost:6868/api/auth/verify?code=qHKItqbhFOOBVuuFe1nNIodIU7Z2x5YxlutzQgXQcg2otbGVVOP0zrav4fkXRgJC");
   }
 }
 export default new UserService();
