@@ -1,7 +1,9 @@
 package com.ecommerce.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,6 +20,7 @@ public class UserRole implements Serializable {
     @Id
     @Getter
     @Setter
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

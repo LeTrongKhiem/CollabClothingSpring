@@ -1,4 +1,5 @@
 package com.ecommerce.Application.Setup.Config;
+import com.ecommerce.Application.Abstractions.IUserService;
 import com.ecommerce.Application.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfig {
     @Autowired
 
-    private final UserService userService;
-
-
-//    @Bean(name="entityManagerFactory")
-//    public LocalSessionFactoryBean sessionFactory() {
-//        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-//
-//        return sessionFactory;
-//    }
+    private final IUserService userService;
 
     @Bean
     public UserDetailsService userDetailsService() {

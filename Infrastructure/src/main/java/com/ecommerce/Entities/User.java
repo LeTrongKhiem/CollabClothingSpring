@@ -1,9 +1,11 @@
 package com.ecommerce.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,7 +45,8 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserRole> user_roles;
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
