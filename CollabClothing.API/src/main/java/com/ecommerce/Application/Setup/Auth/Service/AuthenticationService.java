@@ -90,6 +90,10 @@ public class AuthenticationService {
     }
     //endregion
 
+    public Optional<User> findByEmail(String email) {
+        return userService.findByEmail(email);
+    }
+
     //region Verify
     public boolean verify(String token) {
         VerificationToken verificationToken = verificationService.findByToken(token);
