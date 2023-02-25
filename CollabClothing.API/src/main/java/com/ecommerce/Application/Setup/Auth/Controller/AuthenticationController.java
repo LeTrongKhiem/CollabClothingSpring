@@ -2,9 +2,11 @@ package com.ecommerce.Application.Setup.Auth.Controller;
 
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationRequest;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationResponse;
+import com.ecommerce.Application.Setup.Auth.Model.ForgotPasswordModel;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Application.Setup.Auth.Service.AuthenticationService;
 import com.ecommerce.Model.AppSettings;
+import com.ecommerce.Model.GenericResponse;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -69,5 +71,29 @@ public class AuthenticationController {
         } else {
             return "Verification failed";
         }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam("email") String email, HttpServletRequest httpServletRequest) throws MessagingException, UnsupportedEncodingException {
+        String siteURL = getSiteURL(httpServletRequest);
+        var result = authenticationService.resetPassword(email, appSettings.getPath());
+        if (result != null) {
+            return ResponseEntity.ok("Password reset link sent to your email");
+        } else {
+            return ResponseEntity.status(400).body("Email not found");
+        }
+    }
+
+    @GetMapping("/changePassword")
+    public String showChangePasswordPage(@RequestParam("code") String token) {
+        var error = authenticationService.validatePasswordResetToken(token);
+        if (error != null)
+            return error;
+        return token;
+    }
+
+    @PostMapping("/savePassword")
+    public String savePassword(@Valid @RequestBody ForgotPasswordModel model) {
+        return authenticationService.savePassword(model);
     }
 }

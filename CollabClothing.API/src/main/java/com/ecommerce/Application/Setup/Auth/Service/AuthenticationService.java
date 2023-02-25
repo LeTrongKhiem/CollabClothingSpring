@@ -9,6 +9,7 @@ import com.ecommerce.Application.Mappings.VerificationMapping;
 import com.ecommerce.Application.Service.VerificationService;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationRequest;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationResponse;
+import com.ecommerce.Application.Setup.Auth.Model.ForgotPasswordModel;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Entities.Role;
 import com.ecommerce.Entities.User;
@@ -16,6 +17,7 @@ import com.ecommerce.Entities.UserRole;
 import com.ecommerce.Entities.VerificationToken;
 import com.ecommerce.Model.Constants.RoleConstants;
 import com.ecommerce.Application.Setup.Config.JwtService;
+import com.ecommerce.Model.GenericResponse;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
@@ -28,10 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +46,7 @@ public class AuthenticationService {
     private final VerificationService verificationService;
     @Autowired
     private final ISendMailService sendMailService;
+
     //region Register
     public void register(RegisterRequest request, String siteUrl) {
         Optional<User> checkUser = userService.findByEmail(request.getEmail());
@@ -70,6 +70,7 @@ public class AuthenticationService {
             throw new RuntimeException(e);
         }
     }
+
     //endregion
     //region Authentication
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -105,6 +106,66 @@ public class AuthenticationService {
         user.setEmailVerified(true);
         userService.saveUser(user);
         return true;
+    }
+    //endregion
+
+    //region Forgot Password
+    public void createPasswordResetTokenForUser(User user, String token) {
+        VerificationToken myToken = new VerificationToken();
+        myToken.setToken(token);
+        myToken.setUser(user);
+        myToken.setExpiryDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
+        verificationService.save(myToken);
+    }
+
+    public String resetPassword(String email, String siteUrl) throws MessagingException, UnsupportedEncodingException {
+        User user = userService.findByEmail(email).orElseThrow();
+        String token = RandomString.make(64);
+        VerificationToken checkTokenAvailable = verificationService.findByUser(user);
+        if (checkTokenAvailable != null && checkTokenAvailable.getExpiryDate().getTime() - new Date().getTime() > 0) {
+            verificationService.deleteById(checkTokenAvailable.getId());
+        }
+        createPasswordResetTokenForUser(user, token);
+        sendMailService.sendMailForgetPassword(user, siteUrl);
+        return "Reset password link has been sent to your email";
+    }
+
+    public String savePassword(ForgotPasswordModel model) {
+        String result = validatePasswordResetToken(model.getToken());
+        if (result != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token");
+        }
+        VerificationToken verificationToken = verificationService.findByToken(model.getToken());
+        if (verificationToken.getUser() != null) {
+            changeUserPassword(verificationToken.getUser(), model.getNewPassword());
+            return "Password changed successfully";
+        } else
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token");
+    }
+
+
+    private void changeUserPassword(User user, String password) {
+        user.setPasswordHash(passwordEncoder.encode(password));
+        userService.saveUser(user);
+    }
+    //endregion
+
+    //region check token
+    public String validatePasswordResetToken(String token) {
+        final VerificationToken passToken = verificationService.findByToken(token);
+
+        return !isTokenFound(passToken) ? "invalidToken"
+                : isTokenExpired(passToken) ? "expired"
+                : null;
+    }
+
+    private boolean isTokenFound(VerificationToken passToken) {
+        return passToken != null;
+    }
+
+    private boolean isTokenExpired(VerificationToken passToken) {
+        final Calendar cal = Calendar.getInstance();
+        return passToken.getExpiryDate().before(cal.getTime());
     }
     //endregion
 }
