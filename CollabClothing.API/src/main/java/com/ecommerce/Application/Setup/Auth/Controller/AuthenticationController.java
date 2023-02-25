@@ -93,7 +93,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/savePassword")
-    public String savePassword(@Valid @RequestBody ForgotPasswordModel model) {
-        return authenticationService.savePassword(model);
+    public ResponseEntity<String> savePassword(@Valid @RequestBody ForgotPasswordModel model) {
+        var result = authenticationService.savePassword(model);
+        if (result != null) {
+            return ResponseEntity.ok("Password reset successfully");
+        } else {
+            return ResponseEntity.status(400).body("Password reset failed");
+        }
     }
 }
