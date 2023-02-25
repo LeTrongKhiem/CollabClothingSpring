@@ -92,8 +92,12 @@ public class AuthenticationService {
     //endregion
 
     public Optional<UserModel> findByEmail(String email) {
-        User user = userService.findByEmail(email).orElseThrow();
-        UserModel userModel = UserMapping.mapToUserModel(user);
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isEmpty()) {
+            return Optional.empty();
+        }
+        User userThrow = user.orElseThrow();
+        UserModel userModel = UserMapping.mapToUserModel(userThrow);
         return Optional.of(userModel);
     }
 
