@@ -1,12 +1,15 @@
 package com.ecommerce.Application.Setup.Auth.Controller;
 
+import com.ecommerce.Application.Abstractions.IUserService;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationRequest;
 import com.ecommerce.Application.Setup.Auth.Model.AuthenticationResponse;
 import com.ecommerce.Application.Setup.Auth.Model.ForgotPasswordModel;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Application.Setup.Auth.Service.AuthenticationService;
+import com.ecommerce.Entities.User;
 import com.ecommerce.Model.AppSettings;
 import com.ecommerce.Model.GenericResponse;
+import com.ecommerce.Model.UserModel;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -25,6 +28,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -32,6 +37,8 @@ import java.io.UnsupportedEncodingException;
 @CrossOrigin(origins = {"http://localhost:3000/"})
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    @Autowired
+    IUserService userService;
     @Autowired
     private Environment environment;
     @Autowired
@@ -51,6 +58,16 @@ public class AuthenticationController {
     private String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
+    }
+
+    @GetMapping("/getByEmail")
+    public ResponseEntity<User> getByEmail(@RequestParam("email") String email) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent()) {
+            return new ResponseEntity<User>(user.get(), new HttpHeaders(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/authenticate")
