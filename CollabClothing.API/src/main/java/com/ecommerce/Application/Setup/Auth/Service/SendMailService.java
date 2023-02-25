@@ -27,6 +27,7 @@ public class SendMailService implements ISendMailService {
     private JavaMailSender mailSender;
     @Autowired
     private IVerificationService verificationService;
+
     @Override
     public void sendMailVerification(User user, String siteURL) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
@@ -48,6 +49,54 @@ public class SendMailService implements ISendMailService {
         content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
         VerificationToken token = verificationService.findByUser(user);
         String verifyURL = siteURL + "verify?code=" + token.getToken();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        content = content.replace("[[company]]", appSettings.getCompany());
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendMail(User user, String siteURL, String subject, String content) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getEmail();
+        String fromAddress = appSettings.getEmail();
+        String senderName = appSettings.getCompany();
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendMailForgetPassword(User user, String siteURL) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getEmail();
+        String fromAddress = appSettings.getEmail();
+        String senderName = appSettings.getCompany();
+        String subject = "Forgot Password";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify if you request forget password:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">CHANGE PASSWORD</a></h3>"
+                + "Thank you,<br>"
+                + "[[company]]";
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
+        VerificationToken token = verificationService.findByUser(user);
+        String verifyURL = siteURL + "changePassword?code=" + token.getToken();
 
         content = content.replace("[[URL]]", verifyURL);
 

@@ -7,6 +7,8 @@ import com.ecommerce.Repository.VerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class VerificationService implements IVerificationService {
     @Autowired
@@ -19,6 +21,21 @@ public class VerificationService implements IVerificationService {
     @Override
     public void save(VerificationToken token) {
         verificationRepository.save(token);
+    }
+
+    @Override
+    public void deleteByUser(User user) {
+        verificationRepository.deleteByUser(user);
+    }
+
+    @Override
+    public void deleteByToken(String token) {
+        verificationRepository.deleteByToken(token);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        verificationRepository.deleteById(id);
     }
 
     @Override
