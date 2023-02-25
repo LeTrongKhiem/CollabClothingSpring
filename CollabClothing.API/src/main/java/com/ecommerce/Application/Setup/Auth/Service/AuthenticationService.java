@@ -18,6 +18,7 @@ import com.ecommerce.Entities.VerificationToken;
 import com.ecommerce.Model.Constants.RoleConstants;
 import com.ecommerce.Application.Setup.Config.JwtService;
 import com.ecommerce.Model.GenericResponse;
+import com.ecommerce.Model.UserModel;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
@@ -90,8 +91,10 @@ public class AuthenticationService {
     }
     //endregion
 
-    public Optional<User> findByEmail(String email) {
-        return userService.findByEmail(email);
+    public Optional<UserModel> findByEmail(String email) {
+        User user = userService.findByEmail(email).orElseThrow();
+        UserModel userModel = UserMapping.mapToUserModel(user);
+        return Optional.of(userModel);
     }
 
     //region Verify
