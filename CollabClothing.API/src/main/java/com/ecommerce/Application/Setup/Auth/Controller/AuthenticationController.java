@@ -61,12 +61,12 @@ public class AuthenticationController {
     }
 
     @GetMapping("/getByEmail")
-    public ResponseEntity<User> getByEmail(@RequestParam("email") String email) {
-        Optional<User> user = userService.findByEmail(email);
+    public ResponseEntity<UserModel> getByEmail(@RequestParam("email") String email) {
+        Optional<UserModel> user = authenticationService.findByEmail(email);
         if (user.isPresent()) {
-            return new ResponseEntity<User>(user.get(), new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<UserModel>(user.get(), new HttpHeaders(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<UserModel>(HttpStatus.NOT_FOUND);
         }
     }
 
