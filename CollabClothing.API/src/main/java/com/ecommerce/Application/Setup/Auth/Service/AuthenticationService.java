@@ -84,6 +84,10 @@ public class AuthenticationService {
         if (!user.isEmailVerified()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled");
         }
+        if (user.isBlock())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is blocked");
+        if (user.getIsDeleted())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is deleted");
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

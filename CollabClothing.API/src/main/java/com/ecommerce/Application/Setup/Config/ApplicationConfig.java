@@ -1,6 +1,8 @@
 package com.ecommerce.Application.Setup.Config;
+
 import com.ecommerce.Application.Abstractions.IUserService;
 import com.ecommerce.Application.Service.UserService;
+import com.ecommerce.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfig {
     @Autowired
 
-    private final IUserService userService;
+    private final UserRepository userRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) userService.findByEmail(username)
+        return username -> (UserDetails) userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -45,5 +47,4 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

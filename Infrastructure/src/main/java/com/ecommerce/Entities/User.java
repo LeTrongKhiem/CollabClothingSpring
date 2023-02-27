@@ -46,7 +46,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     @Getter
     @Setter
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> user_roles;
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
@@ -61,9 +61,9 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     }
 
     public static User build(User user) {
-        List<GrantedAuthority> authorities = user.getUser_roles().stream()
+        List<GrantedAuthority> authorities = user.getUser_roles() != null ? user.getUser_roles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole().getName()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) : Collections.emptyList();
 
         return new User(
                 user.getId(),
