@@ -4,6 +4,7 @@ import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Entities.User;
 import com.ecommerce.Entities.UserRole;
 import com.ecommerce.Model.UserModel;
+import com.ecommerce.Model.Users.UserUpdateProfileModel;
 
 import java.util.Date;
 import java.util.List;
@@ -53,8 +54,19 @@ public class UserMapping {
         userModel.setDeletedBy(user.getDeletedBy());
         userModel.setDeletedDate(user.getDateDeleted());
         userModel.setRole(user.getUser_roles().stream().map(UserRole::getRole).map(role -> role.getName()).findFirst().orElse(null));
-
         return userModel;
+    }
+
+    public static User userUpdateProfile(User user, UserUpdateProfileModel userModel) {
+        user.setUserName(userModel.getUserName().isEmpty() ? user.getUsername() : userModel.getUserName());
+        user.setFirstName(userModel.getFirstName().isEmpty() ? user.getFirstName() : userModel.getFirstName());
+        user.setLastName(userModel.getLastName().isEmpty() ? user.getLastName() : userModel.getLastName());
+        user.setPhoneNumber(userModel.getPhoneNumber().isEmpty() ? user.getPhoneNumber() : userModel.getPhoneNumber());
+        user.setAddress(userModel.getAddress().isEmpty() ? user.getAddress() : userModel.getAddress());
+        user.setDob(userModel.getDob() == null ? user.getDob() : userModel.getDob());
+        user.setGender(userModel.getGender() == 0 ? user.getGender() : userModel.getGender());
+
+        return user;
     }
 
     public static List<UserModel> mapListUserModel(List<User> users) {
