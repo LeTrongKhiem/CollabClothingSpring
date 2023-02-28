@@ -154,8 +154,6 @@ public class AuthenticationService {
         User user = verificationToken.getUser();
         if (user == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token");
-        if (!passwordEncoder.matches(model.getOldPassword(), user.getPasswordHash()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Old password is incorrect");
         changeUserPassword(verificationToken.getUser(), model.getNewPassword());
         return "Password changed successfully";
     }
