@@ -2,34 +2,36 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./sass/index.scss";
 //pages
-import { Home, Register } from "./pages";
+import {Home, Register, VerifyEmail, Login} from "./pages";
 //components
-import { Header } from "./components";
-import { ToastContainer } from "react-toastify";
+import {Header} from "./components";
+import {ToastContainer} from "react-toastify";
 import reportWebVitals from "./reportWebVitals";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import {Provider} from "react-redux";
+import {store} from "./redux/store";
 import "react-toastify/dist/ReactToastify.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Header />
-        <div className="container">
-          <div className="main">
-            <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </div>
-        </div>
-      </BrowserRouter>
-      <ToastContainer />
-    </Provider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <BrowserRouter>
+                <Header/>
+                <div className="container">
+                    <div className="main">
+                        <Routes>
+                            <Route path="/" element={<Home/>}/>
+                            <Route path="/register" element={<Register/>}/>
+                            <Route path="/login" element={<Login/>}/>
+                            <Route path="/verify" element={<VerifyEmail/>}/>
+                        </Routes>
+                    </div>
+                </div>
+            </BrowserRouter>
+            <ToastContainer/>
+        </Provider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
