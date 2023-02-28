@@ -27,7 +27,6 @@ const Register = () => {
         gender: "",
     };
     const validationSchema = Yup.object().shape({
-        userName: Yup.string().required("Vui lòng nhập tên tài khoản"),
         firstName: Yup.string().required("Vui lòng nhập tên"),
         lastName: Yup.string().required("Vui lòng nhập họ"),
         // check day of birth
@@ -113,9 +112,10 @@ const Register = () => {
                                 return (
                                     <Form>
                                         <FastField
-                                            name="userName"
+                                            name="email"
                                             component={InputField}
-                                            placeholder="Tên tài khoản"
+                                            placeholder="Email"
+                                            type="email"
 
                                         />
 
@@ -169,13 +169,7 @@ const Register = () => {
                                             placeholder="Địa chỉ"
 
                                         />
-                                        <FastField
-                                            name="email"
-                                            component={InputField}
-                                            placeholder="Email"
-                                            type="email"
 
-                                        />
                                         <FastField
                                             name="password"
                                             component={InputField}

@@ -4,6 +4,53 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  .main {
+    .card {
+      width: 100%;
+      max-width: 1000px;
+      height: 400px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      @media screen and (max-width: 700px) {
+        flex-direction: column;
+      }
+    }
+    display: flex;
+    margin-top: -400px;
+    h3 {
+      font-size: 2.2rem;
+      font-weight: 500;
+      margin: 1rem;
+      text-align: center;
+    }
+    .message {
+      text-align: center;
+      width: 35rem;
+      margin: 0 1rem;
+      font-size: 1.5rem;
+      font-weight: 300;
+      padding: 1rem;
+    }
+    a {
+      margin: 10px auto;
+      padding: 1rem 2rem;
+      &:hover {
+        background: #eee;
+      }
+    }
+    button {
+      margin: 10px auto;
+      padding: 1rem 2rem;
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
 
   .img {
     animation: slide-down 0.5s ease;
