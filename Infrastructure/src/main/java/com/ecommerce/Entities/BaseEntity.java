@@ -17,9 +17,6 @@ import java.util.UUID;
 @SuperBuilder
 public abstract class BaseEntity extends AuditableEntity {
     @Id
-    @GeneratedValue(generator = "uuid-gen")
-    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
-//    @GeneratedValue
     @Column(columnDefinition = "uniqueidentifier")
     @Getter
     @Setter

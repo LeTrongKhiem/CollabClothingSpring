@@ -21,8 +21,6 @@ public class UserUpdateProfileModel {
     private String phoneNumber;
     @NotEmpty(message = "Address is required")
     private String address;
-    @NotEmpty(message = "Date of birth is required")
     private Date dob;
-    @NotEmpty(message = "Gender is required")
     private int gender;
 }

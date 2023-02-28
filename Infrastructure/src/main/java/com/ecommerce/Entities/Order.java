@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@Where(clause = "is_deleted = false")
 @Getter
 @Setter
 @NoArgsConstructor
