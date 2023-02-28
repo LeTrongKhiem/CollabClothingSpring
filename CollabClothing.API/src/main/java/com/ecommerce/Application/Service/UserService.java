@@ -73,6 +73,7 @@ public class UserService implements IUserService {
     public boolean updateUser(UUID uuid, UserUpdateProfileModel userModel) {
         User user = userRepository.findById(uuid).get();
         User updatedUser = UserMapping.userUpdateProfile(user, userModel);
+        userRepository.save(updatedUser);
         return true;
     }
 

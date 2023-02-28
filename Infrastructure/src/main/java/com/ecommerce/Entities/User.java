@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
+@Where(clause = "is_deleted = false")
 @Getter
 @Setter
 @SuperBuilder
