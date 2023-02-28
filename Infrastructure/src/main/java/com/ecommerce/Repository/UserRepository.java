@@ -12,6 +12,7 @@ import java.util.UUID;
 @Repository
 
 public interface UserRepository extends JpaRepository<User, UUID> {
+    List<User> findAllByIsDeletedFalse();
     Optional<User> findByEmail(String email);
     Page<User> findByFirstNameOrLastNameOrEmailOrPhoneNumber(String firstName, String lastName, String email, String phoneNumber, Pageable pageable);
 }

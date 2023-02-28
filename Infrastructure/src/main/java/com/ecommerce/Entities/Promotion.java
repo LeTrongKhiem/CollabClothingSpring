@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "promotions")
-@Where(clause = "is_deleted = false")
+//@Where(clause = "is_deleted = false")
 @Setter
 @Getter
 @AllArgsConstructor

@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
-@Where(clause = "is_deleted = false")
+//@Where(clause = "is_deleted = false")
 @Getter
 @Setter
 @NoArgsConstructor
