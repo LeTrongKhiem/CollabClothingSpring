@@ -46,6 +46,11 @@ public class UserController {
         return new ResponseEntity<List<UserModel>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("/all/active")
+    public List<User> getAllActiveUsers() {
+        return userService.findAllByIsDeletedFalse();
+    }
+
     @PutMapping("/userUpdateProfile")
     public ResponseEntity<Boolean> userUpdateProfile(@RequestBody @Valid UserUpdateProfileModel userModel, BindingResult bindingResult) {
         User user = AuthenticateExtensions.getUser();

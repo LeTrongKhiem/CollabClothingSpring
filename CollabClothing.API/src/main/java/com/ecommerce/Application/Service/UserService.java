@@ -86,4 +86,9 @@ public class UserService implements IUserService {
         userRepository.save(user);
         return true;
     }
+
+    @Override
+    public List<User> findAllByIsDeletedFalse() {
+        return userRepository.findAllByIsDeletedFalse();
+    }
 }

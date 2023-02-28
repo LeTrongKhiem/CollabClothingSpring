@@ -38,4 +38,15 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/all/active")
+    public ResponseEntity<List<Product>> getAllActiveProducts() {
+        try {
+            List<Product> products = productService.findProductsIsDeletedFalse();
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

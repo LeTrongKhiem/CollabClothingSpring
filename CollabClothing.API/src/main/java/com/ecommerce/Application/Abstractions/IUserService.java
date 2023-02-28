@@ -19,4 +19,5 @@ public interface IUserService {
     public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort);
     public boolean updateUser(UUID uuid, UserUpdateProfileModel userModel);
     public boolean userUpdatePassword(UUID uuid, UserChangePasswordModel userModel);
+    public List<User> findAllByIsDeletedFalse();
 }
