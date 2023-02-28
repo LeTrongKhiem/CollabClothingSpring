@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-@Where(clause = "is_deleted = false")
+//@Where(clause = "is_deleted = false")
 @Getter
 @Setter
 @SuperBuilder

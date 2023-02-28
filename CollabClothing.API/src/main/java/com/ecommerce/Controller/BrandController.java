@@ -28,4 +28,14 @@ public class BrandController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/all/active")
+    public ResponseEntity<List<Brand>> getAllActiveBrands() {
+        try {
+            List<Brand> brands = brandService.findAllByIsDeletedFalse();
+            return ResponseEntity.ok(brands);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

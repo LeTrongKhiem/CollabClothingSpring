@@ -58,4 +58,14 @@ public class BrandService implements IBrandService {
         }
         return false;
     }
+
+    @Override
+    public void softDeleteById(UUID id) {
+        brandRepository.softDeleteById(id);
+    }
+
+    @Override
+    public List<Brand> findAllByIsDeletedFalse() {
+        return brandRepository.findAllByIsDeletedFalse();
+    }
 }

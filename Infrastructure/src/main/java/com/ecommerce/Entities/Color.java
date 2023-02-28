@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "colors")
-@Where(clause = "is_deleted = false")
+//@Where(clause = "is_deleted = false")
 @Setter
 @Getter
 @AllArgsConstructor

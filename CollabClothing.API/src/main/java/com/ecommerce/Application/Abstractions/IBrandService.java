@@ -12,4 +12,6 @@ public interface IBrandService {
     Brand findById(UUID id);
     void deleteById(UUID id, UUID userId);
     boolean updateBrand(UUID id, UUID userId, BrandModel brand);
+    void softDeleteById(UUID id);
+    List<Brand> findAllByIsDeletedFalse();
 }
