@@ -26,6 +26,7 @@ const Register = () => {
         confirmPassword: "",
         gender: "",
     };
+
     const validationSchema = Yup.object().shape({
         firstName: Yup.string().required("Vui lòng nhập tên"),
         lastName: Yup.string().required("Vui lòng nhập họ"),
@@ -45,15 +46,15 @@ const Register = () => {
             })
             .required("Vui lòng nhập ngày sinh"),
 
-        phoneNumber: Yup.string().required("Vui lòng nhập số điện thoại"),
+        phoneNumber: Yup.string().required("Vui lòng nhập số điện thoại").matches(/^(?:\+84|0)[3-9]\d{8}$/, "Số điện thoại không hợp lệ"),
         address: Yup.string().required("Vui lòng nhập địa chỉ"),
         // check email exist
         email: Yup.string()
             .required('Vui lòng nhập email').email('Email không hợp lệ').matches(/@[^.]*\./)
             .test('Unique Email', 'Email đã tồn tại', // <- key, message
-                function (value) {
+                async function (value) {
 
-                    return axios.get("http://localhost:6868/api/auth/getByEmail?email=" + value)
+                    return await UserService.checkEmailExist(value)
                         .then((res) => {
                             console.log(res)
                             if (res.data) {
