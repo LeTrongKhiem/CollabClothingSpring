@@ -13,20 +13,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_roles")
+@Getter
+@Setter
 public class UserRole implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
-    @Getter
-    @Setter
-    @JsonBackReference
+    @Column(columnDefinition = "uniqueidentifier")
+    private UUID id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @Id
-    @Getter
-    @Setter
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
