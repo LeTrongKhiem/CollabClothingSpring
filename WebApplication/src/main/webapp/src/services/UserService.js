@@ -18,12 +18,24 @@ class UserService {
 
     checkEmailExist(email) {
         return axios.get(
-            API_URL + "/checkEmailExist?email=" + email
+            API_URL + `/getByEmail?email=${email}`
         );
     }
 
     login(user) {
-        return axios.post(API_URL+"/login", user);
+        return axios.post(API_URL + "/authenticate", user);
+    }
+
+    resetPassword(email) {
+        return axios.post(API_URL + `/reset-password?email=${email}`);
+    }
+    checkTokenForResetPassword(token) {
+        return axios.get(
+            API_URL + `/changePassword?code=${token}`
+        );
+    }
+    changePassword(user) {
+        return axios.post(API_URL + "/savePassword", user);
     }
 }
 

@@ -81,7 +81,6 @@ const Register = () => {
         gender: Yup.number().required("Vui lòng chọn giới tính").nullable(),
     });
     const navigate = useNavigate();
-    console.log(axios.get("http://localhost:6868/api/auth/getByEmail?email=lehoangan238%40gmail.com"))
     const registerUser = (values) => {
         UserService.saveUser(values)
             .then((res) => {
