@@ -1,17 +1,23 @@
 package com.ecommerce.Application.Mappings;
 
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
+import com.ecommerce.Entities.Role;
 import com.ecommerce.Entities.User;
 import com.ecommerce.Entities.UserRole;
+import com.ecommerce.Model.Constants.RoleConstants;
 import com.ecommerce.Model.UserModel;
 import com.ecommerce.Model.Users.UserUpdateProfileModel;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class UserMapping {
     public static User mapToUser(RegisterRequest request, String passwordHash) {
         User user = new User();
+        UUID id = UUID.randomUUID();
+        user.setId(id);
         user.setUserName(request.getUserName());
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordHash);
@@ -27,7 +33,6 @@ public class UserMapping {
         user.setUserType(1);
         user.setCreatedDate(new Date(System.currentTimeMillis()));
         user.setCreatedBy(user.getId());
-
         return user;
     }
 
@@ -71,5 +76,14 @@ public class UserMapping {
 
     public static List<UserModel> mapListUserModel(List<User> users) {
         return users.stream().map(UserMapping::mapToUserModel).toList();
+    }
+
+    public static UserRole mapToRole(User user, Role role) {
+        UUID id = UUID.randomUUID();
+        UserRole roleCreate = new UserRole();
+        roleCreate.setId(id);
+        roleCreate.setRole(role);
+        roleCreate.setUser(user);
+        return roleCreate;
     }
 }

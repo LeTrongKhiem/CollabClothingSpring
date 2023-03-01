@@ -2,6 +2,7 @@ package com.ecommerce.Application.Setup.Auth.Service;
 
 import com.ecommerce.Application.Abstractions.IRoleService;
 import com.ecommerce.Application.Abstractions.ISendMailService;
+import com.ecommerce.Application.Abstractions.IUserRoleService;
 import com.ecommerce.Application.Abstractions.IUserService;
 import com.ecommerce.Application.Exceptions.AppException;
 import com.ecommerce.Application.Mappings.UserMapping;
@@ -47,6 +48,8 @@ public class AuthenticationService {
     private final VerificationService verificationService;
     @Autowired
     private final ISendMailService sendMailService;
+    @Autowired
+    private final IUserRoleService userRoleService;
 
     //region Register
     public void register(RegisterRequest request, String siteUrl) {
@@ -54,14 +57,11 @@ public class AuthenticationService {
         if (checkUser.isPresent()) {
             throw new AppException(400, "User already exists");
         }
-        User user = UserMapping.mapToUser(request, passwordEncoder.encode(request.getPassword()));
-        user.setCreatedBy(user.getId());
         Role role = roleService.findById(RoleConstants.USER_ID).get();
-        UserRole userRole = new UserRole(user, role);
-        user.setUser_roles(new HashSet<UserRole>() {{
-            add(userRole);
-        }});
+        User user = UserMapping.mapToUser(request, passwordEncoder.encode(request.getPassword()));
         userService.saveUser(user);
+        UserRole userRole = UserMapping.mapToRole(user, role);
+        userRoleService.save(userRole);
         String randomToken = RandomString.make(64);
         VerificationToken verificationToken = VerificationMapping.mapToVerificationToken(randomToken, user);
         verificationService.save(verificationToken);
@@ -160,6 +160,15 @@ public class AuthenticationService {
 
 
     private void changeUserPassword(User user, String password) {
+        if (password == null || password.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is empty");
+        }
+        if (user.isBlock() || user.getIsDeleted()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is blocked or deleted");
+        }
+        if (!user.isEmailVerified()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled");
+        }
         user.setPasswordHash(passwordEncoder.encode(password));
         userService.saveUser(user);
     }

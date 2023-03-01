@@ -47,7 +47,6 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 
     @Getter
     @Setter
-    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> user_roles;
     @Transient
