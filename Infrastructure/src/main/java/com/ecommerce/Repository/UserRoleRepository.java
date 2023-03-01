@@ -13,7 +13,4 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UUID> {
     @Modifying
     @Query(value = "insert into user_role (user_id, role_id) values (?1, ?2) ", nativeQuery = true)
     boolean saveByUserIdAndRoleId(UUID userId, UUID roleId);
-//    @Modifying
-//    @Query(value = "insert into user_role (user_id, role_id) values (, ?2) ", nativeQuery = true)
-//    boolean save(UserRole userRole);
 }
