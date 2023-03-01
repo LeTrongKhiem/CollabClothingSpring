@@ -24,15 +24,17 @@ const Login = () => {
 
 
     const navigate = useNavigate();
-    const loginUser = (value) => {
-        UserService.login(value).then((res) => {
-            if (res.status === 200) {
+    const loginUser = async (value)  =>  {
+        try {
+         const response = await  UserService.login(value)
+            if (response.status === 200) {
                 toast.success("Đăng nhập thành công");
                 navigate("/");
-            } else {
-                toast.error("Đăng nhập thất bại");
             }
-        });
+        } catch (e) {
+            toast.error("Đăng nhập thất bại");
+        }
+
 
     }
 
