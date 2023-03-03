@@ -22,6 +22,7 @@ public class ProductMapCategory implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid-gen")
+    @Column(name = "id", columnDefinition = "uniqueidentifier")
     private UUID id;
     @GeneratedValue(generator = "uuid-gen")
     @Getter
