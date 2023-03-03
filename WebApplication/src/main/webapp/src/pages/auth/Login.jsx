@@ -10,8 +10,12 @@ import {toast} from "react-toastify";
 import {FastField, Form, Formik} from "formik";
 import InputField from "../../custom-fields/InputField";
 import * as Yup from "yup" ;
+import {useDispatch} from "react-redux";
+import {loginSuccess} from "../../redux/slice/authSlice";
+
 
 const Login = () => {
+    const dispatch = useDispatch();
     const validationSchema = Yup.object().shape({
         email: Yup.string().required("Vui lòng nhập email").email("Email không hợp lệ").matches(/@[^.]*\./),
         password: Yup.string()
@@ -24,18 +28,17 @@ const Login = () => {
 
 
     const navigate = useNavigate();
-    const loginUser = async (value)  =>  {
-        try {
-         const response = await  UserService.login(value)
-            if (response.status === 200) {
+    const loginUser = (value) => {
+        UserService.login(value).then((res) => {
+            if (res.status === 200) {
                 toast.success("Đăng nhập thành công");
+                localStorage.setItem("token", res.data.token);
                 navigate("/");
+                dispatch(loginSuccess(res.data));
             }
-        } catch (e) {
+        }).catch((err) => {
             toast.error("Đăng nhập thất bại");
-        }
-
-
+        });
     }
 
 
