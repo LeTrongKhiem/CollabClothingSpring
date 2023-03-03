@@ -20,4 +20,5 @@ public interface IUserService {
     public boolean updateUser(UUID uuid, UserUpdateProfileModel userModel);
     public boolean userUpdatePassword(UUID uuid, UserChangePasswordModel userModel);
     public List<User> findAllByIsDeletedFalse();
+    public UserModel getProfileUser(UUID userId);
 }

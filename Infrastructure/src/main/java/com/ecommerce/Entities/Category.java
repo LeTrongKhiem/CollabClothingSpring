@@ -37,7 +37,7 @@ public class Category extends BaseEntity implements Serializable {
     private int level;
     private boolean isShowWeb;
     private String slug;
-    @Nullable
+    @Column(nullable = true)
     private int sortOrder;
     @OneToMany(mappedBy = "category")
     private Set<ProductMapCategory> productMapCategories;
