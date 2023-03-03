@@ -91,4 +91,10 @@ public class UserService implements IUserService {
     public List<User> findAllByIsDeletedFalse() {
         return userRepository.findAllByIsDeletedFalse();
     }
+
+    @Override
+    public UserModel getProfileUser(UUID userId) {
+        User user = userRepository.findById(userId).get();
+        return UserMapping.mapToUserModel(user);
+    }
 }

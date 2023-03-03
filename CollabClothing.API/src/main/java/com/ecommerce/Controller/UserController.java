@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -83,5 +80,12 @@ public class UserController {
             return new ResponseEntity<Boolean>(true, new HttpHeaders(), HttpStatus.OK);
         else
             return new ResponseEntity<Boolean>(false, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/userProfile")
+    public ResponseEntity<UserModel> userProfile() {
+        UUID userId = AuthenticateExtensions.getUserId();
+        UserModel result = userService.getProfileUser(userId);
+        return new ResponseEntity<UserModel>(result, new HttpHeaders(), HttpStatus.OK);
     }
 }
