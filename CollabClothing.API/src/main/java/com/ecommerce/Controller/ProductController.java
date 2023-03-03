@@ -1,11 +1,15 @@
 package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.IProductService;
+import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Entities.Product;
+import com.ecommerce.Model.Products.ProductModel;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +30,16 @@ public class ProductController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Product", "api/products/" + product.getId().toString());
         return new ResponseEntity<>(product, headers, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/saveProduct")
+    public ResponseEntity<Boolean> saveProduct(@Valid @RequestBody ProductModel model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+        var userId = AuthenticateExtensions.getUserId();
+        boolean result = productService.save(userId, model);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/all")
