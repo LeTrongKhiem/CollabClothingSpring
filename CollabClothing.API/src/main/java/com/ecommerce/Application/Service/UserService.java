@@ -44,6 +44,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public List<UserModel> findAll() {
         List<User> list = userRepository.findAll();
         List<UserModel> listModel = UserMapping.mapListUserModel(list);
