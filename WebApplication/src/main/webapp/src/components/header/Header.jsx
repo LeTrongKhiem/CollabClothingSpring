@@ -46,7 +46,7 @@ const Header = () => {
                 UserService.getCurrentUser().then((res) => {
                     if (res.status === 200) {
                         dispatch(loginSuccess(res.data));
-                        const name = res.data.firstName + " " + res.data.lastName;
+                        const name = res.data.lastName + " " + res.data.firstName;
                         setdisplayName(name);
                     }
                 });

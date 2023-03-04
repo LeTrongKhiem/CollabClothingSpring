@@ -12,6 +12,7 @@ import InputField from "../../custom-fields/InputField";
 import * as Yup from "yup";
 import SelectField from "../../custom-fields/SelectField";
 import axios from "axios";
+import Button from "../../components/UI/Button";
 
 const Register = () => {
     const initialState = {
@@ -26,11 +27,10 @@ const Register = () => {
         confirmPassword: "",
         gender: "",
     };
-
+    const [loading, setLoading] = useState(false);
     const validationSchema = Yup.object().shape({
         firstName: Yup.string().required("Vui lòng nhập tên"),
-        lastName: Yup.string().required("Vui lòng nhập họ"),
-        // check day of birth
+        lastName: Yup.string().required("Vui lòng nhập họ"), // check day of birth
         dob: Yup.date()
             .nullable()
             .test("dob", "Khách hàng phải trên 14 tuổi", function (value, ctx) {
@@ -47,8 +47,7 @@ const Register = () => {
             .required("Vui lòng nhập ngày sinh"),
 
         phoneNumber: Yup.string().required("Vui lòng nhập số điện thoại").matches(/^(?:\+84|0)[3-9]\d{8}$/, "Số điện thoại không hợp lệ"),
-        address: Yup.string().required("Vui lòng nhập địa chỉ"),
-        // check email exist
+        address: Yup.string().required("Vui lòng nhập địa chỉ"), // check email exist
         email: Yup.string()
             .required('Vui lòng nhập email').email('Email không hợp lệ').matches(/@[^.]*\./)
             .test('Unique Email', 'Email đã tồn tại', // <- key, message
@@ -66,16 +65,12 @@ const Register = () => {
                             console.log(err)
                             return true;
                         });
-                }
-            ),
+                }),
 
 
         password: Yup.string()
             .required("Vui lòng nhập mật khẩu")
-            .matches(
-                "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
-                "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
-            ),
+            .matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"),
         confirmPassword: Yup.string()
             .required("Vui lòng nhập lại mật khẩu")
             .oneOf([Yup.ref("password")], "Mật khẩu không khớp"),
@@ -83,19 +78,18 @@ const Register = () => {
     });
     const navigate = useNavigate();
     const registerUser = (values) => {
+        setLoading(true);
         UserService.saveUser(values)
             .then((res) => {
-                toast.success(
-                    "Đang ký thành công vui kiểm tra email để kích hoạt tài khoản"
-                );
+                toast.success("Đang ký thành công vui kiểm tra email để kích hoạt tài khoản");
                 navigate("/login");
+                setLoading(false)
             })
             .catch((error) => {
                 toast.error(error.message);
             });
     };
-    return (
-        <Helmet title={"Đăng ký"}>
+    return (<Helmet title={"Đăng ký"}>
             <section className={` container ${styles.auth}`}>
                 <Card>
                     <div className={styles.form}>
@@ -109,8 +103,8 @@ const Register = () => {
                         >
                             {(formikProps) => {
                                 const {values, errors, touched} = formikProps;
-                                return (
-                                    <Form>
+                                console.log(values)
+                                return (<Form>
                                         <FastField
                                             name="email"
                                             component={InputField}
@@ -150,11 +144,10 @@ const Register = () => {
                                                 }),
                                             }}
                                             placeholder="Giới tính"
-                                            options={[
-                                                {value: "1", label: "Nam"},
-                                                {value: "2", label: "Nữ"},
-                                                {value: "3", label: "Khác"},
-                                            ]}
+                                            options={[{value: "1", label: "Nam"}, {
+                                                value: "2",
+                                                label: "Nữ"
+                                            }, {value: "3", label: "Khác"},]}
                                         />
 
                                         <FastField
@@ -185,14 +178,13 @@ const Register = () => {
 
                                         />
 
-                                        <button
-                                            type="submit"
-                                            className="--btn --btn-primary --btn-block"
+                                        <Button
+                                            type="button"
+                                            loading={loading}
                                         >
-                                            Đăng ký
-                                        </button>
-                                    </Form>
-                                );
+                                            {loading ? "" : "Đăng ký"}
+                                        </Button>
+                                    </Form>);
                             }}
                         </Formik>
 
@@ -210,8 +202,7 @@ const Register = () => {
                     <img src={registerImg} alt="Register" width="400"/>
                 </div>
             </section>
-        </Helmet>
-    );
+        </Helmet>);
 };
 
 export default Register;

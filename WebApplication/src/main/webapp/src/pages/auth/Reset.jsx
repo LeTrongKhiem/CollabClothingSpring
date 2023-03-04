@@ -10,9 +10,10 @@ import * as Yup from "yup";
 import UserService from "../../services/UserService";
 import {toast} from "react-toastify";
 import axios from "axios";
+import Button from "../../components/UI/Button";
 
 const Reset = () => {
-    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const resetPassword = async (value) => {
         try {
@@ -78,9 +79,12 @@ const Reset = () => {
                                     <Form>
                                         <FastField name="email" component={InputField} placeholder="Email"/>
 
-                                        <button type="submit" className="--btn --btn-primary --btn-block">
-                                            Xác nhận
-                                        </button>
+                                        <Button
+                                            loading={loading}
+                                            type="button"
+                                            >
+                                            {loading ? "" : "Xác nhận"}
+                                        </Button>
                                         <div className={styles.links}>
                                             <p>
                                                 <Link to="/login">- Đăng nhập</Link>

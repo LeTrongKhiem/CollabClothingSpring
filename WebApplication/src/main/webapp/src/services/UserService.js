@@ -43,6 +43,22 @@ class UserService {
             }
         });
     }
+    updateUser(user) {
+        const token = localStorage.getItem("token");
+        return axios.put(API_URL_USER+"/userUpdateProfile", user, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+    updatePassword(user) {
+        const token = localStorage.getItem("token");
+        return axios.put(API_URL_USER+ "/userChangePassword", user,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 }
 
 export default new UserService();

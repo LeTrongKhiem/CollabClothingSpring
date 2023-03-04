@@ -10,6 +10,7 @@ import {
   Login,
   ResetPassword,
   Reset,
+  UserProfile,
 } from "./pages";
 //components
 import { Header } from "./components";
@@ -35,6 +36,7 @@ root.render(
               <Route path="/verify" element={<VerifyEmail />} />
               <Route path={"/reset"} element={<Reset />} />
               <Route path={"/changePassword"} element={<ResetPassword />} />
+              <Route path={"/user-profile"} element={<UserProfile />} />
             </Routes>
           </div>
         </div>

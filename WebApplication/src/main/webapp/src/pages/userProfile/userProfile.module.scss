@@ -1,0 +1,152 @@
+.userProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f7f7f7;
+
+  .profileHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+
+    &__avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &__title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 5px;
+
+      p {
+        font-size: 16px;
+        font-weight: 400;
+        color: #666;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .profileTabs {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+
+    .tab {
+      cursor: pointer;
+      padding: 10px 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #666;
+
+      &.active {
+        background-color: #0066cc;
+        border-color: #0066cc;
+        color: #fff;
+      }
+    }
+  }
+
+  .profileContent {
+    width: 100%;
+
+    .section {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+
+        .formGroup {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 20px;
+          .errorMessage {
+            color: red !important;
+            font-size: 12px;
+            margin-top: 5px;
+          }
+          label {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+          }
+
+          input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+          }
+
+          &.formGroupInline {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+
+            label {
+              font-size: 16px;
+              font-weight: 400;
+              margin-right: 10px;
+
+              input {
+                margin-right: 5px;
+              }
+            }
+          }
+        }
+
+        .formGroupButton {
+          display: flex;
+          justify-content: flex-end;
+
+          button {
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: #0066cc;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+
+            &:hover {
+              background-color: #004499;
+            }
+          }
+        }
+      }
+    }
+  }
+}
