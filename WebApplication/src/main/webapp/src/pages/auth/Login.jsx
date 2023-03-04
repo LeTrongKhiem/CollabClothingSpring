@@ -12,9 +12,11 @@ import InputField from "../../custom-fields/InputField";
 import * as Yup from "yup" ;
 import {useDispatch} from "react-redux";
 import {loginSuccess} from "../../redux/slice/authSlice";
+import Button from "../../components/UI/Button";
 
 
 const Login = () => {
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const validationSchema = Yup.object().shape({
         email: Yup.string().required("Vui lòng nhập email").email("Email không hợp lệ").matches(/@[^.]*\./),
@@ -28,12 +30,19 @@ const Login = () => {
 
 
     const navigate = useNavigate();
+
     const loginUser = (value) => {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        if(token) {
+            localStorage.removeItem("token");
+        }
         UserService.login(value).then((res) => {
             if (res.status === 200) {
                 toast.success("Đăng nhập thành công");
                 localStorage.setItem("token", res.data.token);
                 navigate("/");
+                setLoading(false)
                 dispatch(loginSuccess(res.data));
             }
         }).catch((err) => {
@@ -51,7 +60,7 @@ const Login = () => {
                     </div>
                     <Card>
                         <div className={styles.form}>
-                            <h2>Login</h2>
+                            <h2>Đăng nhập</h2>
                             <Formik initialValues={{
                                 email: "", password: ""
                             }} validationSchema={validationSchema}
@@ -60,17 +69,18 @@ const Login = () => {
                                     }}>
                                 <Form>
                                     <FastField name="email" component={InputField} placeholder="Email"/>
-                                    <FastField name="password" component={InputField} placeholder="Password"
+                                    <FastField name="password" component={InputField} placeholder="Mật khẩu"
                                                type="password"/>
 
-                                    <button
+                                    <Button
+                                        loading={loading}
                                         type="submit"
-                                        className="--btn --btn-primary --btn-block"
                                     >
-                                        Login
-                                    </button>
+                                        {loading ? "" : "Đăng nhập"}
+
+                                    </Button>
                                     <div className={styles.links}>
-                                        <Link to="/reset">Forgot Password?</Link>
+                                        <Link to="/reset">Quên mật khẩu ?</Link>
                                     </div>
                                     <p>-- or --</p>
                                 </Form>
@@ -79,15 +89,16 @@ const Login = () => {
                                 type="submit"
                                 className="--btn --btn-block"
 
+
                             >
                                 <i className="bx bxl-google"></i>
-                                Login with Google
+                                Đăng nhập với Google
                             </button>
                             <span className={styles.register}>
                 <p>
-                  Don't have an account?{" "}
+                  Bạn chưa có tài khoản ? &nbsp;
                     <Link to="/register">
-                    <b>Register</b>
+                    <b>Đăng ký</b>
                   </Link>
                 </p>
               </span>

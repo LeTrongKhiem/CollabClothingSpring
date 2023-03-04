@@ -46,7 +46,7 @@ const Header = () => {
                 UserService.getCurrentUser().then((res) => {
                     if (res.status === 200) {
                         dispatch(loginSuccess(res.data));
-                        const name = res.data.firstName + " " + res.data.lastName;
+                        const name = res.data.lastName + " " + res.data.firstName;
                         setdisplayName(name);
                     }
                 });
@@ -123,7 +123,7 @@ const Header = () => {
                         <div className="header__menu__item header__menu__right__item ">
                             <div className="header__user">
                                 <ShowOnLogin>
-                                    <Link>
+                                    <Link to="/user-profile">
                                         <i className='bx bx-user'></i>
                                         <span>{displayName}</span>
                                     </Link>

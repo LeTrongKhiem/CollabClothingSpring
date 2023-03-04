@@ -4,3 +4,4 @@ export { default as Login } from "./auth/Login";
 export { default as VerifyEmail } from "./auth/VerifyEmail";
 export { default as Reset } from "./auth/Reset";
 export { default as ResetPassword } from "./auth/ResetPassword";
+export { default as UserProfile } from "./userProfile/UserProfile";
