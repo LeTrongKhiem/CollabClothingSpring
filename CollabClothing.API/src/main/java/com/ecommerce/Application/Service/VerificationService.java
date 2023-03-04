@@ -7,6 +7,7 @@ import com.ecommerce.Repository.VerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -16,6 +17,16 @@ public class VerificationService implements IVerificationService {
     @Override
     public VerificationToken findByUser(User user) {
         return verificationRepository.findByUser(user);
+    }
+
+    @Override
+    public VerificationToken findByUserId(UUID userId) {
+        return verificationRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<VerificationToken> findAllByUserOrderByExpiryDateDesc(User user) {
+        return verificationRepository.findAllByUserOrderByExpiryDateDesc(user);
     }
 
     @Override

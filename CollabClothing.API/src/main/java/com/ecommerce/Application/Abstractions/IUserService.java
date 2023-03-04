@@ -15,6 +15,7 @@ import java.util.UUID;
 public interface IUserService {
     public User saveUser(User user);
     public Optional<User> findByEmail(String email);
+    public Optional<User> getUserByEmail(String email);
     public List<UserModel> findAll();
     public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort);
     public boolean updateUser(UUID uuid, UserUpdateProfileModel userModel);

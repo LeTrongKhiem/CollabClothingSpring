@@ -10,4 +10,5 @@ public interface ISendMailService {
     void sendMailVerification(User user, String siteURL) throws MessagingException, UnsupportedEncodingException;
     void sendMail(User user, String siteURL, String subject, String content) throws MessagingException, UnsupportedEncodingException;
     void sendMailForgetPassword(User user, String siteURL) throws MessagingException, UnsupportedEncodingException;
+    void sendMailForgetPassword(User user, String siteURL, String token) throws MessagingException, UnsupportedEncodingException;
 }

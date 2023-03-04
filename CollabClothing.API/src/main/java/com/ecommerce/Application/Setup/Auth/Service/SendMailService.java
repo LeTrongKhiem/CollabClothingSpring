@@ -106,4 +106,34 @@ public class SendMailService implements ISendMailService {
 
         mailSender.send(message);
     }
+
+    @Override
+    public void sendMailForgetPassword(User user, String siteURL, String token) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getEmail();
+        String fromAddress = appSettings.getEmail();
+        String senderName = appSettings.getCompany();
+        String subject = "Forgot Password";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify if you request forget password:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">CHANGE PASSWORD</a></h3>"
+                + "Thank you,<br>"
+                + "[[company]]";
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
+        String verifyURL = siteURL + "changePassword?code=" + token;
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        content = content.replace("[[company]]", appSettings.getCompany());
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    }
 }

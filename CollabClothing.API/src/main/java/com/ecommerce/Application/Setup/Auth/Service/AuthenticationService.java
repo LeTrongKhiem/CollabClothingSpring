@@ -134,14 +134,15 @@ public class AuthenticationService {
     }
 
     public String resetPassword(String email, String siteUrl) throws MessagingException, UnsupportedEncodingException {
-        User user = userService.findByEmail(email).orElseThrow();
+        User user = userService.getUserByEmail(email).orElseThrow();
         String token = RandomString.make(64);
-        VerificationToken checkTokenAvailable = verificationService.findByUser(user);
+        List<VerificationToken> verificationTokens = verificationService.findAllByUserOrderByExpiryDateDesc(user);
+        VerificationToken checkTokenAvailable = verificationTokens.stream().findFirst().orElse(null);
         if (checkTokenAvailable != null && checkTokenAvailable.getExpiryDate().getTime() - new Date().getTime() > 0) {
             verificationService.deleteById(checkTokenAvailable.getId());
         }
         createPasswordResetTokenForUser(user, token);
-        sendMailService.sendMailForgetPassword(user, siteUrl);
+        sendMailService.sendMailForgetPassword(user, siteUrl, token);
         return "Reset password link has been sent to your email";
     }
 
