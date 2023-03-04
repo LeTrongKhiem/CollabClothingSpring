@@ -123,7 +123,7 @@ const Header = () => {
                         <div className="header__menu__item header__menu__right__item ">
                             <div className="header__user">
                                 <ShowOnLogin>
-                                    <Link>
+                                    <Link to="/user-profile">
                                         <i className='bx bx-user'></i>
                                         <span>{displayName}</span>
                                     </Link>
