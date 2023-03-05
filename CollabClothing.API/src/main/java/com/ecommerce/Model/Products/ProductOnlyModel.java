@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class ProductModel {
+public class ProductOnlyModel {
     private UUID id;
     private Date created_date;
     private Date updated_date;
@@ -23,19 +23,8 @@ public class ProductModel {
     @NotNull
     private boolean sold_out;
     private UUID brand_id;
+    private String slug;
     private String brandName;
     private List<UUID> category_id;
     private List<String> categoryNames;
-    @NotNull
-    private int consumer;
-    @NotNull
-    private int cotton;
-    private String description;
-    private String form;
-    private String made_in;
-    private double priceCurrent;
-    private double priceOld;
-    @NotNull
-    private int sale_off;
-    private String type;
 }

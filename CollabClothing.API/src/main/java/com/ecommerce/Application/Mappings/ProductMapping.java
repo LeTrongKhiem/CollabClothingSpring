@@ -4,9 +4,14 @@ import com.ecommerce.Application.Extensions.SlugExtensions;
 import com.ecommerce.Entities.Brand;
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductDetail;
+import com.ecommerce.Model.Products.ProductDetailModel;
 import com.ecommerce.Model.Products.ProductModel;
+import com.ecommerce.Model.Products.ProductOnlyModel;
+import lombok.val;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class ProductMapping {
@@ -41,5 +46,100 @@ public class ProductMapping {
         productDetail.setProduct(product);
 
         return productDetail;
+    }
+
+    public static ProductModel getProduct(Product product, ProductDetail productDetail) {
+        ProductModel productModel = new ProductModel();
+        productModel.setId(product.getId());
+        productModel.setName(product.getName());
+        productModel.setBrand_id(product.getBrand().getId());
+        productModel.setBrandName(product.getBrand().getName());
+        productModel.setConsumer(productDetail.getConsumer());
+        productModel.setCotton(productDetail.getCotton());
+        productModel.setDescription(productDetail.getDescription());
+        productModel.setForm(productDetail.getForm());
+        productModel.setMade_in(productDetail.getMadeIn());
+        productModel.setPriceCurrent(productDetail.getPriceCurrent());
+        productModel.setPriceOld(productDetail.getPriceOld());
+        productModel.setSale_off(productDetail.getSaleOff());
+        productModel.setType(productDetail.getType());
+        productModel.setSold_out(product.isSoldOut());
+        productModel.setCreated_date(product.getCreatedDate());
+        productModel.setCreated_by(product.getCreatedBy());
+        productModel.setUpdated_date(product.getModifiedDate());
+        productModel.setUpdated_by(product.getModifiedBy());
+        productModel.set_deleted(product.getIsDeleted());
+
+        return productModel;
+    }
+
+    public static ProductModel getProduct(Product product) {
+        ProductModel productModel = new ProductModel();
+        ProductDetail productDetail = product.getProductDetail();
+        productModel.setId(product.getId());
+        productModel.setName(product.getName());
+        productModel.setBrand_id(product.getBrand().getId());
+        productModel.setBrandName(product.getBrand().getName());
+        productModel.setConsumer(productDetail.getConsumer());
+        productModel.setCotton(productDetail.getCotton());
+        productModel.setDescription(productDetail.getDescription());
+        productModel.setForm(productDetail.getForm());
+        productModel.setMade_in(productDetail.getMadeIn());
+        productModel.setPriceCurrent(productDetail.getPriceCurrent());
+        productModel.setPriceOld(productDetail.getPriceOld());
+        productModel.setSale_off(productDetail.getSaleOff());
+        productModel.setType(productDetail.getType());
+        productModel.setSold_out(product.isSoldOut());
+        productModel.setCreated_date(product.getCreatedDate());
+        productModel.setCreated_by(product.getCreatedBy());
+        productModel.setUpdated_date(product.getModifiedDate());
+        productModel.setUpdated_by(product.getModifiedBy());
+        productModel.set_deleted(product.getIsDeleted());
+
+        return productModel;
+    }
+
+    public static ProductOnlyModel toProduct(Product product) {
+        ProductOnlyModel productOnlyModel = new ProductOnlyModel();
+        productOnlyModel.setId(product.getId());
+        productOnlyModel.setName(product.getName());
+        productOnlyModel.setBrand_id(product.getBrand().getId());
+        productOnlyModel.setBrandName(product.getBrand().getName());
+        productOnlyModel.setCreated_date(product.getCreatedDate());
+        productOnlyModel.setCreated_by(product.getCreatedBy());
+        productOnlyModel.setUpdated_date(product.getModifiedDate());
+        productOnlyModel.setUpdated_by(product.getModifiedBy());
+        productOnlyModel.set_deleted(product.getIsDeleted());
+
+        return productOnlyModel;
+    }
+
+    public static ProductDetailModel toProductDetail(ProductDetail productDetail) {
+        ProductDetailModel productDetailModel = new ProductDetailModel();
+        productDetailModel.setId(productDetail.getId());
+        productDetailModel.setConsumer(productDetail.getConsumer());
+        productDetailModel.setCotton(productDetail.getCotton());
+        productDetailModel.setDescription(productDetail.getDescription());
+        productDetailModel.setForm(productDetail.getForm());
+        productDetailModel.setMade_in(productDetail.getMadeIn());
+        productDetailModel.setPriceCurrent(productDetail.getPriceCurrent());
+        productDetailModel.setPriceOld(productDetail.getPriceOld());
+        productDetailModel.setSale_off(productDetail.getSaleOff());
+        productDetailModel.setType(productDetail.getType());
+
+        return productDetailModel;
+    }
+
+//    public static List<ProductModel> getListProduct(List<Product> products) {
+//        var ppp = products.stream().map(ProductMapping::getProduct).toList();
+//        return products.stream().map(ProductMapping::toProduct).toList();
+//    }
+
+    public static List<ProductModel> getListProduct(List<Product> products) {
+        return products.stream().map(ProductMapping::getProduct).toList();
+    }
+
+    public static List<ProductDetailModel> getListProductDetail(List<ProductDetail> productDetails) {
+        return productDetails.stream().map(ProductMapping::toProductDetail).toList();
     }
 }

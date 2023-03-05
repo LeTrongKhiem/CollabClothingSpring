@@ -76,7 +76,10 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        List<GrantedAuthority> authorities1 = getUser_roles() != null ? getUser_roles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole().getName()))
+                .collect(Collectors.toList()) : Collections.emptyList();
+        return authorities1;
     }
 
     public String getEmail() {
