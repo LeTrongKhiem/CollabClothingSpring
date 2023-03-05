@@ -13,6 +13,7 @@ import * as Yup from "yup" ;
 import {useDispatch} from "react-redux";
 import {loginSuccess} from "../../redux/slice/authSlice";
 import Button from "../../components/UI/Button";
+import jwtDecode from 'jwt-decode';
 
 
 const Login = () => {
@@ -32,23 +33,33 @@ const Login = () => {
     const navigate = useNavigate();
 
     const loginUser = (value) => {
-        setLoading(true);
         const token = localStorage.getItem("token");
-        if(token) {
-            localStorage.removeItem("token");
-        }
-        UserService.login(value).then((res) => {
-            if (res.status === 200) {
-                toast.success("Đăng nhập thành công");
-                localStorage.setItem("token", res.data.token);
-                navigate("/");
-                setLoading(false)
-                dispatch(loginSuccess(res.data));
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            const currentTime = Date.now() / 1000;
+            if (decodedToken.exp < currentTime) {
+                // Nếu token đã hết hạn, xoá token và đăng nhập lại trước khi gửi yêu cầu đăng nhập mới
+                localStorage.removeItem("token");
+                toast.error("Token đã hết hạn, vui lòng đăng nhập lại");
+                navigate("/login");
+                return;
             }
-        }).catch((err) => {
-            toast.error("Đăng nhập thất bại");
-        });
-    }
+        }
+
+        // Gửi yêu cầu đăng nhập mới
+        UserService.login(value)
+            .then((res) => {
+                if (res.status === 200) {
+                    toast.success("Đăng nhập thành công");
+                    localStorage.setItem("token", res.data.token);
+                    navigate("/");
+                    dispatch(loginSuccess(res.data));
+                }
+            })
+            .catch((err) => {
+                toast.error("Đăng nhập thất bại");
+            });
+    };
 
 
     return (<>
