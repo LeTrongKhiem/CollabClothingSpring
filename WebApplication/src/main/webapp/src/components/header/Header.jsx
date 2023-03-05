@@ -10,6 +10,7 @@ import {loginSuccess, logoutSuccess} from "../../redux/slice/authSlice";
 // import { REMOVE_ACTIVE_USER, SET_ACTIVE_USER } from "../redux/auth/authSlice";
 import {ShowOnLogin, ShowOnLogout} from "../hiddenLink/hiddenLink";
 // import productData from "../assets/fake-data/products";
+import jwt_decode from "jwt-decode";
 const mainNav = [
     {
         display: "Trang chủ",
@@ -38,25 +39,53 @@ const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
     useEffect(() => {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-                UserService.getCurrentUser().then((res) => {
-                    if (res.status === 200) {
-                        dispatch(loginSuccess(res.data));
-                        const name = res.data.lastName + " " + res.data.firstName;
-                        setdisplayName(name);
-                    }
-                });
-            }
+        const token = localStorage.getItem("token");
+        if (token) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            UserService.getCurrentUser().then((res) => {
+                if (res.status === 200) {
+                    dispatch(loginSuccess(res.data));
+                    const name = res.data.lastName + " " + res.data.firstName;
+                    setdisplayName(name);
+                }
+            }).catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    localStorage.removeItem("token"); // Xóa token trong localStorage
+                    delete axios.defaults.headers.common["Authorization"]; // Xóa token trong header của axios
+                    logoutUser(); // Gọi hàm logoutUser để đăng xuất và hiển thị thông báo
+                }
+            });
         }
-        , [dispatch]);
+    }, [dispatch]);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            const expirationTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
+            const timeUntilExpiration = expirationTime - Date.now();
+
+            const timeoutId = setTimeout(() => {
+                dispatch(logoutSuccess());
+                localStorage.removeItem("token");
+                delete axios.defaults.headers.common["Authorization"];
+                navigate("/login")
+            }, timeUntilExpiration);
+
+            return () => {
+                clearTimeout(timeoutId);
+            };
+        }
+    }, [dispatch]);
     const logoutUser = () => {
+        localStorage.removeItem("token");
+        delete axios.defaults.headers.common["Authorization"];
         dispatch(logoutSuccess());
         toast.success("Đăng xuất thành công");
-    }
+        navigate("/login");
+    };
+
 
     useEffect(() => {
         window.addEventListener("scroll", () => {
