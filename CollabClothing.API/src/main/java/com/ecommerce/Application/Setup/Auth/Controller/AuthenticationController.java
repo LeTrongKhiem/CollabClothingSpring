@@ -10,6 +10,7 @@ import com.ecommerce.Entities.User;
 import com.ecommerce.Model.AppSettings;
 import com.ecommerce.Model.GenericResponse;
 import com.ecommerce.Model.UserModel;
+import io.jsonwebtoken.impl.DefaultClaims;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -28,7 +29,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController

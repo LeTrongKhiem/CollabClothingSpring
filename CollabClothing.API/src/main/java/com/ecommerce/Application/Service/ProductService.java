@@ -88,12 +88,14 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductModel> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return ProductMapping.getListProduct(products);
     }
 
     @Override
-    public List<Product> findProductsIsDeletedFalse() {
-        return productRepository.findAllByIsDeletedFalse();
+    public List<ProductModel> findProductsIsDeletedFalse() {
+        List<Product> products = productRepository.findAllByIsDeletedFalse();
+        return ProductMapping.getListProduct(products);
     }
 }

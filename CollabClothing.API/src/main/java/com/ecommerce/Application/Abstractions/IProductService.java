@@ -15,6 +15,6 @@ public interface IProductService {
     List<ProductModel> getProductByCategoryId(UUID id);
     boolean deleteProduct(UUID id);
     boolean updateProduct(ProductModel productModel);
-    List<Product> getAllProducts();
-    List<Product> findProductsIsDeletedFalse();
+    List<ProductModel> getAllProducts();
+    List<ProductModel> findProductsIsDeletedFalse();
 }

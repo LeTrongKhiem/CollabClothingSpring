@@ -43,9 +43,9 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductModel>> getAllProducts() {
         try {
-            List<Product> products = productService.getAllProducts();
+            List<ProductModel> products = productService.getAllProducts();
             return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
@@ -54,9 +54,9 @@ public class ProductController {
     }
 
     @GetMapping("/all/active")
-    public ResponseEntity<List<Product>> getAllActiveProducts() {
+    public ResponseEntity<List<ProductModel>> getAllActiveProducts() {
         try {
-            List<Product> products = productService.findProductsIsDeletedFalse();
+            List<ProductModel> products = productService.findProductsIsDeletedFalse();
             return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());

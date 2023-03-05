@@ -93,6 +93,10 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+    public String refreshToken(Map<String, Object> claims, String token) {
+        return jwtService.doGenerateRefreshToken(claims, token);
+    }
     //endregion
 
     public Optional<UserModel> findByEmail(String email) {
