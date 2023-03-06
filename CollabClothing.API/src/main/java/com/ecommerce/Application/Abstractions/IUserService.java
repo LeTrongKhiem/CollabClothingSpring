@@ -1,5 +1,6 @@
 package com.ecommerce.Application.Abstractions;
 
+import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Entities.User;
 import com.ecommerce.Model.UserModel;
 import com.ecommerce.Model.Users.UserChangePasswordModel;
@@ -15,11 +16,13 @@ import java.util.UUID;
 public interface IUserService {
     public User saveUser(User user);
     public Optional<User> findByEmail(String email);
+    public Optional<User> findById(UUID userId);
     public Optional<User> getUserByEmail(String email);
     public List<UserModel> findAll();
     public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort);
     public boolean updateUser(UUID uuid, UserUpdateProfileModel userModel);
     public boolean userUpdatePassword(UUID uuid, UserChangePasswordModel userModel);
-    public List<User> findAllByIsDeletedFalse();
+    public List<UserModel> findAllByIsDeletedFalse();
     public UserModel getProfileUser(UUID userId);
+    public boolean createAccountByAdmin(UUID userId, RegisterRequest model);
 }

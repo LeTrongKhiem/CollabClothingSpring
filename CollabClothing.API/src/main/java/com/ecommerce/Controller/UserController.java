@@ -2,6 +2,7 @@ package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.IUserService;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
+import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Entities.User;
 import com.ecommerce.Model.UserModel;
 import com.ecommerce.Model.Users.UserChangePasswordModel;
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping("/all/active")
-    public List<User> getAllActiveUsers() {
+    public List<UserModel> getAllActiveUsers() {
         return userService.findAllByIsDeletedFalse();
     }
 
@@ -88,5 +89,21 @@ public class UserController {
         UUID userId = AuthenticateExtensions.getUserId();
         UserModel result = userService.getProfileUser(userId);
         return new ResponseEntity<UserModel>(result, new HttpHeaders(), HttpStatus.OK);
+    }
+    @PostMapping("/adminCreateAccount")
+    public ResponseEntity<Boolean> adminCreateAccount(@RequestBody RegisterRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.put(error.getField(), error.getDefaultMessage());
+            });
+            return new ResponseEntity<Boolean>(false, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        }
+        UUID userId = AuthenticateExtensions.getUserId();
+        boolean result = userService.createAccountByAdmin(userId, request);
+        if (result)
+            return new ResponseEntity<Boolean>(true, new HttpHeaders(), HttpStatus.OK);
+        else
+            return new ResponseEntity<Boolean>(false, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
