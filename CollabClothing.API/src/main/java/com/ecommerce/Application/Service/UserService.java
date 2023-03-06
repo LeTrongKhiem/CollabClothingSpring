@@ -1,14 +1,22 @@
 package com.ecommerce.Application.Service;
 
 import com.ecommerce.Application.Abstractions.IUserService;
+import com.ecommerce.Application.Exceptions.AppException;
 import com.ecommerce.Application.Mappings.UserMapping;
+import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
+import com.ecommerce.Entities.Role;
 import com.ecommerce.Entities.User;
+import com.ecommerce.Entities.UserRole;
+import com.ecommerce.Model.Constants.RoleConstants;
 import com.ecommerce.Model.UserModel;
 import com.ecommerce.Model.Users.UserChangePasswordModel;
 import com.ecommerce.Model.Users.UserUpdateProfileModel;
+import com.ecommerce.Repository.RoleRepository;
 import com.ecommerce.Repository.UserRepository;
+import com.ecommerce.Repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +40,16 @@ public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
+    private String defaultPassword;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
+    @Value("${default.passwordAdmin}")
+    public void setDefaultPassword(String defaultPassword) {
+        this.defaultPassword = defaultPassword;
+    }
     @Override
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -41,6 +58,11 @@ public class UserService implements IUserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findById(UUID userId) {
+        return userRepository.findById(userId);
     }
 
     @Override
@@ -93,13 +115,32 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> findAllByIsDeletedFalse() {
-        return userRepository.findAllByIsDeletedFalse();
+    public List<UserModel> findAllByIsDeletedFalse() {
+        List<User> users = userRepository.findAllByIsDeletedFalse();
+        return UserMapping.mapListUserModel(users);
     }
 
     @Override
     public UserModel getProfileUser(UUID userId) {
         User user = userRepository.findById(userId).get();
         return UserMapping.mapToUserModel(user);
+    }
+    @Override
+    public boolean createAccountByAdmin(UUID userId, RegisterRequest model) {
+        User currentUser = userRepository.findById(userId).orElseThrow();
+        if (!currentUser.getUser_roles().stream().anyMatch(x -> x.getRole().getId().equals(RoleConstants.ADMIN_ID))) {
+            throw new AppException(400, "You don't have permission to create account");
+        }
+        Optional<User> checkUser = userRepository.findByEmail(model.getEmail());
+        if (checkUser.isPresent()) {
+            throw new AppException(400, "User already exists");
+        }
+        Role role = roleRepository.findById(RoleConstants.ADMIN_ID).get();
+        String password = passwordEncoder.encode(defaultPassword);
+        User user = UserMapping.mapToAdmin(userId, model, password);
+        userRepository.save(user);
+        UserRole userRole = UserMapping.mapToRole(user, role);
+        userRoleRepository.save(userRole);
+        return true;
     }
 }

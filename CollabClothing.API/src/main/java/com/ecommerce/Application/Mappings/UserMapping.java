@@ -36,6 +36,28 @@ public class UserMapping {
         return user;
     }
 
+    public static User mapToAdmin(UUID userId, RegisterRequest request, String passwordHash) {
+        User user = new User();
+        UUID id = UUID.randomUUID();
+        user.setId(id);
+        user.setUserName(request.getUserName());
+        user.setEmail(request.getEmail());
+        user.setPasswordHash(passwordHash);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setAddress(request.getAddress());
+        user.setDob(request.getDob());
+        user.setPhoneNumber(request.getPhoneNumber());
+        user.setGender(request.getGender());
+        user.setIsDeleted(false);
+        user.setBlock(false);
+        user.setEmailVerified(true);
+        user.setUserType(2);
+        user.setCreatedDate(new Date(System.currentTimeMillis()));
+        user.setCreatedBy(userId);
+        return user;
+    }
+
     public static UserModel mapToUserModel(User user) {
         UserModel userModel = new UserModel();
         userModel.setId(user.getId());
