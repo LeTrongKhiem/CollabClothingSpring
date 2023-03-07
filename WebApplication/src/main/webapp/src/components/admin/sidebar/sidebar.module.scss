@@ -1,0 +1,52 @@
+@import "../../../sass/variables.scss";
+.sidebar {
+  min-width: $sidebar-width;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: $main-bg;
+  box-shadow: $box-shadow;
+
+  &__logo {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > img {
+      height: 45px;
+    }
+  }
+
+  &__item {
+    padding: 0 20px;
+
+    &_inner {
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      transition: color 0.3s ease 0s;
+
+      > i {
+        margin-right: 10px;
+        font-size: 1.5rem;
+      }
+
+      > span {
+        text-transform: capitalize;
+      }
+
+      &:hover {
+        color: $main-color;
+      }
+
+      &.active {
+        border-radius: $border-radius;
+        background-image: linear-gradient(to right, $main-color, $second-color);
+        color: $txt-white;
+      }
+    }
+  }
+}

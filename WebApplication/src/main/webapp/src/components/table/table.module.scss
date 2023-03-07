@@ -1,0 +1,61 @@
+.tableWrapper {
+  overflow-y: auto;
+
+  table {
+    width: 100%;
+    min-width: 400px;
+    border-spacing: 0;
+  }
+
+  thead {
+    background-color: #fafafb;
+  }
+
+  tr {
+    text-align: left;
+  }
+
+  th,
+  td {
+    text-transform: capitalize;
+    padding: 15px 10px;
+  }
+
+  tbody > tr:hover {
+    background-color: #4267b2;
+    color: #fff;
+  }
+}
+.table__pagination {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+
+  &__item ~ &__item {
+    margin-left: 10px;
+  }
+
+  &__item {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &.active,
+    &.active:hover {
+      background-color: #4267b2;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    &:hover {
+      color: #fff;
+      background-color: #8d8d8d;
+    }
+  }
+}

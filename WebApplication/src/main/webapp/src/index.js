@@ -11,6 +11,7 @@ import {
   ResetPassword,
   Reset,
   UserProfile,
+  Admin,
 } from "./pages";
 //components
 import { Header } from "./components";
@@ -22,6 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -37,6 +39,8 @@ root.render(
               <Route path={"/reset"} element={<Reset />} />
               <Route path={"/changePassword"} element={<ResetPassword />} />
               <Route path={"/user-profile"} element={<UserProfile />} />
+
+              <Route path="/admin/*" element={<Admin />} />
             </Routes>
           </div>
         </div>

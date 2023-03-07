@@ -1,0 +1,11 @@
+.layout {
+  color: #455560;
+  &__content {
+    padding-left: 300px;
+    background-color: #fafafb;
+    min-height: 100vh;
+    &__main {
+      padding: 30px;
+    }
+  }
+}
