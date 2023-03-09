@@ -1,20 +1,18 @@
 package com.ecommerce.Application.Service;
 
-import com.ecommerce.Application.Abstractions.IBrandService;
-import com.ecommerce.Application.Abstractions.ICategoryService;
-import com.ecommerce.Application.Abstractions.IProductMapCategoryService;
-import com.ecommerce.Application.Abstractions.IProductService;
+import com.ecommerce.Application.Abstractions.*;
+import com.ecommerce.Application.Mappings.ProductImageMapping;
 import com.ecommerce.Application.Mappings.ProductMapping;
 import com.ecommerce.Entities.*;
+import com.ecommerce.Model.Products.ProductImageModel;
 import com.ecommerce.Model.Products.ProductModel;
-import com.ecommerce.Repository.CategoryRepository;
-import com.ecommerce.Repository.ProductDetailsRepository;
-import com.ecommerce.Repository.ProductMapCategoryRepository;
-import com.ecommerce.Repository.ProductRepository;
+import com.ecommerce.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +33,10 @@ public class ProductService implements IProductService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductMapCategoryRepository productMapCategoryRepository;
+    @Autowired
+    private ProductImageRepository productImageRepository;
+    @Autowired
+    private IFileStorageService fileStorageService;
 
     @Override
     public Product AddProduct(Product product) {
@@ -97,5 +99,18 @@ public class ProductService implements IProductService {
     public List<ProductModel> findProductsIsDeletedFalse() {
         List<Product> products = productRepository.findAllByIsDeletedFalse();
         return ProductMapping.getListProduct(products);
+    }
+
+    @Override
+    public void addImage(UUID createBy, UUID productId, ProductImageModel productImage) {
+        Product product = productRepository.findById(productId).get();
+        if (productImage.getFiles() == null) {
+            return;
+        }
+        for (MultipartFile file : productImage.getFiles()) {
+            String path = fileStorageService.saveImage(file);
+            ProductImage image = ProductImageMapping.mapToProductImage(createBy, product, productImage, path);
+            productImageRepository.save(image);
+        }
     }
 }
