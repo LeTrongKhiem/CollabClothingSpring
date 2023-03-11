@@ -1,33 +1,25 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import './table.css'
 
 const Table = props => {
 
-    const initDataShow = props.limit && props.bodyData ? props.bodyData.slice(0, Number(props.limit)) : props.bodyData
+    const {totalPages, onChangePage, data, pageSize, currentPage, handlePageChange} = props;
+    const [dataShow, setDataShow] = useState([])
+    console.log(dataShow)
+    const [range, setRange] = useState([...Array(totalPages).keys()]);
+    useEffect(() => {
+        setDataShow(data)
+    }, [currentPage, data, pageSize, totalPages]);
 
-    const [dataShow, setDataShow] = useState(initDataShow)
+    useEffect(() => {
+        const newRange = [...Array(totalPages).keys()];
+        setRange(newRange);
+    }, [totalPages]);
+    const handleClick = (page) => {
+        onChangePage(page-1);
+    };
 
-    let pages = 1
-
-    let range = []
-
-    if (props.limit !== undefined) {
-        let page = Math.floor(props.bodyData.length / Number(props.limit))
-        pages = props.bodyData.length % Number(props.limit) === 0 ? page : page + 1
-        range = [...Array(pages).keys()]
-    }
-
-    const [currPage, setCurrPage] = useState(0)
-
-    const selectPage = page => {
-        const start = Number(props.limit) * page
-        const end = start + Number(props.limit)
-
-        setDataShow(props.bodyData.slice(start, end))
-
-        setCurrPage(page)
-    }
 
     return (
         <div>
@@ -45,7 +37,7 @@ const Table = props => {
                         ) : null
                     }
                     {
-                        props.bodyData && props.renderBody ? (
+                        data && props.renderBody ? (
                             <tbody>
                             {
                                 dataShow.map((item, index) => props.renderBody(item, index))
@@ -56,12 +48,19 @@ const Table = props => {
                 </table>
             </div>
             {
-                pages > 1 ? (
+                totalPages > 1 ? (
                     <div className="table__pagination">
                         {
                             range.map((item, index) => (
-                                <div key={index} className={`table__pagination-item ${currPage === index ? 'active' : ''}`} onClick={() => selectPage(index)}>
-                                    {item + 1}
+                                <div
+                                    key={index}
+                                    className={`table__pagination-item ${
+                                        currentPage === index  ? "active" : ""
+                                    }`}
+                                    onClick={() => handleClick(index + 1)}
+
+                                >
+                                    {index + 1}
                                 </div>
                             ))
                         }
