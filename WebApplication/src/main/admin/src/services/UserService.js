@@ -19,6 +19,14 @@ class UserService {
             }
         });
     }
+    getAllUsers() {
+        const  token  = localStorage.getItem("token");
+        return axios.get(API_URL_USER+"/all",{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 }
 
 export default new UserService();

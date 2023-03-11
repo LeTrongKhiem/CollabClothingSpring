@@ -30,11 +30,12 @@ function Login() {
         UserService.login(value)
             .then((res) => {
                 if (res.status === 200) {
+                    localStorage.setItem("token", res.data.token);
                     UserService.getCurrentUser().then((res) => {
                         if (res.data.role === "USER") {
                             toast.success("Đăng nhập thành công");
                             dispatch(login(value));
-                            localStorage.setItem("token", res.data.token);
+
                             navigate("/");
 
                         } else {
