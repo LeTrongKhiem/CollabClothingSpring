@@ -8,6 +8,7 @@ import com.ecommerce.Model.Products.ProductDetailModel;
 import com.ecommerce.Model.Products.ProductModel;
 import com.ecommerce.Model.Products.ProductOnlyModel;
 import lombok.val;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -130,16 +131,12 @@ public class ProductMapping {
         return productDetailModel;
     }
 
-//    public static List<ProductModel> getListProduct(List<Product> products) {
-//        var ppp = products.stream().map(ProductMapping::getProduct).toList();
-//        return products.stream().map(ProductMapping::toProduct).toList();
-//    }
-
     public static List<ProductModel> getListProduct(List<Product> products) {
         return products.stream().map(ProductMapping::getProduct).toList();
     }
 
-    public static List<ProductDetailModel> getListProductDetail(List<ProductDetail> productDetails) {
-        return productDetails.stream().map(ProductMapping::toProductDetail).toList();
+    public static Page<ProductModel> getPageProducts(Page<Product> products) {
+        return products.map(ProductMapping::getProduct);
     }
+
 }
