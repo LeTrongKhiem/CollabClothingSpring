@@ -146,8 +146,16 @@ public class ProductService implements IProductService {
 
     @Override
     public PagingModel<ProductModel> getAll(SearchProductItems items) {
-        Pageable pageable = PageRequest.of(items.getPage(), items.getSize(), Sort.by(items.getSortBy()));
-        List<Product> listProducts = productRepository.findAll();
+//        Pageable pageable = PageRequest.of(items.getPage(), items.getSize(), Sort.by(items.getSortBy()));
+        Sort sort;
+        if (items.getSortType() != null && items.getSortType().equals("desc")) {
+            sort =  Sort.by(Sort.Order.desc(items.getSortBy()));
+        } else {
+            sort =  Sort.by(Sort.Order.asc(items.getSortBy()));
+        }
+        Pageable pageable = PageRequest.of(items.getPage(), items.getSize(), sort);
+
+        List<Product> listProducts = productRepository.findAll(sort);
         if (items.getBrandId() != null) {
             listProducts = listProducts.stream().filter(product -> product.getBrand().getId().equals(items.getBrandId())).toList();
         }
