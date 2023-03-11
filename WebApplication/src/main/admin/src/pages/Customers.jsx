@@ -52,7 +52,7 @@ const Customers = () => {
     const [pageSize, setPageSize] = useState(2);
     // const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     useEffect(() => {
         const getUsers = async () => {
             setLoading(true);
