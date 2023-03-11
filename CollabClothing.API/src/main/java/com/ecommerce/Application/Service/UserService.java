@@ -78,8 +78,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort) {
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(sort));
+    public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort, String sortType) {
+        Pageable pageable;
+        if (sortType != null && sortType.equals("desc")) {
+            pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc(sort)));
+        } else {
+            pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.asc(sort)));
+        }
         Page<User> users;
         if (search != null && !search.isEmpty()) {
             users = userRepository.findByFirstNameOrLastNameOrEmailOrPhoneNumber(search, search, search, search, pageable);

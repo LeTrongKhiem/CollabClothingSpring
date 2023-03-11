@@ -19,7 +19,7 @@ public interface IUserService {
     public Optional<User> findById(UUID userId);
     public Optional<User> getUserByEmail(String email);
     public List<UserModel> findAll();
-    public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort);
+    public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort, String sortType);
     public boolean updateUser(UUID uuid, UserUpdateProfileModel userModel);
     public boolean userUpdatePassword(UUID uuid, UserChangePasswordModel userModel);
     public List<UserModel> findAllByIsDeletedFalse();

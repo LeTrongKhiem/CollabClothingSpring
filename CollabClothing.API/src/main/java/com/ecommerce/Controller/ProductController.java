@@ -144,9 +144,10 @@ public class ProductController {
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(defaultValue = "") UUID categoryId,
             @RequestParam(defaultValue = "") UUID brandId) {
-        SearchProductItems searchProductItems = new SearchProductItems(search, brandId, categoryId, page, pageSize, sortBy);
+        SearchProductItems searchProductItems = new SearchProductItems(search, brandId, categoryId, page, pageSize, sortBy, sortType);
         try {
             PagingModel<ProductModel> products = productService.getAll(searchProductItems);
             return new ResponseEntity<>(products, HttpStatus.OK);
