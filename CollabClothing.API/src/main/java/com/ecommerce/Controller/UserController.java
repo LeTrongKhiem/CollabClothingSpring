@@ -38,9 +38,10 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "") String search,
-            @RequestParam(defaultValue = "lastName") String sortBy)
+            @RequestParam(defaultValue = "lastName") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortType)
     {
-        List<UserModel> list = userService.getAllUsersModel(page, pageSize, search, sortBy);
+        List<UserModel> list = userService.getAllUsersModel(page, pageSize, search, sortBy, sortType);
 
         return new ResponseEntity<List<UserModel>>(list, new HttpHeaders(), HttpStatus.OK);
     }
