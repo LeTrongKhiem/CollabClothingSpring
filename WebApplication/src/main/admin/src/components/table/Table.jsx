@@ -4,7 +4,11 @@ import './table.css'
 
 const Table = props => {
 
-    const {totalPages, onChangePage, data, pageSize, currentPage, handlePageChange} = props;
+    const {totalPages, onChangePage, data, pageSize, currentPage, sortColumn,sortOrder,onSort} = props;
+    console.log(sortColumn)
+    console.log(sortOrder)
+    console.log(onSort)
+
     const [dataShow, setDataShow] = useState([])
     console.log(dataShow)
     const [range, setRange] = useState([...Array(totalPages).keys()]);
@@ -19,18 +23,37 @@ const Table = props => {
     const handleClick = (page) => {
         onChangePage(page-1);
     };
-
+    const  handleSort = (column) => {
+        onSort(column)
+    }
 
     return (
         <div>
             <div className="table-wrapper">
                 <table>
                     {
-                        props.headData && props.renderHead ? (
+                        props.headData  ? (
                             <thead>
                             <tr>
                                 {
-                                    props.headData.map((item, index) => props.renderHead(item, index))
+                                    props.headData.map((item, index) => (
+                                        <th
+                                            key={index}
+                                            onClick={() => handleSort(item.key)}
+                                        >
+                                            {item.label}
+                                            {
+                                                sortColumn === item.key ? (
+                                                    sortOrder === 'asc' ? (
+                                                        <i className='bx bx-up-arrow-alt'></i>
+                                                    ) : (
+                                                        <i className='bx bx-down-arrow-alt'></i>
+                                                    )
+                                                ) : null
+
+                                            }
+                                        </th>
+                                    ))
                                 }
                             </tr>
                             </thead>

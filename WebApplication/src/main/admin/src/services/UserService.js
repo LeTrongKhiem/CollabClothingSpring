@@ -22,13 +22,16 @@ class UserService {
         });
     }
 
-    getAllUsers(page, pageSize) {
+    getAllUsers(page, pageSize,searchTerm,sortOrder, sortBy) {
         const token = localStorage.getItem("token");
         return axios.get(API_URL_USER + "/getAllUsers", {
             params: {
                 page: page,
                 pageSize: pageSize,
-                sortBy: 'lastName'
+                search: searchTerm,
+                sortBy: sortBy,
+                sortType: sortOrder
+
             },
             headers: {
                 Authorization: `Bearer ${token}`
