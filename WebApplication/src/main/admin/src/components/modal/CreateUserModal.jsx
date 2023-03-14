@@ -1,68 +1,159 @@
 import React, { useState } from "react";
+import {FastField, Form, Formik} from "formik";
+import * as Yup from "yup";
+import InputField from "../../custom-fields/InputField";
+import SelectField from "../../custom-fields/SelectField";
+import "./createUserModal.css";
+function CreateUserModal({ showModal, closeModal }) {
+   const [modal, setModal] = useState(showModal);
+    console.log(modal)
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
 
-function CreateUserModal() {
-    const [showModal, setShowModal] = useState(false);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-
-    const handleShowModal = () => {
-        setShowModal(true);
+    const initialState = {
+        userName: "",
+        firstName: "",
+        lastName: "",
+        dob: "",
+        phoneNumber: "",
+        address: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        gender: "",
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleNameChange = (event) => {
-        setName(event.target.value);
-    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Xử lý gửi form tại đây
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
     };
+    console.log(showModal)
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Do something with the name and email values
-        console.log(name, email);
-        // Close the modal
-        setShowModal(false);
-    };
 
     return (
-        <div>
-            <button onClick={handleShowModal}>Create User</button>
-            {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <h2>Create User</h2>
-                        <form onSubmit={handleSubmit}>
-                            <div>
-                                <label htmlFor="name">Name:</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    value={name}
-                                    onChange={handleNameChange}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="email">Email:</label>
-                                <input
+
+
+        <div className={`product-view__modal ${showModal  ?  "active" : "" }`}>
+
+            <div className="product-view__modal__content auth" >
+                <div  className="form">
+                    <h2>Đăng ký</h2>
+                    <Formik
+                        initialValues={initialState}
+
+
+                    >
+                        {(formikProps) => {
+                            const {values, errors, touched} = formikProps;
+                            console.log(values)
+                            return (<Form>
+                                <FastField
+                                    name="email"
+                                    component={InputField}
+                                    placeholder="Email"
                                     type="email"
-                                    id="email"
-                                    value={email}
-                                    onChange={handleEmailChange}
+
                                 />
-                            </div>
-                            <button type="submit">Submit</button>
-                        </form>
-                        <button onClick={handleCloseModal}>Cancel</button>
+
+                                <FastField
+                                    name="firstName"
+                                    component={InputField}
+                                    placeholder="Họ"
+
+                                />
+                                <FastField
+                                    name="lastName"
+                                    component={InputField}
+                                    placeholder="Tên"
+
+                                />
+                                <FastField
+                                    name="dob"
+                                    component={InputField}
+                                    placeholder="Ngày sinh"
+                                    isdate={true}
+                                    type="text"
+                                />
+                                <FastField
+                                    name="gender"
+                                    component={SelectField}
+                                    styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderColor: state.isFocused ? "" : "#777",
+                                            color: "#777",
+                                            fontSize: "16px",
+                                        }),
+                                    }}
+                                    placeholder="Giới tính"
+                                    options={[{value: "1", label: "Nam"}, {
+                                        value: "2",
+                                        label: "Nữ"
+                                    }, {value: "3", label: "Khác"},]}
+                                />
+
+                                <FastField
+                                    name="phoneNumber"
+                                    component={InputField}
+                                    placeholder="Số điện thoại"
+                                    isdate={false}
+                                />
+                                <FastField
+                                    name="address"
+                                    component={InputField}
+                                    placeholder="Địa chỉ"
+
+                                />
+
+                                <FastField
+                                    name="password"
+                                    component={InputField}
+                                    placeholder="Mật khẩu"
+                                    type="password"
+
+                                />
+                                <FastField
+                                    name="confirmPassword"
+                                    component={InputField}
+                                    placeholder="Nhập lại mật khẩu"
+                                    type="password"
+
+                                />
+
+                                <button
+                                    type="button"
+                                    className="btn-register"
+                                >
+                                    Đăng ký
+                                </button>
+                            </Form>);
+                        }}
+                    </Formik>
+
+
+                    <div className="product-view__modal__content__close">
+                        <button onClick={closeModal}>
+                            <i className="fas fa-times"></i>
+                            Đóng
+
+                        </button>
                     </div>
+
                 </div>
-            )}
+
+            </div>
         </div>
-    );
+    )
+
 }
 
 export default CreateUserModal;

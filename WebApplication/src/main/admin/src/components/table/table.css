@@ -10,16 +10,22 @@ table {
 
 thead {
     background-color: var(--second-bg);
+    cusor: pointer;
 }
 
 tr {
     text-align: left;
 }
 
+
 th,
 td {
     text-transform: capitalize;
     padding: 15px 10px;
+}
+th > i {
+    margin-left: 5px;
+    cursor: pointer;
 }
 
 tbody > tr:hover {

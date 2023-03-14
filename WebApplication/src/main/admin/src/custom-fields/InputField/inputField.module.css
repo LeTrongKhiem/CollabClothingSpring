@@ -1,0 +1,11 @@
+input.isInvalid {
+
+    border: 1px solid red !important;
+
+}
+.errors {
+  color: red;
+  font-size: 0.9rem;
+  margin: 1rem 0 !important;
+  text-align: unset !important;
+}
