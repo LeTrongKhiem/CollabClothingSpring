@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -70,28 +71,18 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductModel> getAllProductModel() {
-        return null;
-    }
-
-    @Override
-    public List<ProductModel> getProductByBrandId(UUID id) {
-        return null;
-    }
-
-    @Override
-    public List<ProductModel> getProductByCategoryId(UUID id) {
-        return null;
-    }
-
-    @Override
     public boolean deleteProduct(UUID id) {
         return false;
     }
 
     @Override
-    public boolean updateProduct(ProductModel productModel) {
-        return false;
+    public boolean updateProduct(UUID productId, UUID userId, ProductModel productModel) {
+        Product product = productRepository.findById(productId).orElseThrow();
+        ProductDetail productDetail = productDetailsRepository.findById(product.getProductDetail().getId()).orElseThrow();
+        Brand brand = brandService.findById(product.getBrand().getId());
+        Product productUpdate = ProductMapping.updateProduct(userId, brand, product, productDetail, productModel);
+        productRepository.save(productUpdate);
+        return true;
     }
 
     @Override

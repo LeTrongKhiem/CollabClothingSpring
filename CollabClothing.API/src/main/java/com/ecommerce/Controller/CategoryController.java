@@ -2,6 +2,8 @@ package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.ICategoryService;
 import com.ecommerce.Application.Abstractions.IFileStorageService;
+import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
+import com.ecommerce.Model.Categories.CategoryCreateModel;
 import com.ecommerce.Model.Categories.CategoryModel;
 import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.PagingRequest;
@@ -9,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
     @Autowired
     ICategoryService categoryService;
-    @Autowired
-    IFileStorageService fileStorageService;
 
     public CategoryController(ICategoryService categoryService) {
         this.categoryService = categoryService;
@@ -30,6 +32,28 @@ public class CategoryController {
         PagingRequest request = new PagingRequest(page, pageSize, sortBy, sortDirection, search);
         try {
             var result = categoryService.getAll(request);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Boolean> addCategory(@ModelAttribute CategoryCreateModel model) {
+        try {
+            UUID userId = AuthenticateExtensions.getUserId();
+            var result = categoryService.addCategory(userId, model);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/update/{categoryId}")
+    public ResponseEntity<Boolean> updateCategory(@PathVariable UUID categoryId, @ModelAttribute CategoryCreateModel model) {
+        try {
+            UUID userId = AuthenticateExtensions.getUserId();
+            var result = categoryService.updateCategory(userId, categoryId, model);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

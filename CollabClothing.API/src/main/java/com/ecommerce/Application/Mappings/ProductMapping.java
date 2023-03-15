@@ -100,6 +100,26 @@ public class ProductMapping {
         return productModel;
     }
 
+    public static Product updateProduct(UUID userId, Brand brand, Product product, ProductDetail productDetail, ProductModel productModel) {
+        product.setName(productModel.getName());
+        product.setSoldOut(productModel.isSold_out());
+        product.setModifiedDate(new Date(System.currentTimeMillis()));
+        product.setModifiedBy(userId);
+        product.setSlug(SlugExtensions.toSlug(productModel.getName()));
+        product.setBrand(brand);
+        productDetail.setConsumer(productModel.getConsumer());
+        productDetail.setCotton(productModel.getCotton());
+        productDetail.setDescription(productModel.getDescription());
+        productDetail.setForm(productModel.getForm());
+        productDetail.setMadeIn(productModel.getMade_in());
+        productDetail.setPriceCurrent(productModel.getPriceCurrent());
+        productDetail.setPriceOld(productModel.getPriceOld());
+        productDetail.setSaleOff(productModel.getSale_off());
+        productDetail.setType(productModel.getType());
+        product.setProductDetail(productDetail);
+        return product;
+    }
+
     public static ProductOnlyModel toProduct(Product product) {
         ProductOnlyModel productOnlyModel = new ProductOnlyModel();
         productOnlyModel.setId(product.getId());

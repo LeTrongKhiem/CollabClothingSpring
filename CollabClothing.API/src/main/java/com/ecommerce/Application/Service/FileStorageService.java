@@ -21,10 +21,12 @@ import java.util.stream.Stream;
 @Component
 public class FileStorageService implements IFileStorageService {
     private final Path root = Paths.get("upload_images");
+    private final Path categoryFile = Paths.get("upload_images/categories");
     @Override
     public void init() {
         try {
             Files.createDirectories(root);
+            Files.createDirectories(categoryFile);
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize folder for upload!");
         }
@@ -98,6 +100,34 @@ public class FileStorageService implements IFileStorageService {
             return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
         } catch (IOException e) {
             throw new RuntimeException("Could not load the files!");
+        }
+    }
+
+    @Override
+    public String saveFile(MultipartFile file, Path folderName) {
+        UUID uuid = UUID.randomUUID();
+        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        String fileName = date + "_" + uuid.toString();
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        try {
+            Files.copy(file.getInputStream(), folderName.resolve(fileName + extension), StandardCopyOption.REPLACE_EXISTING);
+            return folderName.toString() + "/" + fileName + extension;
+        } catch (Exception e) {
+            if (e instanceof FileAlreadyExistsException) {
+                throw new RuntimeException("A file of that name already exists.");
+            }
+
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteFilePath(String path) {
+        try {
+            Path file = Paths.get(path);
+            Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
         }
     }
 }

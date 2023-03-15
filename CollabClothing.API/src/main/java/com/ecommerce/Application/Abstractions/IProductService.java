@@ -17,11 +17,8 @@ public interface IProductService {
     Product AddProduct(Product product);
     boolean save(UUID userId, ProductModel productModel);
     ProductModel getProductById(UUID id);
-    List<ProductModel> getAllProductModel();
-    List<ProductModel> getProductByBrandId(UUID id);
-    List<ProductModel> getProductByCategoryId(UUID id);
     boolean deleteProduct(UUID id);
-    boolean updateProduct(ProductModel productModel);
+    boolean updateProduct(UUID productId, UUID userId, ProductModel productModel);
     List<ProductModel> getAllProducts();
     List<ProductModel> findProductsIsDeletedFalse();
     void addImage(UUID createBy, UUID productId, ProductImageModel model);
