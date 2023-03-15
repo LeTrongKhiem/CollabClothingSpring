@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import { selectIsLoggedIn } from "./redux/slice/authSlice";
 import { useSelector } from "react-redux";
 import {ToastContainer} from "react-toastify";
+import Topnav from "./components/topnav/TopNav";
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
@@ -23,6 +24,7 @@ function App() {
               <div className="layout">
                 <Sidebar />
                 <div className="layout__content">
+                    <Topnav />
                   <div className="layout__content-main">
                     <Routes>
                       <Route path="/" element={<Dashboard />} />

@@ -1,0 +1,26 @@
+{
+  "sidebar": {
+    "dashboard": "Bảng điều khiển",
+    "customers": "Khách hàng",
+    "products": "Sản phẩm",
+    "orders": "Đơn hàng",
+    "analytics": "Phân tích",
+    "categories": "Danh mục",
+    "discount": "Giảm giá",
+    "inventory": "Kho hàng",
+    "settings": "Cài đặt"
+  },
+  "customers": {
+    "title": "Khách hàng",
+    "lastName": "Họ",
+    "firstName": "Tên",
+    "email": "Email",
+    "dob": "Ngày sinh",
+    "phone": "Số điện thoại",
+    "address": "Địa chỉ",
+    "gender": "Giới tính",
+    "emailVerified": "Da xác thực",
+    "role": "Vai trò"
+
+  }
+}
