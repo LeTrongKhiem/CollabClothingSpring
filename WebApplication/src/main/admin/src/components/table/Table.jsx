@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 
 import './table.css'
-
+import {useTranslation} from "react-i18next";
+import i18n from '../../locales/i18n';
 const Table = props => {
 
     const {totalPages, onChangePage, data, pageSize, currentPage, sortColumn,sortOrder,onSort} = props;
@@ -26,8 +27,9 @@ const Table = props => {
     const  handleSort = (column) => {
         onSort(column)
     }
-
+    const {t} = useTranslation();
     return (
+
         <div>
             <div className="table-wrapper">
                 <table>
@@ -41,7 +43,7 @@ const Table = props => {
                                             key={index}
                                             onClick={() => handleSort(item.key)}
                                         >
-                                            {item.label}
+                                            {t(item.label)}
                                             {
                                                 sortColumn === item.key ? (
                                                     sortOrder === 'asc' ? (

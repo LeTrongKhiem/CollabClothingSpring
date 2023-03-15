@@ -1,6 +1,9 @@
 import React from "react";
+import {useTranslation} from "react-i18next";
 
 const SidebarItem = (props) => {
+    const { t } = useTranslation();
+    const displayName = t(props.display_name_key);
   const active = props.active ? "active" : "";
 
   return (

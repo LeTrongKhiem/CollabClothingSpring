@@ -2,18 +2,19 @@ import React, {useCallback, useEffect, useState} from "react";
 import Table from "../components/table/Table";
 import UserService from "../services/UserService";
 import CreateUserModal from "../components/modal/CreateUserModal";
-
+import {useTranslation} from "react-i18next";
+import i18n from '../locales/i18n';
 const customerTableHead = [
     { key: "number", label: "#" },
-    { key: "email", label: "Email" },
-    { key: "lastName", label: "Họ" },
-    { key: "firstName", label: "Tên" },
-    { key: "dob", label: "Ngày sinh" },
-    { key: "gender", label: "Giới tính" },
-    { key: "phoneNumber", label: "Số điện thoại" },
-    { key: "address", label: "Địa chỉ" },
-    { key: "emailVerified", label: "Xác thực" },
-    { key: "role", label: "Vai trò" },
+    { key: "email", label: "customers.email" },
+    { key: "lastName", label: "customers.lastName" },
+    { key: "firstName", label: "customers.firstName" },
+    { key: "dob", label: "customers.dob" },
+    { key: "gender", label: "customers.gender" },
+    { key: "phoneNumber", label:"customers.phone" },
+    { key: "address", label: "customers.address" },
+    { key: "emailVerified", label: "customers.emailVerified"},
+    { key: "role", label: "customers.role" },
 ];
 
 
@@ -63,9 +64,7 @@ const Customers = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [sortColumn, setSortColumn] = useState("lastName");
-    console.log(sortColumn)
     const [sortOrder, setSortOrder] = useState('asc');
-    console.log(sortOrder)
     const openModal = () => {
         setShowModal(true);
     };
@@ -77,9 +76,6 @@ const Customers = () => {
         const getUsers = async () => {
             setLoading(true);
             const response = await UserService.getAllUsers(currentPage, pageSize, searchTerm,sortOrder,sortColumn);
-            console.log("api",sortOrder)
-            console.log("api",sortColumn)
-
             const total = await  UserService.getTotalsUser();
             setCustomerList(response.data);
             setLoading(false);
@@ -103,11 +99,12 @@ const Customers = () => {
             setSortOrder('asc')
         }
     }, [sortColumn, sortOrder]);
+    const {t} = useTranslation();
     return (<>
 
         <div>
             <h2 className="page-header">
-                customers
+                {t('customers.title')}
             </h2>
             <div className="row">
                 <div className="col-12">
