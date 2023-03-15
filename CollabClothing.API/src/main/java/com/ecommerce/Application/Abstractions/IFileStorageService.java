@@ -14,4 +14,6 @@ public interface IFileStorageService {
     boolean delete(String filename);
     void deleteAll();
     Stream<Path> loadAll();
+    String saveFile (MultipartFile file, Path folderName);
+    void deleteFilePath(String path);
 }

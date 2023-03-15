@@ -156,4 +156,14 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/update/{productId}")
+    public ResponseEntity<Boolean> updateProduct(@PathVariable UUID productId, @Valid @RequestBody ProductModel model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+        var userId = AuthenticateExtensions.getUserId();
+        boolean result = productService.updateProduct(productId, userId, model);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
