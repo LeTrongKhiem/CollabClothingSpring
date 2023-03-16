@@ -29,8 +29,8 @@ public class UserMapping {
         user.setGender(request.getGender());
         user.setIsDeleted(false);
         user.setBlock(false);
-        user.setEmailVerified(false);
-        user.setUserType(1);
+        user.setEmailVerified(true);
+        user.setUserType(2);
         user.setCreatedDate(new Date(System.currentTimeMillis()));
         user.setCreatedBy(user.getId());
         return user;
