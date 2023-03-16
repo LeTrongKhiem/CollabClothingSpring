@@ -32,7 +32,8 @@ function Login() {
                 if (res.status === 200) {
                     localStorage.setItem("token", res.data.token);
                     UserService.getCurrentUser().then((res) => {
-                        if (res.data.role === "USER") {
+                        console.log(res.data)
+                        if (res.data.role === "ADMIN") {
                             toast.success("Đăng nhập thành công");
                             dispatch(login(value));
 
