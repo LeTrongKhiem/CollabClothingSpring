@@ -48,7 +48,9 @@ public class AuthenticationController {
     private AppSettings appSettings;
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request, HttpServletRequest httpServletRequest) {
+    public String register(@RequestBody @Valid RegisterRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
         String result = "User registered successfully";
         try {
             authenticationService.register(request, appSettings.getPath());
