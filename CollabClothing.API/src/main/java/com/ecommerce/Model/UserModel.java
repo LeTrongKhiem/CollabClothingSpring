@@ -14,7 +14,6 @@ public class UserModel {
     private String userName;
     private String firstName;
     private String lastName;
-    private String passwordHash;
     private String phoneNumber;
     private String address;
     private String email;

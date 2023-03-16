@@ -64,7 +64,6 @@ public class UserMapping {
         userModel.setUserName(user.getUsername());
         userModel.setFirstName(user.getFirstName());
         userModel.setLastName(user.getLastName());
-        userModel.setPasswordHash(user.getPasswordHash());
         userModel.setPhoneNumber(user.getPhoneNumber());
         userModel.setAddress(user.getAddress());
         userModel.setEmail(user.getEmail());

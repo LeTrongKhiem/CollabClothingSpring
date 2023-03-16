@@ -59,4 +59,15 @@ public class CategoryController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PutMapping("/delete/{categoryId}")
+    public ResponseEntity<Boolean> deleteCategory(@PathVariable UUID categoryId) {
+        try {
+            UUID userId = AuthenticateExtensions.getUserId();
+            var result = categoryService.deleteCategory(userId, categoryId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
