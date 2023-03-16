@@ -146,7 +146,7 @@
 
 .btn-register {
     margin: 10px auto;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1.6rem !important;
     background-color: var(--main-color);
     color: #ffff;
     text-transform: uppercase;
@@ -222,6 +222,7 @@
     font-size: 1rem;
     padding: 0.5rem 1.3rem;
     font-weight: 600;
+    border-radius: 0 !important;
 }
 
 .product-view__modal.active .product-view__modal__content {

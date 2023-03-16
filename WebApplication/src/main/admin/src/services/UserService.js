@@ -22,18 +22,17 @@ class UserService {
         });
     }
 
-    getAllUsers(page, pageSize,searchTerm,sortOrder, sortBy) {
+    checkEmailExist(email) {
+        return axios.get(API_URL + `/getByEmail?email=${email}`);
+    }
+
+    getAllUsers(page, pageSize, searchTerm, sortOrder, sortBy) {
         const token = localStorage.getItem("token");
         return axios.get(API_URL_USER + "/getAllUsers", {
             params: {
-                page: page,
-                pageSize: pageSize,
-                search: searchTerm,
-                sortBy: sortBy,
-                sortType: sortOrder
+                page: page, pageSize: pageSize, search: searchTerm, sortBy: sortBy, sortType: sortOrder
 
-            },
-            headers: {
+            }, headers: {
                 Authorization: `Bearer ${token}`
             }
         });
@@ -42,6 +41,15 @@ class UserService {
     getTotalsUser() {
         const token = localStorage.getItem("token");
         return axios.get(API_URL_USER + "/all", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+    createUser(user) {
+        const token = localStorage.getItem("token");
+        return axios.post(API_URL_USER + "/adminCreateAccount", user, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
