@@ -17,7 +17,7 @@ public interface IProductService {
     Product AddProduct(Product product);
     boolean save(UUID userId, ProductModel productModel);
     ProductModel getProductById(UUID id);
-    boolean deleteProduct(UUID id);
+    boolean deleteProduct(UUID id, UUID userId);
     boolean updateProduct(UUID productId, UUID userId, ProductModel productModel);
     List<ProductModel> getAllProducts();
     List<ProductModel> findProductsIsDeletedFalse();
