@@ -111,7 +111,7 @@ public class FileStorageService implements IFileStorageService {
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         try {
             Files.copy(file.getInputStream(), folderName.resolve(fileName + extension), StandardCopyOption.REPLACE_EXISTING);
-            return folderName.toString() + "/" + fileName + extension;
+            return folderName.toString().replace("\\", "/") + "/" + fileName + extension;
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
                 throw new RuntimeException("A file of that name already exists.");
