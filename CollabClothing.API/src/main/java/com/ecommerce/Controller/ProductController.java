@@ -166,4 +166,11 @@ public class ProductController {
         boolean result = productService.updateProduct(productId, userId, model);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PutMapping("delete/{productId}")
+    public ResponseEntity<Boolean> deleteProduct(@PathVariable UUID productId) {
+        var userId = AuthenticateExtensions.getUserId();
+        boolean result = productService.deleteProduct(productId, userId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

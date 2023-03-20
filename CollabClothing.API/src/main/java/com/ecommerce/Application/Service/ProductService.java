@@ -71,8 +71,13 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public boolean deleteProduct(UUID id) {
-        return false;
+    public boolean deleteProduct(UUID id, UUID userId) {
+        Product product = productRepository.findById(id).orElseThrow();
+        product.setIsDeleted(true);
+        product.setDeletedBy(userId);
+        product.setDateDeleted(new java.util.Date(System.currentTimeMillis()));
+        productRepository.save(product);
+        return true;
     }
 
     @Override
