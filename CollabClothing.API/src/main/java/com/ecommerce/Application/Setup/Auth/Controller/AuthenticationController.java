@@ -81,6 +81,12 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+         authenticationService.logout(request);
+         return ResponseEntity.ok("Logged out successfully");
+    }
+
     @GetMapping("/verify")
     public String verifyUser(@Param("code") String code) {
         if (authenticationService.verify(code)) {
