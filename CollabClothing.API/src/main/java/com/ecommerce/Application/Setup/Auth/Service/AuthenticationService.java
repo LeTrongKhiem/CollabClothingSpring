@@ -21,6 +21,7 @@ import com.ecommerce.Application.Setup.Config.JwtService;
 import com.ecommerce.Model.GenericResponse;
 import com.ecommerce.Model.UserModel;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,11 @@ public class AuthenticationService {
 
     public String refreshToken(Map<String, Object> claims, String token) {
         return jwtService.doGenerateRefreshToken(claims, token);
+    }
+
+    public void logout(HttpServletRequest request) {
+        String authToken = jwtService.getTokenFromRequest(request);
+        jwtService.invalidateToken(authToken);
     }
     //endregion
 
