@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +24,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-
+    @Autowired
+    JWTBlackListService jwtBlackListService;
     private String SECRET_KEY;
     private int jwtExpirationInMs;
     private int refreshExpirationDateInMs;
@@ -38,11 +40,11 @@ public class JwtService {
     }
 
     public void invalidateToken(String token) {
-        Jws<Claims> claimsJws = Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token);
-        claimsJws.getBody().put("invalid", true);
+        jwtBlackListService.addTokenToBlacklist(token);
+    }
+
+    public boolean checkIfTokenIsBlacklisted(String token) {
+        return jwtBlackListService.isTokenBlacklisted(token);
     }
 
     public String getTokenFromRequest(HttpServletRequest request) {
