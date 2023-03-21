@@ -21,7 +21,7 @@ InputField.defaultProps = {
 };
 
 function InputField(props) {
-  const { field, type, form, label, placeholder, disabled, isdate } = props;
+  const { field, type, form, label, placeholder, disabled, isdate, className } = props;
   const { name } = field;
   const showError = form.errors[name] && form.touched[name];
   return (
@@ -37,6 +37,7 @@ function InputField(props) {
         placeholder={placeholder}
         isdate="false"
         className={showError ? styles.isInvalid : ""}
+        className={className}
         onFocus={isdate ? (e) => (e.target.type = "date") : null}
       />
       <ErrorMessage name={name} component="p" className={styles.errors} />

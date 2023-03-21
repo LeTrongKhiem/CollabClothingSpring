@@ -5,7 +5,7 @@ import "./assets/css/grid.css";
 import "./assets/css/index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "./components/sidebar/Sidebar";
-import { Dashboard, Customers } from "./pages";
+import {Dashboard, Customers, Products} from "./pages";
 import Login from "./pages/Login";
 import { selectIsLoggedIn } from "./redux/slice/authSlice";
 import { useSelector } from "react-redux";
@@ -29,6 +29,8 @@ function App() {
                     <Routes>
                       <Route path="/" element={<Dashboard />} />
                       <Route path="customers" element={<Customers />} />
+                        <Route path="products" element={<Products />} />
+
                     </Routes>
                   </div>
                 </div>
