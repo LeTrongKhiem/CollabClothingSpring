@@ -76,7 +76,13 @@ public class AuthenticationService {
     //region Authentication
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            if (auth.isAuthenticated()) {
+                User user = auth.getPrincipal() instanceof User ? (User) auth.getPrincipal() : null;
+                assert user != null;
+                user.setLastLogin(new Date());
+                userService.saveUser(user);
+            }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid username or password");
         }
