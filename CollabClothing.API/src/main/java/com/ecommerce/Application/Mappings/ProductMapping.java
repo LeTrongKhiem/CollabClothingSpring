@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ProductMapping {
     public static Product mapToProductModel(ProductModel model, Brand brand, UUID userId) {
@@ -96,6 +97,8 @@ public class ProductMapping {
         productModel.setUpdated_date(product.getModifiedDate());
         productModel.setUpdated_by(product.getModifiedBy());
         productModel.set_deleted(product.getIsDeleted());
+        productModel.setCategory_id(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getId()).collect(Collectors.toList())));
+        productModel.setCategoryNames(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getName()).collect(Collectors.toList())));
 
         return productModel;
     }
