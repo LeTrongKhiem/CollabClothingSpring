@@ -6,12 +6,9 @@ import i18n from '../../locales/i18n';
 const Table = props => {
 
     const {totalPages, onChangePage, data, pageSize, currentPage, sortColumn,sortOrder,onSort} = props;
-    console.log(sortColumn)
-    console.log(sortOrder)
-    console.log(onSort)
+    console.log("totalPages",totalPages)
 
     const [dataShow, setDataShow] = useState([])
-    console.log(dataShow)
     const [range, setRange] = useState([...Array(totalPages).keys()]);
     useEffect(() => {
         setDataShow(data)

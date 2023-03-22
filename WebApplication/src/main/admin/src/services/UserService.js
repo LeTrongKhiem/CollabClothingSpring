@@ -55,6 +55,9 @@ class UserService {
             }
         });
     }
+    logout() {
+        return axios.post(API_URL + "/logout");
+    }
 }
 
 export default new UserService();

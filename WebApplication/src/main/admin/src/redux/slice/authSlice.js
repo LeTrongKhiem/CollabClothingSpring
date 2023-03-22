@@ -8,7 +8,6 @@ export const authSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      // TODO: Call API to authenticate user
       const user = { email: action.payload.email };
       state.isLoggedIn = true;
       state.user = user;
@@ -16,6 +15,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = null;
+      localStorage.removeItem("token");
     },
   },
 });

@@ -21,6 +21,26 @@
     "gender": "Giới tính",
     "emailVerified": "Da xác thực",
     "role": "Vai trò"
-
+  },
+  "products": {
+    "title": "Sản phẩm",
+    "name": "Tên",
+    "categoryNames": "Danh mục",
+    "brandName": "Thương hiệu",
+    "consumer": "Người tiêu dùng",
+    "cotton": "Cotton",
+    "form": "Form",
+    "description": "Mô tả",
+    "priceCurrent": "Giá hiện tại",
+    "priceOld": "Giá cũ",
+    "sale_off": "Giảm giá",
+    "made_in": "Xuất xứ",
+    "type": "Loại",
+    "price": "Giá",
+    "quantity": "Số lượng",
+    "category": "Danh mục",
+    "discount": "Giảm giá",
+    "image": "Hình ảnh",
+    "status": "Trạng thái"
   }
 }

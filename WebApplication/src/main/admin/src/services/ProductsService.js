@@ -36,6 +36,17 @@ class ProductsService {
             }
         });
     }
+    getAllProducts(page, pageSize, searchTerm, sortOrder, sortBy) {
+        const token = localStorage.getItem("token");
+        return axios.get(API_URL + "products/getall", {
+            params: {
+                page: page, pageSize: pageSize, search: searchTerm, sortBy: sortBy, sortType: sortOrder
+
+            }, headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 }
 
 export default new ProductsService();

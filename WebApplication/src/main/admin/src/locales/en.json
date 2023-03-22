@@ -21,6 +21,26 @@
     "gender": "Gender",
     "emailVerified": "Email Verified",
     "role": "Role"
-
+  },
+  "products": {
+    "title": "Products",
+    "name": "Name",
+    "brandName": "Brand Name",
+    "consumer": "Consumer",
+    "categoryNames": "Category Name",
+    "cotton": "Cotton",
+    "description": "Description",
+    "form": "Form",
+    "priceCurrent": "Price Current",
+    "priceOld": "Price Old",
+    "sale_off": "Sale Off",
+    "type": "Type",
+    "made_in": "Made In",
+    "price": "Giá",
+    "quantity": "Số lượng",
+    "category": "Danh mục",
+    "discount": "Giảm giá",
+    "image": "Hình ảnh",
+    "status": "Trạng thái"
   }
 }
