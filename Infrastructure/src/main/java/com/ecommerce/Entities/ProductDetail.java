@@ -32,6 +32,7 @@ public class ProductDetail implements Serializable {
     @Column(columnDefinition = "decimal(18,2)")
     private double priceOld;
     private int saleOff;
+    @Length(max = 2000)
     private String description;
     private int consumer;
     private String type;
