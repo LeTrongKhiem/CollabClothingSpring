@@ -5,10 +5,7 @@ import com.ecommerce.Application.Mappings.ProductImageMapping;
 import com.ecommerce.Application.Mappings.ProductMapping;
 import com.ecommerce.Entities.*;
 import com.ecommerce.Model.PagingModel;
-import com.ecommerce.Model.Products.ImageModel;
-import com.ecommerce.Model.Products.ProductImageModel;
-import com.ecommerce.Model.Products.ProductModel;
-import com.ecommerce.Model.Products.SearchProductItems;
+import com.ecommerce.Model.Products.*;
 import com.ecommerce.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -108,9 +105,9 @@ public class ProductService implements IProductService {
         if (productImage.getFiles() == null) {
             return;
         }
-        for (MultipartFile file : productImage.getFiles()) {
-            String path = fileStorageService.saveImage(file);
-            ProductImage image = ProductImageMapping.mapToProductImage(createBy, product, productImage, path);
+        for (PartFileModel file : productImage.getFiles()) {
+            String path = fileStorageService.saveImage(file.getFile());
+            ProductImage image = ProductImageMapping.mapToProductImage(createBy, product, productImage, path, file.isThumbnail());
             productImageRepository.save(image);
         }
     }

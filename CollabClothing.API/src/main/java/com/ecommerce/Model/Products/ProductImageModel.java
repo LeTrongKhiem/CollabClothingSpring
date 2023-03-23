@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ProductImageModel {
-    private String alt;
-    private boolean isThumbnail;
-    List<MultipartFile> files;
+//    private String alt;
+//    private boolean isThumbnail;
+    List<PartFileModel> files;
 }

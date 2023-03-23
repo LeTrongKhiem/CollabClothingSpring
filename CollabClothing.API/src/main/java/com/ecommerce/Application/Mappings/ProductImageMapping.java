@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class ProductImageMapping {
-    public static ProductImage mapToProductImage(UUID createBy, Product product, ProductImageModel model, String path) {
+    public static ProductImage mapToProductImage(UUID createBy, Product product, ProductImageModel model, String path, boolean isThumbnail) {
         ProductImage productImage = new ProductImage();
         UUID id = UUID.randomUUID();
         productImage.setId(id);
         productImage.setAlt(product.getName());
-        productImage.setThumbnail(model.isThumbnail());
+        productImage.setThumbnail(isThumbnail);
         productImage.setProduct(product);
         productImage.setCreatedBy(createBy);
         productImage.setCreatedDate(new Date(System.currentTimeMillis()));
