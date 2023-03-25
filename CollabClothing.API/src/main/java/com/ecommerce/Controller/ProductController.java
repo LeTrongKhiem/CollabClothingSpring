@@ -2,6 +2,7 @@ package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.IFileStorageService;
 import com.ecommerce.Application.Abstractions.IProductService;
+import com.ecommerce.Application.Extensions.FileUploadModelConverter;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductImage;
@@ -18,11 +19,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -80,8 +84,9 @@ import java.util.stream.Collectors;
     }
 
     @PostMapping("image/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam UUID productId, @ModelAttribute List<PartFileModel> model) {
+    public ResponseEntity<String> uploadImage(@RequestParam UUID productId, MultipartHttpServletRequest request) {
         UUID userId = AuthenticateExtensions.getUserId();
+        List<PartFileModel> model = FileUploadModelConverter.convert(request);
         try {
             productService.addImage(userId, productId, model);
             return ResponseEntity.status(HttpStatus.OK).body("Upload successfully");
