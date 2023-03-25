@@ -62,6 +62,9 @@ public class ProductService implements IProductService {
             ProductMapCategory productMapCategory = new ProductMapCategory(uuid, product, category);
             productMapCategoryRepository.save(productMapCategory);
         }
+        if (productModel.getImages() != null) {
+            addImage(userId, product.getId(), productModel.getImages());
+        }
         return true;
     }
 

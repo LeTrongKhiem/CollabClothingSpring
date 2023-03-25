@@ -38,4 +38,5 @@ public class ProductModel {
     @NotNull
     private int sale_off;
     private String type;
+    ProductImageModel images;
 }
