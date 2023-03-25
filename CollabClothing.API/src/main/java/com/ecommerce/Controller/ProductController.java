@@ -6,10 +6,7 @@ import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductImage;
 import com.ecommerce.Model.PagingModel;
-import com.ecommerce.Model.Products.ImageModel;
-import com.ecommerce.Model.Products.ProductImageModel;
-import com.ecommerce.Model.Products.ProductModel;
-import com.ecommerce.Model.Products.SearchProductItems;
+import com.ecommerce.Model.Products.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -83,7 +80,7 @@ import java.util.stream.Collectors;
     }
 
     @PostMapping("image/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam UUID productId, @ModelAttribute ProductImageModel model) {
+    public ResponseEntity<String> uploadImage(@RequestParam UUID productId, @ModelAttribute List<PartFileModel> model) {
         UUID userId = AuthenticateExtensions.getUserId();
         try {
             productService.addImage(userId, productId, model);

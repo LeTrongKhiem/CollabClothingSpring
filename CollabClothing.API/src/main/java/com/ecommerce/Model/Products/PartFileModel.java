@@ -8,6 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 public class PartFileModel {
     MultipartFile file;
-    String alt;
     boolean isThumbnail;
 }

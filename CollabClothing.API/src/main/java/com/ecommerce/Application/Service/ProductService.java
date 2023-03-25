@@ -100,14 +100,14 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void addImage(UUID createBy, UUID productId, ProductImageModel productImage) {
+    public void addImage(UUID createBy, UUID productId, List<PartFileModel> productImage) {
         Product product = productRepository.findById(productId).get();
-        if (productImage.getFiles() == null) {
+        if (productImage == null) {
             return;
         }
-        for (PartFileModel file : productImage.getFiles()) {
+        for (PartFileModel file : productImage) {
             String path = fileStorageService.saveImage(file.getFile());
-            ProductImage image = ProductImageMapping.mapToProductImage(createBy, product, productImage, path, file.isThumbnail());
+            ProductImage image = ProductImageMapping.mapToProductImage(createBy, product, new ProductImageModel(), path, file.isThumbnail());
             productImageRepository.save(image);
         }
     }
