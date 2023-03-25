@@ -13,9 +13,6 @@ import java.nio.file.Paths;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry
-//                .addResourceHandler("/upload_images/**")
-//                .addResourceLocations("file:///D:/Spring/MVC/CollabClothing/upload_images/");
         exposeDirectory("upload_images", registry);
     }
 

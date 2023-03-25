@@ -5,10 +5,7 @@ import com.ecommerce.Application.Mappings.ProductImageMapping;
 import com.ecommerce.Application.Mappings.ProductMapping;
 import com.ecommerce.Entities.*;
 import com.ecommerce.Model.PagingModel;
-import com.ecommerce.Model.Products.ImageModel;
-import com.ecommerce.Model.Products.ProductImageModel;
-import com.ecommerce.Model.Products.ProductModel;
-import com.ecommerce.Model.Products.SearchProductItems;
+import com.ecommerce.Model.Products.*;
 import com.ecommerce.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -62,6 +59,9 @@ public class ProductService implements IProductService {
             ProductMapCategory productMapCategory = new ProductMapCategory(uuid, product, category);
             productMapCategoryRepository.save(productMapCategory);
         }
+        if (productModel != null) {
+            addImage(userId, product.getId(), productModel.getImages());
+        }
         return true;
     }
 
@@ -103,14 +103,14 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void addImage(UUID createBy, UUID productId, ProductImageModel productImage) {
+    public void addImage(UUID createBy, UUID productId, List<PartFileModel> productImage) {
         Product product = productRepository.findById(productId).get();
-        if (productImage.getFiles() == null) {
+        if (productImage == null) {
             return;
         }
-        for (MultipartFile file : productImage.getFiles()) {
-            String path = fileStorageService.saveImage(file);
-            ProductImage image = ProductImageMapping.mapToProductImage(createBy, product, productImage, path);
+        for (PartFileModel file : productImage) {
+            String path = fileStorageService.saveImage(file.getFile());
+            ProductImage image = ProductImageMapping.mapToProductImage(createBy, product, new ProductImageModel(), path, file.isThumbnail());
             productImageRepository.save(image);
         }
     }
