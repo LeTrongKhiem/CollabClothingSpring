@@ -131,12 +131,13 @@ public class ProductService implements IProductService {
     public PagingModel<ImageModel> getImages(UUID productId, int pageIndex, int size) {
         Pageable pageable = PageRequest.of(pageIndex, size);
         List<ProductImage> images = productImageRepository.findAll();
+        List<ProductImage> imagesByProductId = productImageRepository.findAllByProductId(productId);
         final int start = (int)pageable.getOffset();
-        final int end = Math.min((start + pageable.getPageSize()), images.size());
-        final Page<ProductImage> page = new PageImpl<>(images.subList(start, end), pageable, images.size());
+        final int end = Math.min((start + pageable.getPageSize()), imagesByProductId.size());
+        final Page<ProductImage> page = new PageImpl<>(imagesByProductId.subList(start, end), pageable, imagesByProductId.size());
         var result = ProductImageMapping.mapToImageModel(page.getContent());
-        int totalPage = (int) Math.ceil((double) images.size() / size);
-        int totalItem = images.size();
+        int totalPage = (int) Math.ceil((double) imagesByProductId.size() / size);
+        int totalItem = imagesByProductId.size();
         return new PagingModel<>(result, size, totalItem, pageIndex, totalPage);
     }
 
