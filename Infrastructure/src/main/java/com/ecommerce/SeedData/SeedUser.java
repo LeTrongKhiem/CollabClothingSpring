@@ -30,9 +30,11 @@ public class SeedUser implements CommandLineRunner {
             Role admin = new Role(RoleConstants.ADMIN_ID, RoleConstants.ADMIN, RoleConstants.ADMIN_DESCRIPTION);
             Role user = new Role(RoleConstants.USER_ID, RoleConstants.USER, RoleConstants.USER_DESCRIPTION);
             Role guest = new Role(RoleConstants.GUEST_ID, RoleConstants.GUEST, RoleConstants.GUEST_DESCRIPTION);
+            Role employee = new Role(RoleConstants.EMPLOYEE_ID, RoleConstants.EMPLOYEE, RoleConstants.EMPLOYEE_DESCRIPTION);
             roleRepository.save(admin);
             roleRepository.save(user);
             roleRepository.save(guest);
+            roleRepository.save(employee);
         }
     }
 }

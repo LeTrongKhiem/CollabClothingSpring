@@ -143,7 +143,6 @@ public class ProductService implements IProductService {
 
     @Override
     public PagingModel<ProductModel> getAll(SearchProductItems items) {
-//        Pageable pageable = PageRequest.of(items.getPage(), items.getSize(), Sort.by(items.getSortBy()));
         Sort sort;
         if (items.getSortType() != null && items.getSortType().equals("desc")) {
             sort =  Sort.by(Sort.Order.desc(items.getSortBy()));

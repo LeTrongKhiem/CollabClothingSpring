@@ -140,7 +140,7 @@ public class UserService implements IUserService {
         if (checkUser.isPresent()) {
             throw new AppException(400, "User already exists");
         }
-        Role role = roleRepository.findById(RoleConstants.ADMIN_ID).get();
+        Role role = roleRepository.findById(RoleConstants.EMPLOYEE_ID).get();
         String password = passwordEncoder.encode(defaultPassword);
         User user = UserMapping.mapToAdmin(userId, model, password);
         userRepository.save(user);

@@ -78,6 +78,9 @@ public class ProductMapping {
     public static ProductModel getProduct(Product product) {
         ProductModel productModel = new ProductModel();
         ProductDetail productDetail = product.getProductDetail();
+        if (productDetail == null) {
+            productDetail = new ProductDetail();
+        }
         productModel.setId(product.getId());
         productModel.setName(product.getName());
         productModel.setBrand_id(product.getBrand().getId());
