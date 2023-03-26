@@ -3,6 +3,8 @@ package com.ecommerce.Controller;
 import com.ecommerce.Application.Abstractions.IFileStorageService;
 import com.ecommerce.Application.Abstractions.IProductService;
 import com.ecommerce.Application.Extensions.FileUploadModelConverter;
+import com.ecommerce.Application.PreAuthorizes.AdminOnly;
+import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductImage;
@@ -10,6 +12,7 @@ import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -142,6 +145,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/getall")
+    @StaffRole
     public ResponseEntity<PagingModel<ProductModel>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,

@@ -81,6 +81,10 @@ public class JwtService {
             claims.put("isUser", true);
         }
 
+        if (roles.contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+            claims.put("isEmployee", true);
+        }
+
         return generateToken(claims, userDetails);
     }
 
