@@ -18,12 +18,15 @@ const customerTableHead = [
     {key: "form", label: "products.form"},
     {key: "type", label: "products.type"},
     {key: "made_in", label: "products.made_in"},
-    {key: "description", label: "products.description"}
+    {key: "description", label: "products.description"},
+    {key: "isDeleted", label: "products.isDeleted"},
+    {key: "action", label: "products.action"}
 ];
 const renderBody = (item, index) => {
     const {
-        name, brandName, categoryNames, consumer, cotton, form, description, priceCurrent, priceOld, sale_off, type,made_in
+        name, brandName, categoryNames, consumer, cotton, form, description, priceCurrent, priceOld, sale_off, type,made_in,_deleted
     } = item;
+    const isDeleted = _deleted ? "Deleted" : "Active";
     const category = categoryNames.map((item) => {
         return item + " "
     })
@@ -34,13 +37,34 @@ const renderBody = (item, index) => {
         <td>{brandName}</td>
         <td>{priceOld}</td>
         <td>{priceCurrent}</td>
-        <td>{sale_off}</td>
+        <td>{sale_off}%</td>
         <td>{consumer}</td>
-        <td>{cotton}</td>
+        <td>{cotton}%</td>
         <td>{form}</td>
         <td>{type}</td>
         <td>{made_in}</td>
         <td>{description}</td>
+        <td>{isDeleted}</td>
+        <td>
+            <Link to={`/admin/products/${item.id}`} className="btn btn-primary">
+                <i className='bx bxs-edit-alt'></i>
+            </Link>
+            <Link to= {`/products/images/${item.id}`} className="btn btn-primary">
+                <i className='bx bxs-image'></i>
+            </Link>
+            <div className="btn btn-danger">
+                <i className='bx bx-trash' onClick={
+                    () => {
+                        if (window.confirm('Are you sure you wish to delete this item?')) {
+                            productsService.deleteProduct(item.id).then((res) => {
+                                window.location.reload();
+                            })
+                        }
+                    }
+                }></i>
+            </div>
+
+        </td>
 
 
     </tr>)
@@ -50,6 +74,7 @@ const renderBody = (item, index) => {
 
 const Products = () => {
     const [productList, setProductList] = useState([]);
+    console.log(productList)
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(4);
@@ -58,20 +83,22 @@ const Products = () => {
     const [sortColumn, setSortColumn] = useState("name");
     const [sortOrder, setSortOrder] = useState('asc');
     useEffect(() => {
-        const getUsers = async () => {
+        const getProducts = async () => {
             setLoading(true);
             const response = await productsService.getAllProducts(currentPage, pageSize, searchTerm, sortOrder, sortColumn);
             const total = await productsService.getAllProducts(0, 1000, searchTerm, sortOrder, sortColumn);
             setProductList(response.data.results);
             setLoading(false);
             setTotalPages(Math.ceil(total.data.results.length / pageSize));
+            if(searchTerm === ''){
+                setTotalPages(Math.ceil(response.data.results.length / pageSize));
+            }
 
         };
-        getUsers();
+        getProducts();
     }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder]);
     const handlePageChange = useCallback((page) => {
         setCurrentPage(page ); //trừ 1 vì page bắt đầu từ 0
-        console.log(page)
     }, []);
     const handleSort = useCallback((column) => {
         setSortColumn(column);
@@ -95,7 +122,7 @@ const Products = () => {
                             <button style={{
                                 margin: "10px 0px",
                             }}>
-                            <Link to="/addProduct">
+                            <Link to="/products/addProduct">
                                 <i className='bx bx-plus'></i>
                             </Link>
                             </button>

@@ -55,7 +55,6 @@ const renderBody = (item, index) => {
 
 const Customers = () => {
     const [customerList, setCustomerList] = useState([]);
-    console.log(customerList)
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [pageSize, setPageSize] = useState(2);

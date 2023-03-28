@@ -12,10 +12,9 @@ import {useSelector} from "react-redux";
 import {ToastContainer} from "react-toastify";
 import Topnav from "./components/topnav/TopNav";
 import AddProduct from "./pages/AddProduct";
-
+import ProductImages from "./pages/ProductImages";
 function App() {
-    const isLoggedIn = useSelector(selectIsLoggedIn);
-
+    const isLoggedIn = useSelector(selectIsLoggedIn)
     return (
         <BrowserRouter>
             <Routes>
@@ -31,8 +30,9 @@ function App() {
                                         <Routes>
                                             <Route path="/" element={<Dashboard/>}/>
                                             <Route path="/customers" element={<Customers/>}/>
-                                            <Route path="/products" element={<Products/>}/>
-                                            <Route path="/addProduct" element={<AddProduct/>}/>
+                                            <Route path="/products/*" element={<Products/>}/>
+                                            <Route path="products/addProduct" element={<AddProduct/>}/>
+                                            <Route path="products/images/:id" element={<ProductImages/>}/>
                                         </Routes>
                                     </div>
                                 </div>
