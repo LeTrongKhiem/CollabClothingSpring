@@ -1,6 +1,8 @@
 package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.IUserService;
+import com.ecommerce.Application.PreAuthorizes.AdminOnly;
+import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Entities.User;
@@ -34,6 +36,7 @@ public class UserController {
     }
 
     @GetMapping("getAllUsers")
+    @StaffRole
     public ResponseEntity<List<UserModel>> getAllModel(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
@@ -47,6 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/all/active")
+    @AdminOnly
     public List<UserModel> getAllActiveUsers() {
         return userService.findAllByIsDeletedFalse();
     }
@@ -92,6 +96,7 @@ public class UserController {
         return new ResponseEntity<UserModel>(result, new HttpHeaders(), HttpStatus.OK);
     }
     @PostMapping("/adminCreateAccount")
+    @AdminOnly
     public ResponseEntity<Boolean> adminCreateAccount(@RequestBody RegisterRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();

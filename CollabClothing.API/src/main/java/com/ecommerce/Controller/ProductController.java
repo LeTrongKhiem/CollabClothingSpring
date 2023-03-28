@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
     }
 
     @PostMapping("/add")
+    @StaffRole
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
         Product result = productService.AddProduct(product);
         HttpHeaders headers = new HttpHeaders();
@@ -55,6 +56,7 @@ import java.util.stream.Collectors;
     }
 
     @PostMapping("/saveProduct")
+    @StaffRole
     public ResponseEntity<Boolean> saveProduct(@Valid @RequestBody ProductModel model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
@@ -65,6 +67,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/all")
+    @StaffRole
     public ResponseEntity<List<ProductModel>> getAllProducts() {
         try {
             List<ProductModel> products = productService.getAllProducts();
@@ -76,6 +79,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/all/active")
+    @StaffRole
     public ResponseEntity<List<ProductModel>> getAllActiveProducts() {
         try {
             List<ProductModel> products = productService.findProductsIsDeletedFalse();
@@ -87,6 +91,7 @@ import java.util.stream.Collectors;
     }
 
     @PostMapping("image/upload")
+    @StaffRole
     public ResponseEntity<String> uploadImage(@RequestParam UUID productId, MultipartHttpServletRequest request) {
         UUID userId = AuthenticateExtensions.getUserId();
         List<PartFileModel> model = FileUploadModelConverter.convert(request);
@@ -135,6 +140,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/image/{imageId}")
+    @StaffRole
     public ResponseEntity<ImageModel> getImage(@PathVariable UUID imageId) {
         try {
             var result = productService.getImage(imageId);
@@ -145,7 +151,6 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/getall")
-    @StaffRole
     public ResponseEntity<PagingModel<ProductModel>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
@@ -165,6 +170,7 @@ import java.util.stream.Collectors;
     }
 
     @PutMapping("/update/{productId}")
+    @StaffRole
     public ResponseEntity<Boolean> updateProduct(@PathVariable UUID productId, @Valid @RequestBody ProductModel model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
@@ -175,6 +181,7 @@ import java.util.stream.Collectors;
     }
 
     @PutMapping("delete/{productId}")
+    @StaffRole
     public ResponseEntity<Boolean> deleteProduct(@PathVariable UUID productId) {
         var userId = AuthenticateExtensions.getUserId();
         boolean result = productService.deleteProduct(productId, userId);
