@@ -1,6 +1,7 @@
 package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.IBrandService;
+import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Entities.BaseEntity;
 import com.ecommerce.Entities.Brand;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class BrandController {
     }
 
     @GetMapping("/all/active")
+    @StaffRole
     public ResponseEntity<List<Brand>> getAllActiveBrands() {
         try {
             List<Brand> brands = brandService.findAllByIsDeletedFalse();

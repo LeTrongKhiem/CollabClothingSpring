@@ -2,6 +2,7 @@ package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.ICategoryService;
 import com.ecommerce.Application.Abstractions.IFileStorageService;
+import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Model.Categories.CategoryCreateModel;
 import com.ecommerce.Model.Categories.CategoryModel;
@@ -40,6 +41,7 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
+    @StaffRole
     public ResponseEntity<Boolean> addCategory(@ModelAttribute CategoryCreateModel model) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();
@@ -51,6 +53,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{categoryId}")
+    @StaffRole
     public ResponseEntity<Boolean> updateCategory(@PathVariable UUID categoryId, @ModelAttribute CategoryCreateModel model) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();
@@ -62,6 +65,7 @@ public class CategoryController {
     }
 
     @PutMapping("/delete/{categoryId}")
+    @StaffRole
     public ResponseEntity<Boolean> deleteCategory(@PathVariable UUID categoryId) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();
