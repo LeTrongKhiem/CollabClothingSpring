@@ -87,7 +87,21 @@
     opacity: 0;
     transition: opacity 0.3s ease;
 }
-
+.drop-file-preview__item__check {
+    background-color: #f5f8ff;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
 .drop-file-preview__item:hover .drop-file-preview__item__del {
     opacity: 1;
 }

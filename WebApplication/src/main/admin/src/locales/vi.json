@@ -41,6 +41,8 @@
     "category": "Danh mục",
     "discount": "Giảm giá",
     "image": "Hình ảnh",
-    "status": "Trạng thái"
+    "status": "Trạng thái",
+    "action": "Hành động",
+    "isDeleted": "Đã xóa"
   }
 }

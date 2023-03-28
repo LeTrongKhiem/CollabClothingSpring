@@ -6,12 +6,14 @@ import DropFileInput from "../components/drop-file-input/DropFileInput";
 import Select from "react-select";
 import Categories from "../constants/Categories";
 import Brands from "../constants/Brands";
-import {FastField, Form, Formik} from "formik";
+import {ErrorMessage, FastField, Form, Formik} from "formik";
 import InputField from "../custom-fields/InputField";
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import ProductsService from "../services/ProductsService";
 import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
+import * as Yup from "yup";
 
 const customerTableHead = [{key: "number", label: "#"}, {key: "email", label: "customers.email"}, {
     key: "lastName", label: "customers.lastName"
@@ -52,41 +54,84 @@ const renderBody = (item, index) => {
     </tr>)
 
 }
-const  consumerOptions = [
-    { value: 1, label: 'Nam' },
-    { value: 2, label: 'Nữ' },
-    {value:  3, label: 'Trẻ em'},
-    { value: 4, label: 'Unisex' },
+const consumerOptions = [
+    {value: 1, label: 'Nam'},
+    {value: 2, label: 'Nữ'},
+    {value: 3, label: 'Trẻ em'},
+    {value: 4, label: 'Unisex'},
 ];
 
 
 const AddProduct = () => {
     const initialValues = {
         name: '',
-        priceOld: 0,
-        priceCurrent: '',
+        priceOld: null,
+        priceCurrent: null,
         description: '',
         category_id: [],
         categoryNames: [],
         brand_id: '',
         brandName: '',
-        consumer: 0,
-        cotton: 0,
+        consumer: null,
+        cotton: null,
         made_in: '',
         sale_off: '',
         type: '',
+        form: '',
 
 
     }
-    const [productList, setProductList] = useState(initialValues);
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required('Vui lòng nhập tên sản phẩm'),
+        priceOld: Yup.number().required('Vui lòng nhập giá cũ'),
+        priceCurrent: Yup.number().required('Vui lòng nhập giá hiện tại'),
+        description: Yup.string().required('Vui lòng nhập mô tả'),
+        category_id: Yup.array().required('Vui lòng chọn danh mục'),
+        categoryNames: Yup.array().required('Vui lòng chọn danh mục'),
+        brand_id: Yup.string().required('Vui lòng chọn thương hiệu'),
+        brandName: Yup.string().required('Vui lòng chọn thương hiệu'),
+        consumer: Yup.string().required('Vui lòng chọn đối tượng'),
+        cotton: Yup.number().typeError('Vui lòng nhập số').required('Vui lòng nhập số lượng cotton'),
+        made_in: Yup.string().required('Vui lòng nhập xuất xứ'),
+        sale_off: Yup.number().required('Vui lòng nhập giảm giá'),
+        type: Yup.string().required('Vui lòng nhập loại sản phẩm'),
+        form: Yup.string().required('Vui lòng nhập hình thức sản phẩm'),
+
+
+    })
+
     const [category, setCategory] = useState([]);
     const [brand, setBrand] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
+    const [files, setFiles] = useState([]);
+    console.log(files)
 
     const onFileChange = (files) => {
-        console.log(files);
+       setFiles(files)
+    }
+    const saveProductImage = async () => {
+        try {
+            const data = new FormData();
+            files.map((file, index) => {
+                data.append(`file[${index}]`, file.file)
+                data.append(`file[${index}]thumbnail`, file.isThumbnail)
+                    console.log(`file[${index}]`,file.file)
+                    console.log(`file[${index}]thumbnail`,file.isThumbnail)
+            }
+
+            )
+            const response = await ProductsService.saveProductImage(data);
+            if (response.status === 200) {
+                toast.success("Thêm ảnh thành oông", {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+
+            }
+        }
+        catch (e){
+            console.log(e)
+        }
     }
 
     useEffect(() => {
@@ -128,6 +173,9 @@ const AddProduct = () => {
                 toast.success("Thêm sản phẩm thành công", {
                     position: toast.POSITION.TOP_CENTER
                 })
+                // saveProductImage()
+                navigate('/products')
+
             } else {
                 toast.error("Thêm sản phẩm thất bại", {
                     position: toast.POSITION.TOP_CENTER
@@ -148,30 +196,12 @@ const AddProduct = () => {
                 <div className="card">
                     <div className="card__body">
                         <DropFileInput onFileChange={(files) => onFileChange(files)}/>
-                        {/*<div className="search-container">*/}
-                        {/*  <input*/}
-                        {/*      type="search"*/}
-                        {/*      placeholder="Tìm kiếm"*/}
-                        {/*      value={searchTerm}*/}
-                        {/*      onChange={(e) => setSearchTerm(e.target.value)}*/}
-                        {/*  />*/}
-
-                        {/*</div>*/}
-                        {/*{loading ? <div>Loading...</div> : (*/}
-                        {/*    <Table*/}
-                        {/*        limit={2}*/}
-                        {/*        headData={customerTableHead}*/}
-                        {/*        data={productList}*/}
-                        {/*        renderBody={(item, index) => renderBody(item, index)}*/}
-
-                        {/*    />*/}
-                        {/*)}*/}
-
                     </div>
                 </div>
                 <div className="card">
                     <div className="card__body">
-                        <Formik initialValues={initialValues} onSubmit={values => saveProduct(values)}>
+                        <Formik initialValues={initialValues} validationSchema={validationSchema}
+                                onSubmit={values => saveProduct(values)}>
                             {({
                                   values,
                                   errors,
@@ -188,8 +218,6 @@ const AddProduct = () => {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="name">Tên sản phẩm</label>
-                                                {/*<input type="text" className="form-control" id="name"*/}
-                                                {/*       placeholder="Nhập tên sản phẩm"/>*/}
                                                 <FastField name="name" component={InputField} type="text"
                                                            className="form-control" id="name"
                                                            placeholder="Nhập tên sản phẩm" htmlFor="name"/>
@@ -198,7 +226,7 @@ const AddProduct = () => {
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlFor="name">Danh Mục</label>
+                                                <label htmlFor="category_id">Danh Mục</label>
                                                 <Select
                                                     name="category_id"
                                                     options={categories}
@@ -218,6 +246,7 @@ const AddProduct = () => {
                                                     isMulti
                                                     placeholder={'Chọn danh mục'}
                                                 />
+                                                <ErrorMessage name="category_id" className="errors"/>
 
 
                                             </div>
@@ -278,7 +307,6 @@ const AddProduct = () => {
                                                            className="form-control" id="type"/>
                                             </div>
                                         </div>
-
 
 
                                     </div>
@@ -363,6 +391,7 @@ const AddProduct = () => {
                                                     }
                                                     }
                                                 />
+                                                <ErrorMessage name="description" component="div" className="error"/>
                                             </div>
                                         </div>
 

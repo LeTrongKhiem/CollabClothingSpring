@@ -36,7 +36,7 @@ function Login() {
                         if (res.data.role === "ADMIN") {
                             toast.success("Đăng nhập thành công");
                             dispatch(login(value));
-
+                            localStorage.setItem("isLogin", "true")
                             navigate("/");
 
                         } else {
