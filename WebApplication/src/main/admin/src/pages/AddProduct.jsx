@@ -14,38 +14,6 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 
-const renderBody = (item, index) => {
-    const {email, lastName, firstName, dob, gender, phoneNumber, address, emailVerified, role, block} = item;
-    const date = new Date(dob);
-    const formatDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-    const verify = emailVerified ? "Đã xác thực" : "Chưa xác thực";
-
-    const formatGender = () => {
-        if (gender === 1) {
-            return "Nam"
-        } else if (gender === 2) {
-            return "Nữ"
-        } else {
-            return "Khác"
-        }
-
-    }
-    return (<tr key={index}>
-        <td>{index + 1}</td>
-        <td>{email}</td>
-        <td>{lastName}</td>
-        <td>{firstName}</td>
-        <td>{formatDate}</td>
-        <td>{formatGender()}</td>
-        <td>{phoneNumber}</td>
-        <td>{address}</td>
-        <td>{verify}</td>
-        <td>{role}</td>
-
-
-    </tr>)
-
-}
 const consumerOptions = [
     {value: 1, label: 'Nam'},
     {value: 2, label: 'Nữ'},
@@ -56,22 +24,23 @@ const consumerOptions = [
 
 const AddProduct = () => {
     const [category, setCategory] = useState([]);
-    console.log(category)
     const [brand, setBrand] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate()
     const [files, setFiles] = useState([]);
+    console.log(files)
+
     const initialValues = {
         name: '',
-        priceOld: null,
-        priceCurrent: null,
+        priceOld: 0,
+        priceCurrent: 0,
         description: '',
         category_id: [],
         categoryNames: [],
         brand_id: '',
         brandName: '',
-        consumer: null,
-        cotton: null,
+        consumer: 0,
+        cotton: 0,
         made_in: '',
         sale_off: '',
         type: '',
@@ -106,21 +75,8 @@ const AddProduct = () => {
     }
     const saveProductImage = async () => {
         try {
-            const data = new FormData();
-            files.map((file, index) => {
-                    data.append(`file[${index}]`, file.file)
-                    data.append(`file[${index}]thumbnail`, file.isThumbnail)
-                    console.log(`file[${index}]`, file.file)
-                    console.log(`file[${index}]thumbnail`, file.isThumbnail)
-                }
-            )
-            const response = await ProductsService.saveProductImage(data);
-            if (response.status === 200) {
-                toast.success("Thêm ảnh thành oông", {
-                    position: toast.POSITION.TOP_RIGHT
-                });
 
-            }
+
         } catch (e) {
             console.log(e)
         }
@@ -158,14 +114,40 @@ const AddProduct = () => {
 
         }
     })
+
+    const formDataList = files.map((file, index) => {
+        const data = new FormData();
+        data.append(`file[${index}]`, file.file)
+        data.append(`file[${index}]thumbnail`, file.isThumbnail)
+        return data;
+    });
     const saveProduct = async (values) => {
+        const data = new FormData();
+        data.append('name', values.name)
+        data.append('priceOld', values.priceOld)
+        data.append('priceCurrent', values.priceCurrent)
+        data.append('description', values.description)
+        data.append('category_id', values.category_id)
+        data.append('categoryNames', values.categoryNames)
+        data.append('brand_id', values.brand_id)
+        data.append('brandName', values.brandName)
+        data.append('consumer', values.consumer)
+        data.append('cotton', values.cotton)
+        data.append('made_in', values.made_in)
+        data.append('sale_off', values.sale_off)
+        data.append('type', values.type)
+        data.append('form', values.form)
+        files.map((file, index) => {
+            data.append(`file[${index}]`, file.file)
+            data.append(`file[${index}]thumbnail`, file.isThumbnail)
+        })
+
         try {
-            const response = await ProductsService.saveProduct(values);
+            const response = await ProductsService.saveProduct(data)
             if (response.status === 200) {
                 toast.success("Thêm sản phẩm thành công", {
                     position: toast.POSITION.TOP_CENTER
                 })
-                // saveProductImage()
                 navigate('/products')
 
             } else {
@@ -196,20 +178,13 @@ const AddProduct = () => {
                                 onSubmit={values => saveProduct(values)}>
                             {({
                                   values,
-                                  errors,
-                                  touched,
-                                  handleChange,
+
                                   handleBlur,
-                                  handleSubmit,
-                                  isSubmitting,
                                   setFieldValue,
-                                  validateForm,
                                   setFieldTouched,
-                                  validateField,
                                   setFieldError
 
                               }) => {
-                                console.log(values)
                                 return (<Form>
                                     <div className="row">
                                         <div className="col-6">
@@ -253,10 +228,9 @@ const AddProduct = () => {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="priceOld">Giá cũ</label>
-                                                <FastField name="priceOld" component={InputField} type="number"
-                                                           className="form-control" id="priceOld"/>
-
-
+                                                <FastField name="priceOld" component={InputField}
+                                                           type="number" className="form-control"
+                                                           id="priceOld"/>
                                             </div>
                                         </div>
                                         <div className="col-6">
@@ -378,7 +352,7 @@ const AddProduct = () => {
                                             <div className="form-group">
                                                 <label htmlFor="description">Mô tả</label>
                                                 <Field name="description">
-                                                    {({ field }) => (
+                                                    {({field}) => (
                                                         <div>
                                                             <CKEditor
                                                                 editor={ClassicEditor}
@@ -396,7 +370,8 @@ const AddProduct = () => {
                                                                     }
                                                                 }}
                                                             />
-                                                            <ErrorMessage name="description" component="div" className="error" />
+                                                            <ErrorMessage name="description" component="div"
+                                                                          className="error"/>
                                                         </div>
                                                     )}
                                                 </Field>

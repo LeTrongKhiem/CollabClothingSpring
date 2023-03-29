@@ -33,8 +33,10 @@ class ProductsService {
         const token = localStorage.getItem("token");
         return axios.post(API_URL + "products/saveProduct", product, {
             headers: {
-                Authorization: `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+
+            },
         });
     }
 
