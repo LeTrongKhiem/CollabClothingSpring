@@ -57,10 +57,12 @@ import java.util.stream.Collectors;
 
     @PostMapping("/saveProduct")
     @StaffRole
-    public ResponseEntity<Boolean> saveProduct(@Valid @RequestBody ProductModel model, BindingResult bindingResult) {
+    public ResponseEntity<Boolean> saveProduct(@Valid @ModelAttribute ProductModel model, MultipartHttpServletRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
+        List<PartFileModel> images = FileUploadModelConverter.convert(request);
+        model.setImages(images);
         var userId = AuthenticateExtensions.getUserId();
         boolean result = productService.save(userId, model);
         return new ResponseEntity<>(result, HttpStatus.OK);
