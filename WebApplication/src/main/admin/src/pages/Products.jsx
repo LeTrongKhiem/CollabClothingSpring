@@ -79,6 +79,7 @@ const Products = () => {
     const [loading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(4);
     const [totalPages, setTotalPages] = useState(0);
+    console.log(totalPages)
     const [currentPage, setCurrentPage] = useState(0);
     const [sortColumn, setSortColumn] = useState("name");
     const [sortOrder, setSortOrder] = useState('asc');
@@ -86,14 +87,9 @@ const Products = () => {
         const getProducts = async () => {
             setLoading(true);
             const response = await productsService.getAllProducts(currentPage, pageSize, searchTerm, sortOrder, sortColumn);
-            const total = await productsService.getAllProducts(0, 1000, searchTerm, sortOrder, sortColumn);
             setProductList(response.data.results);
+            setTotalPages(Math.ceil(response.data.totalCount/ pageSize)) //tổng số trang
             setLoading(false);
-            setTotalPages(Math.ceil(total.data.results.length / pageSize));
-            if(searchTerm === ''){
-                setTotalPages(Math.ceil(response.data.results.length / pageSize));
-            }
-
         };
         getProducts();
     }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder]);
