@@ -2,6 +2,7 @@ package com.ecommerce.Application.Abstractions;
 
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Entities.User;
+import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.UserModel;
 import com.ecommerce.Model.Users.UserChangePasswordModel;
 import com.ecommerce.Model.Users.UserUpdateProfileModel;
@@ -19,7 +20,7 @@ public interface IUserService {
     public Optional<User> findById(UUID userId);
     public Optional<User> getUserByEmail(String email);
     public List<UserModel> findAll();
-    public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort, String sortType);
+    public PagingModel<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort, String sortType);
     public boolean updateUser(UUID uuid, UserUpdateProfileModel userModel);
     public boolean userUpdatePassword(UUID uuid, UserChangePasswordModel userModel);
     public List<UserModel> findAllByIsDeletedFalse();

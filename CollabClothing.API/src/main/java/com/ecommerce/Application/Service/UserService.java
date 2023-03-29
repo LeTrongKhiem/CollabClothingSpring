@@ -2,12 +2,15 @@ package com.ecommerce.Application.Service;
 
 import com.ecommerce.Application.Abstractions.IUserService;
 import com.ecommerce.Application.Exceptions.AppException;
+import com.ecommerce.Application.Mappings.ProductMapping;
 import com.ecommerce.Application.Mappings.UserMapping;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
+import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.Role;
 import com.ecommerce.Entities.User;
 import com.ecommerce.Entities.UserRole;
 import com.ecommerce.Model.Constants.RoleConstants;
+import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.UserModel;
 import com.ecommerce.Model.Users.UserChangePasswordModel;
 import com.ecommerce.Model.Users.UserUpdateProfileModel;
@@ -18,10 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -50,6 +50,7 @@ public class UserService implements IUserService {
     public void setDefaultPassword(String defaultPassword) {
         this.defaultPassword = defaultPassword;
     }
+
     @Override
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -78,27 +79,30 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserModel> getAllUsersModel(int page, int pageSize, String search, String sort, String sortType) {
-        Pageable pageable;
+    public PagingModel<UserModel> getAllUsersModel(int page, int pageSize, String search, String sortBy, String sortType) {
+        Sort sort;
         if (sortType != null && sortType.equals("desc")) {
-            pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc(sort)));
+            sort = Sort.by(Sort.Order.desc(sortBy));
         } else {
-            pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.asc(sort)));
+            sort = Sort.by(Sort.Order.asc(sortBy));
         }
-        Page<User> users;
-        if (search != null && !search.isEmpty()) {
-            users = userRepository.findByFirstNameOrLastNameOrEmailOrPhoneNumber(search, search, search, search, pageable);
-        } else
-            users = userRepository.findAll(pageable);
-        List<User> listUser = users.getContent();
-        List<UserModel> listModel = UserMapping.mapListUserModel(listUser);
-        int total = users.getTotalPages();
-        int size = users.getSize();
-        int number = users.getNumber();
-        if (users.hasContent())
-            return listModel;
-        else
-            return new ArrayList<UserModel>();
+        Pageable pageable = PageRequest.of(page, pageSize, sort);
+        List<User> users = userRepository.findAll(sort);
+        if (search != null) {
+            users = users.stream().filter(user ->
+                    user.getFirstName().toLowerCase().contains(search.toLowerCase()) ||
+                            user.getLastName().toLowerCase().contains(search.toLowerCase()) ||
+                            user.getEmail().toLowerCase().contains(search.toLowerCase()) ||
+                            user.getAddress().toLowerCase().contains(search.toLowerCase()) ||
+                            user.getPhoneNumber().toLowerCase().contains(search.toLowerCase())).toList();
+        }
+        final int start = (int) pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), users.size());
+        final Page<User> paging = new PageImpl<>(users.subList(start, end), pageable, users.size());
+        var result = UserMapping.mapListUserModel(paging.getContent());
+        int totalPage = (int) Math.ceil((double) users.size() / pageSize);
+        int totalItem = users.size();
+        return new PagingModel<>(result, pageSize, totalItem, page, totalPage);
     }
 
     @Override
@@ -130,6 +134,7 @@ public class UserService implements IUserService {
         User user = userRepository.findById(userId).get();
         return UserMapping.mapToUserModel(user);
     }
+
     @Override
     public boolean createAccountByAdmin(UUID userId, RegisterRequest model) {
         User currentUser = userRepository.findById(userId).orElseThrow();

@@ -6,6 +6,7 @@ import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
 import com.ecommerce.Entities.User;
+import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.UserModel;
 import com.ecommerce.Model.Users.UserChangePasswordModel;
 import com.ecommerce.Model.Users.UserUpdateProfileModel;
@@ -37,16 +38,16 @@ public class UserController {
 
     @GetMapping("getAllUsers")
     @StaffRole
-    public ResponseEntity<List<UserModel>> getAllModel(
+    public ResponseEntity<PagingModel<UserModel>> getAllModel(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "lastName") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType)
     {
-        List<UserModel> list = userService.getAllUsersModel(page, pageSize, search, sortBy, sortType);
+        PagingModel<UserModel> list = userService.getAllUsersModel(page, pageSize, search, sortBy, sortType);
 
-        return new ResponseEntity<List<UserModel>>(list, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<PagingModel<UserModel>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/all/active")
