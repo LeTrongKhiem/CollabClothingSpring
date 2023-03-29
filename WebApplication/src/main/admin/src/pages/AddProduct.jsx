@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from "react";
 
-import Table from "../components/table/Table";
 import "./products.css"
 import DropFileInput from "../components/drop-file-input/DropFileInput";
 import Select from "react-select";
 import Categories from "../constants/Categories";
 import Brands from "../constants/Brands";
-import {ErrorMessage, FastField, Form, Formik} from "formik";
+import {ErrorMessage, FastField, Field, Form, Formik} from "formik";
 import InputField from "../custom-fields/InputField";
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -15,13 +14,6 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 
-const customerTableHead = [{key: "number", label: "#"}, {key: "email", label: "customers.email"}, {
-    key: "lastName", label: "customers.lastName"
-}, {key: "firstName", label: "customers.firstName"}, {key: "dob", label: "customers.dob"}, {
-    key: "gender", label: "customers.gender"
-}, {key: "phoneNumber", label: "customers.phone"}, {key: "address", label: "customers.address"}, {
-    key: "emailVerified", label: "customers.emailVerified"
-}, {key: "role", label: "customers.role"},];
 const renderBody = (item, index) => {
     const {email, lastName, firstName, dob, gender, phoneNumber, address, emailVerified, role, block} = item;
     const date = new Date(dob);
@@ -63,6 +55,12 @@ const consumerOptions = [
 
 
 const AddProduct = () => {
+    const [category, setCategory] = useState([]);
+    console.log(category)
+    const [brand, setBrand] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
+    const [files, setFiles] = useState([]);
     const initialValues = {
         name: '',
         priceOld: null,
@@ -86,7 +84,7 @@ const AddProduct = () => {
         priceOld: Yup.number().required('Vui lòng nhập giá cũ'),
         priceCurrent: Yup.number().required('Vui lòng nhập giá hiện tại'),
         description: Yup.string().required('Vui lòng nhập mô tả'),
-        category_id: Yup.array().required('Vui lòng chọn danh mục'),
+        category_id: Yup.array().min(1, 'Bạn phải chọn ít nhất một danh mục'),
         categoryNames: Yup.array().required('Vui lòng chọn danh mục'),
         brand_id: Yup.string().required('Vui lòng chọn thương hiệu'),
         brandName: Yup.string().required('Vui lòng chọn thương hiệu'),
@@ -100,26 +98,21 @@ const AddProduct = () => {
 
     })
 
-    const [category, setCategory] = useState([]);
-    const [brand, setBrand] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate()
-    const [files, setFiles] = useState([]);
+
     console.log(files)
 
     const onFileChange = (files) => {
-       setFiles(files)
+        setFiles(files)
     }
     const saveProductImage = async () => {
         try {
             const data = new FormData();
             files.map((file, index) => {
-                data.append(`file[${index}]`, file.file)
-                data.append(`file[${index}]thumbnail`, file.isThumbnail)
-                    console.log(`file[${index}]`,file.file)
-                    console.log(`file[${index}]thumbnail`,file.isThumbnail)
-            }
-
+                    data.append(`file[${index}]`, file.file)
+                    data.append(`file[${index}]thumbnail`, file.isThumbnail)
+                    console.log(`file[${index}]`, file.file)
+                    console.log(`file[${index}]thumbnail`, file.isThumbnail)
+                }
             )
             const response = await ProductsService.saveProductImage(data);
             if (response.status === 200) {
@@ -128,8 +121,7 @@ const AddProduct = () => {
                 });
 
             }
-        }
-        catch (e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -210,7 +202,12 @@ const AddProduct = () => {
                                   handleBlur,
                                   handleSubmit,
                                   isSubmitting,
-                                  setFieldValue
+                                  setFieldValue,
+                                  validateForm,
+                                  setFieldTouched,
+                                  validateField,
+                                  setFieldError
+
                               }) => {
                                 console.log(values)
                                 return (<Form>
@@ -228,7 +225,7 @@ const AddProduct = () => {
                                             <div className="form-group">
                                                 <label htmlFor="category_id">Danh Mục</label>
                                                 <Select
-                                                    name="category_id"
+                                                    name="category"
                                                     options={categories}
                                                     getOptionLabel={(option) => option.label}
                                                     getOptionValue={(option) => option.value}
@@ -246,7 +243,7 @@ const AddProduct = () => {
                                                     isMulti
                                                     placeholder={'Chọn danh mục'}
                                                 />
-                                                <ErrorMessage name="category_id" className="errors"/>
+                                                <ErrorMessage name="category_id" className="error" component="div"/>
 
 
                                             </div>
@@ -370,6 +367,7 @@ const AddProduct = () => {
                                                     placeholder={'Chọn thương hiệu'}
 
                                                 />
+                                                <ErrorMessage name="brand_id" className="error" component="div"/>
                                             </div>
                                         </div>
 
@@ -379,19 +377,29 @@ const AddProduct = () => {
                                         <div className="col-12">
                                             <div className="form-group">
                                                 <label htmlFor="description">Mô tả</label>
-                                                <CKEditor
-                                                    editor={ClassicEditor}
-                                                    data={values.description}
-
-                                                    style={{height: '500px !important'}}
-                                                    onChange={(event, editor) => {
-                                                        const data = editor.getData();
-                                                        setFieldValue('description', data);
-
-                                                    }
-                                                    }
-                                                />
-                                                <ErrorMessage name="description" component="div" className="error"/>
+                                                <Field name="description">
+                                                    {({ field }) => (
+                                                        <div>
+                                                            <CKEditor
+                                                                editor={ClassicEditor}
+                                                                data={field.value}
+                                                                onChange={(event, editor) => {
+                                                                    const data = editor.getData();
+                                                                    setFieldValue('description', data);
+                                                                }}
+                                                                onBlur={() => {
+                                                                    setFieldTouched('description', true);
+                                                                    if (!field.value) {
+                                                                        setFieldError('description', 'This field is required');
+                                                                    } else {
+                                                                        setFieldError('description', '');
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <ErrorMessage name="description" component="div" className="error" />
+                                                        </div>
+                                                    )}
+                                                </Field>
                                             </div>
                                         </div>
 
