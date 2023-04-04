@@ -191,4 +191,21 @@ public class ProductService implements IProductService {
         int totalItem = listProducts.size();
         return new PagingModel<>(result, items.getSize(), totalItem, items.getPage(), totalPage);
     }
+
+    @Override
+    public boolean deleteImage(UUID imageId, UUID userId) {
+        Optional<ProductImage> productImage = productImageRepository.findById(imageId);
+        if (!productImage.isPresent()) {
+            throw new NotFoundException("Image not found");
+        }
+        softDeleteImage(productImage.get(), userId);
+        productImageRepository.save(productImage.get());
+        return true;
+    }
+
+    private void softDeleteImage(ProductImage productImage, UUID userId) {
+        productImage.setIsDeleted(true);
+        productImage.setDeletedBy(userId);
+        productImage.setDateDeleted(new java.util.Date(System.currentTimeMillis()));
+    }
 }

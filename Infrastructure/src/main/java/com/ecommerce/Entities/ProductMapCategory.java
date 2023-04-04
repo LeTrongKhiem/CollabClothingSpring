@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,8 +23,9 @@ public class ProductMapCategory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "uuid-gen")
+//    @GeneratedValue(generator = "uuid-gen")
     @Column(name = "id", columnDefinition = "uniqueidentifier")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @GeneratedValue(generator = "uuid-gen")
     @Getter

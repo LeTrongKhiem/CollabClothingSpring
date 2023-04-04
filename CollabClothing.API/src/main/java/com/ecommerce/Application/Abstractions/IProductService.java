@@ -23,4 +23,5 @@ public interface IProductService {
     ImageModel getImage(UUID imageId);
     PagingModel<ImageModel> getImages(UUID productId, int page, int size);
     PagingModel<ProductModel> getAll(SearchProductItems items);
+    boolean deleteImage(UUID imageId, UUID userId);
 }

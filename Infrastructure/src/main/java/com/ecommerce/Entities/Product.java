@@ -37,7 +37,6 @@ public class Product extends BaseEntity implements Serializable {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private ProductDetail productDetail;
     @OneToMany(mappedBy = "product")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<ProductMapCategory> productMapCategories;
     @OneToMany(mappedBy = "product")
     private Set<ProductMapColor> productMapColors;
