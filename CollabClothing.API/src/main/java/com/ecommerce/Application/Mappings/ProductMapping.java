@@ -4,6 +4,7 @@ import com.ecommerce.Application.Extensions.SlugExtensions;
 import com.ecommerce.Entities.Brand;
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductDetail;
+import com.ecommerce.Model.Products.PartFileModel;
 import com.ecommerce.Model.Products.ProductDetailModel;
 import com.ecommerce.Model.Products.ProductModel;
 import com.ecommerce.Model.Products.ProductOnlyModel;
@@ -102,7 +103,7 @@ public class ProductMapping {
         productModel.set_deleted(product.getIsDeleted());
         productModel.setCategory_id(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getId()).collect(Collectors.toList())));
         productModel.setCategoryNames(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getName()).collect(Collectors.toList())));
-
+        productModel.setProductImages(ProductImageMapping.mapToImageModel(new ArrayList<>(product.getProductImages())));
         return productModel;
     }
 
