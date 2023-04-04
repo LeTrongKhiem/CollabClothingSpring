@@ -89,10 +89,24 @@ public class ProductService implements IProductService {
     public boolean updateProduct(UUID productId, UUID userId, ProductModel productModel) {
         Product product = productRepository.findById(productId).orElseThrow();
         ProductDetail productDetail = productDetailsRepository.findById(product.getProductDetail().getId()).orElseThrow();
-        Brand brand = brandService.findById(product.getBrand().getId());
+        Brand brand = brandService.findById(productModel.getBrand_id());
         Product productUpdate = ProductMapping.updateProduct(userId, brand, product, productDetail, productModel);
+        if (productModel.getCategory_id().size() > 0) {
+            List<ProductMapCategory> productMapCategories = productMapCategoryRepository.findByProductId(productId);
+            productMapCategoryRepository.deleteAll(productMapCategories);
+            saveProductCategory(productModel.getCategory_id(), productUpdate);
+        }
         productRepository.save(productUpdate);
         return true;
+    }
+
+    private void saveProductCategory(List<UUID> categoryIds, Product product) {
+        for (UUID cateId : categoryIds) {
+            UUID uuid = UUID.randomUUID();
+            Category category = categoryRepository.findById(cateId).get();
+            ProductMapCategory productMapCategory = new ProductMapCategory(uuid, product, category);
+            productMapCategoryRepository.save(productMapCategory);
+        }
     }
 
     @Override
