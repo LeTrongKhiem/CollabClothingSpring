@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface ProductMapCategoryRepository extends JpaRepository<ProductMapCategory, UUID> {
     List<ProductMapCategory> findByProductId(UUID productId);
+    void deleteById(UUID id);
 }
