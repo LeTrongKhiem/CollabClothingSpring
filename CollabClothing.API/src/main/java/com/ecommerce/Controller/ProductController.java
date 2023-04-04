@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.webjars.NotFoundException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -188,5 +189,17 @@ import java.util.stream.Collectors;
         var userId = AuthenticateExtensions.getUserId();
         boolean result = productService.deleteProduct(productId, userId);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("{productId}")
+    public ResponseEntity<ProductModel> getProduct(@PathVariable UUID productId) {
+        try {
+            ProductModel product = productService.getProductById(productId);
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -39,4 +39,5 @@ public class ProductModel {
     private int sale_off;
     private String type;
     List<PartFileModel> images;
+    List<ImageModel> productImages;
 }
