@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "product_images")
-//@Where(clause = "is_deleted = false")
+@Where(clause = "is_deleted = false")
 @Getter
 @Setter
 @AllArgsConstructor

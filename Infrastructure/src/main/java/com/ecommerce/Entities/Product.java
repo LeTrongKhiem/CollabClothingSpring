@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Where;
 
 import java.io.Serial;
@@ -34,6 +37,7 @@ public class Product extends BaseEntity implements Serializable {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private ProductDetail productDetail;
     @OneToMany(mappedBy = "product")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<ProductMapCategory> productMapCategories;
     @OneToMany(mappedBy = "product")
     private Set<ProductMapColor> productMapColors;

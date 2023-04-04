@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Where;
 
 import java.io.Serial;
@@ -40,5 +42,6 @@ public class Category extends BaseEntity implements Serializable {
     @Column(nullable = true)
     private int sortOrder;
     @OneToMany(mappedBy = "category")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<ProductMapCategory> productMapCategories;
 }
