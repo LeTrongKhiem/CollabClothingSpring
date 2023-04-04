@@ -202,4 +202,12 @@ import java.util.stream.Collectors;
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("image/delete/{imageId}")
+    @StaffRole
+    public ResponseEntity<Boolean> deleteImage(@PathVariable UUID imageId) {
+        var userId = AuthenticateExtensions.getUserId();
+        boolean result = productService.deleteImage(imageId, userId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
