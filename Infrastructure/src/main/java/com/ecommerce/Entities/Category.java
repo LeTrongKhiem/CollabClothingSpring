@@ -42,6 +42,5 @@ public class Category extends BaseEntity implements Serializable {
     @Column(nullable = true)
     private int sortOrder;
     @OneToMany(mappedBy = "category")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<ProductMapCategory> productMapCategories;
 }
