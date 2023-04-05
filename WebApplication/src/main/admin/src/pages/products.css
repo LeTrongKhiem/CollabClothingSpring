@@ -1,6 +1,7 @@
 .form-group {
     margin-bottom: 1rem;
 }
+
 .form-control {
     width: 100%;
     border: 2px solid #ccc;
@@ -25,10 +26,12 @@ label {
     font-size: 16px;
     font-weight: 600;
 }
+
 .ck-editor__editable {
     min-height: 300px;
 }
-.btn-submit{
+
+.btn-submit {
     background-color: #4267b2;
     border: none;
     color: white;
@@ -42,8 +45,80 @@ label {
     border-radius: 4px;
     margin-left: auto;
 }
+
 .error {
     color: red;
     font-size: 14px;
     margin-top: 8px;
+}
+
+.header__form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.catalog {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.catalog__filter {
+    width: 20%;
+    width: max-content;
+    height: 50vh;
+    background-color: #fff;
+    padding: 1rem;
+    position: fixed;
+    right: 0;
+    top: 100px;
+    bottom: 100px;
+    z-index: 100;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+catalog__filter__close{
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.catalog__filter.active {
+    transform: translateX(0);
+}
+
+.catalog__filter__widget {
+    margin-bottom: 1rem;
+}
+
+.catalog__filter__widget__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-bottom: 16px;
+}
+
+.catalog__filter__widget____content {
+    color: #2d2d2d;
+}
+
+.catalog__filter__widget____item {
+    margin-bottom: 16px;
+}
+.catalog__filter__toggle button{
+    border: 0;
+    outline: 0;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    font-size: 1rem;
+    background-color: var(--main-color);
+    padding: 0.5rem 1.2rem;
 }

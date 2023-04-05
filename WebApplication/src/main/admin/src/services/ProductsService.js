@@ -33,18 +33,24 @@ class ProductsService {
         const token = localStorage.getItem("token");
         return axios.post(API_URL + "products/saveProduct", product, {
             headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data'
+                Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data'
 
             },
         });
     }
 
-    getAllProducts(page, pageSize, searchTerm, sortOrder, sortBy) {
+    getAllProducts(page, pageSize, searchTerm, sortOrder, sortBy, categoryId, brand_id) {
         const token = localStorage.getItem("token");
         return axios.get(API_URL + "products/getall", {
             params: {
-                page: page, pageSize: pageSize, search: searchTerm, sortBy: sortBy, sortType: sortOrder
+                page: page,
+                pageSize: pageSize,
+                search: searchTerm,
+                sortBy: sortBy,
+                sortType: sortOrder,
+                categoryId: categoryId,
+                brandId: brand_id
+
 
             }, headers: {
                 Authorization: `Bearer ${token}`
@@ -52,11 +58,29 @@ class ProductsService {
         });
     }
 
-    deleteProduct(id) {
+    getProductById(id) {
         const token = localStorage.getItem("token");
-        return axios.delete(API_URL + "products/delete/" + id, {
+        return axios.get(API_URL + "products/" + id, {
             headers: {
                 Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+    updateProduct(id, product) {
+        const token = localStorage.getItem("token");
+        return axios.put(API_URL + "products/update/" + id, product, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+    }
+
+    deleteProduct(id) {
+        const token = localStorage.getItem("token");
+        return axios.put(API_URL + "products/delete/" + id,{}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
             }
         });
     }
@@ -64,17 +88,24 @@ class ProductsService {
     saveProductImage(id, image) {
         const token = localStorage.getItem("token");
         return axios.post("http://localhost:6868/api/products/image/upload?productId=" + id, image, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data"
-                },
-            }
-        );
+            headers: {
+                Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data"
+            },
+        });
     }
 
     getProductImage(id) {
         const token = localStorage.getItem("token");
         return axios.get(API_URL + "products/images/" + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+    deleteProductImage(id) {
+        const token = localStorage.getItem("token");
+        return axios.put(`http://localhost:6868/api/products/image/delete/${id}`, {},{
             headers: {
                 Authorization: `Bearer ${token}`
             }

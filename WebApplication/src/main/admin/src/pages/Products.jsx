@@ -1,10 +1,13 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect, useCallback, useRef} from "react";
 
 import Table from "../components/table/Table";
 import "./products.css"
 import productsService from "../services/ProductsService";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
+import Categories from "../constants/Categories";
+import Brands from "../constants/Brands";
+import Select from "react-select";
 
 const customerTableHead = [
     {key: "number", label: "#"}, {key: "name", label: "products.name"},
@@ -24,11 +27,23 @@ const customerTableHead = [
 ];
 const renderBody = (item, index) => {
     const {
-        name, brandName, categoryNames, consumer, cotton, form, description, priceCurrent, priceOld, sale_off, type,made_in,_deleted
+        name,
+        brandName,
+        categoryNames,
+        consumer,
+        cotton,
+        form,
+        description,
+        priceCurrent,
+        priceOld,
+        sale_off,
+        type,
+        made_in,
+        _deleted
     } = item;
     const isDeleted = _deleted ? "Deleted" : "Active";
-    const category = categoryNames.map((item) => {
-        return item + " "
+    const category = categoryNames.map((item, index) => {
+        return <div key={index}>{item}</div>
     })
     return (<tr key={index}>
         <td>{index + 1}</td>
@@ -46,10 +61,10 @@ const renderBody = (item, index) => {
         <td>{description}</td>
         <td>{isDeleted}</td>
         <td>
-            <Link to={`/admin/products/${item.id}`} className="btn btn-primary">
+            <Link to={`/products/${item.id}`} className="btn btn-primary">
                 <i className='bx bxs-edit-alt'></i>
             </Link>
-            <Link to= {`/products/images/${item.id}`} className="btn btn-primary">
+            <Link to={`/products/images/${item.id}`} className="btn btn-primary">
                 <i className='bx bxs-image'></i>
             </Link>
             <div className="btn btn-danger">
@@ -74,88 +89,180 @@ const renderBody = (item, index) => {
 
 const Products = () => {
     const [productList, setProductList] = useState([]);
-    console.log(productList)
+    const [category, setCategory] = useState([]);
+    const [brand, setBrand] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(4);
     const [totalPages, setTotalPages] = useState(0);
-    console.log(totalPages)
     const [currentPage, setCurrentPage] = useState(0);
     const [sortColumn, setSortColumn] = useState("name");
     const [sortOrder, setSortOrder] = useState('asc');
+    const [categoryId, setCategoryId] = useState(null);
+    const [brandId, setBrandId] = useState(null);
+    const filterRef = useRef(null);
     useEffect(() => {
         const getProducts = async () => {
             setLoading(true);
-            const response = await productsService.getAllProducts(currentPage, pageSize, searchTerm, sortOrder, sortColumn);
+            const response = await productsService.getAllProducts(currentPage, pageSize, searchTerm, sortOrder, sortColumn, categoryId, brandId)
             setProductList(response.data.results);
-            setTotalPages(Math.ceil(response.data.totalCount/ pageSize)) //tổng số trang
+            setTotalPages(Math.ceil(response.data.totalCount / pageSize)) //tổng số trang
             setLoading(false);
         };
         getProducts();
-    }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder]);
+    }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder, categoryId, brandId]);
+    useEffect(() => {
+        async function fetchCategories() {
+            const data = await Categories();
+            setCategory(data)
+        }
+
+        fetchCategories().then(r => {
+            setLoading(false)
+        });
+    }, [])
+    useEffect(() => {
+        async function fetchBrands() {
+            const data = await Brands();
+            setBrand(data)
+        }
+
+        fetchBrands().then(r => {
+            setLoading(false)
+        });
+    }, [])
+    const categories = category.map((item) => {
+        return {
+            label: item.name, value: item.id
+        }
+    })
+    const brands = brand.map((item) => {
+        return {
+            label: item.name, value: item.id
+        }
+    })
+
     const handlePageChange = useCallback((page) => {
-        setCurrentPage(page ); //trừ 1 vì page bắt đầu từ 0
+        setCurrentPage(page); //trừ 1 vì page bắt đầu từ 0
     }, []);
     const handleSort = useCallback((column) => {
         setSortColumn(column);
-        if(sortOrder === 'asc'){
+        if (sortOrder === 'asc') {
             setSortOrder('desc')
-        }else {
+        } else {
             setSortOrder('asc')
         }
     }, [sortColumn, sortOrder]);
+    const showHideFilter = () => filterRef.current.classList.toggle("active");
     const {t} = useTranslation();
-    return (<div>
-        <h2 className="page-header">
-            {t('products.title')}
-        </h2>
-        <div className="row">
-            <div className="col-12">
+    return (<>
+        <div>
+            <h2 className="page-header">
+                {t('products.title')}
+            </h2>
+            <div className="row">
+                <div className="col-12">
 
-                <div className="card">
-                    <div className="card__body">
-                        <div className="user-register">
-                            <button style={{
-                                margin: "10px 0px",
-                            }}>
-                            <Link to="/products/addProduct">
-                                <i className='bx bx-plus'></i>
-                            </Link>
-                            </button>
+                    <div className="card">
+                        <div className="card__body">
+                            <div className="header__form">
+                                <div className="user-register">
+                                    <button style={{
+                                        margin: "10px 0px",
+                                    }}>
+                                        <Link to="/products/addProduct">
+                                            <i className='bx bx-plus'></i>
+                                        </Link>
+                                    </button>
+                                </div>
+                                <div className="catalog__filter " ref={filterRef}>
+                                    <div
+                                        className="catalog__filter__close"
+                                        onClick={() => showHideFilter()}
+                                    >
+                                        <i className="bx bx-right-arrow-alt"></i>
+                                    </div>
+                                    <div className="catalog__filter__widget">
+                                        <div className="catalog__filter__widget__title">
+                                            danh mục sản phẩm
+                                        </div>
+                                        <div className="catalog__filter__widget__content">
+                                            <Select
+                                                options={categories}
+                                                onChange={(selectedOptions) => {
+                                                    const selectedValues = selectedOptions.map(option => option.value);
+                                                    setCategoryId(selectedValues);
+
+                                                }
+                                                }
+                                                isMulti
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="catalog__filter__widget">
+                                        <div className="catalog__filter__widget__title">
+                                            thương hiệu
+                                        </div>
+                                        <div className="catalog__filter__widget__content">
+                                            <Select
+                                                options={brands}
+                                                onChange={(selectedOptions) => {
+                                                    const selectedValues = selectedOptions.map(option => option.value);
+                                                    setBrandId(selectedValues);
+                                                }
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="catalog__filter__widget">
+                                        {/*<div className="catalog__filter__widget__content">*/}
+                                        {/*    <button size="sm">*/}
+                                        {/*        Xoá bộ lọc*/}
+                                        {/*    </button>*/}
+                                        {/*</div>*/}
+                                    </div>
+                                </div>
+                                <div className="catalog__filter__toggle">
+                                    <button  className="btn-toggle" onClick={() => showHideFilter()}>
+                                        <i className='bx bx-filter-alt'></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="search-container">
+                                <input
+                                    type="search"
+                                    placeholder="Tìm kiếm"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+
+                            </div>
+                            {loading ? <div>Loading...</div> : (
+                                <Table
+                                    limit={pageSize}
+                                    headData={customerTableHead}
+                                    data={productList}
+                                    renderBody={(item, index) => renderBody(item, index)}
+                                    totalPages={totalPages}
+                                    currentPage={currentPage}
+                                    onChangePage={handlePageChange}
+                                    pageSize={pageSize}
+                                    sortColumn={sortColumn}
+                                    sortOrder={sortOrder}
+                                    onSort={handleSort}
+
+
+                                />)}
+
                         </div>
-                        <div className="search-container">
-                            <input
-                                type="search"
-                                placeholder="Tìm kiếm"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
 
-                        </div>
-                        {loading ? <div>Loading...</div> : (
-                            <Table
-                            limit={pageSize}
-                            headData={customerTableHead}
-                            data={productList}
-                            renderBody={(item, index) => renderBody(item, index)}
-                            totalPages={totalPages}
-                            currentPage={currentPage}
-                            onChangePage={handlePageChange}
-                            pageSize={pageSize}
-                            sortColumn={sortColumn}
-                            sortOrder={sortOrder}
-                            onSort={handleSort}
-
-
-                        />)}
 
                     </div>
-
-
                 </div>
             </div>
         </div>
-    </div>);
+    </>);
 };
 
 export default Products;

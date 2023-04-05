@@ -77,7 +77,7 @@ const Topnav = () => {
             dispatch(logout());
             toast.success(t('logout_success'));
 
-            navigate('/login');
+            navigate('/');
         });
     }
     const switchLanguage = (lang) => {

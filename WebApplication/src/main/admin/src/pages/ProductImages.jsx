@@ -39,77 +39,98 @@ const ProductImages = () => {
         getImages();
 
     }, [id])
-    const saveProductImage = async () => {
+    const deleteImage = async (id) => {
         try {
-            const data = new FormData();
-            files.map((file, index) => {
-                data.append(`file[${index}]`, file.file)
-                data.append(`file[${index}]thumbnail`, file.isThumbnail)
-                console.log(`file[${index}]`, file.file)
-                console.log(`file[${index}]thumbnail`, file.isThumbnail)
-            })
-            const response = await ProductsService.saveProductImage(id, data);
-            if (response.status === 200) {
-                toast.success("Thêm ảnh thành oông", {
-                    position: toast.POSITION.TOP_RIGHT
-                });
-                navigate("/products")
-
-            }
+          await ProductsService.deleteProductImage(id).then((response) => {
+                    if (response.status === 200) {
+                        toast.success("Xoá ảnh thành công", {
+                            position: toast.POSITION.TOP_RIGHT
+                        });
+                        navigate("/products")
+                    }
+                }
+            )
         } catch (e) {
             console.log(e)
         }
     }
 
 
-    return (<div>
-        <h2 className="page-header">
-            Ảnh sản phẩm
-        </h2>
-        <div className="row">
-            <div className="col-12">
+const saveProductImage = async () => {
+    try {
+        const data = new FormData();
+        files.map((file, index) => {
+            data.append(`file[${index}]`, file.file)
+            data.append(`file[${index}]thumbnail`, file.isThumbnail)
+            console.log(`file[${index}]`, file.file)
+            console.log(`file[${index}]thumbnail`, file.isThumbnail)
+        })
+        const response = await ProductsService.saveProductImage(id, data);
+        if (response.status === 200) {
+            toast.success("Thêm ảnh thành oông", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            navigate("/products")
 
-                <div className="card">
-                    <div className="card__body">
-                        <DropFileInput onFileChange={(files) => onFileChange(files)}/>
-                        {files.length > 0 ?
-                            <button className="btn-submit" onClick={saveProductImage}>Lưu</button> : null}
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
 
-                    </div>
+
+return (<div>
+    <h2 className="page-header">
+        Ảnh sản phẩm
+    </h2>
+    <button className="btn-submit" onClick={() => deleteImage("C81CD1FD-FBDA-467B-B8A6-4B13E8338D32")}>Xoá</button>
+    <div className="row">
+        <div className="col-12">
+
+            <div className="card">
+                <div className="card__body">
+                    <DropFileInput onFileChange={(files) => onFileChange(files)}/>
+                    {files.length > 0 ?
+                        <button className="btn-submit" onClick={saveProductImage}>Lưu</button> : null}
+
                 </div>
-                <div className="card">
-                    <div className="card__body">
-                        {images.length > 0 ? (<div className="drop-file-preview">
-                            <p className="drop-file-preview__title">
-                                Danh sách ảnh
-                            </p>
-                            {images.map((item, index) => (
+            </div>
+            <div className="card">
+                <div className="card__body">
+                    {images.length > 0 ? (<div className="drop-file-preview">
+                        <p className="drop-file-preview__title">
+                            Danh sách ảnh
+                        </p>
+                        {images.map((item, index) => (
 
-                                <div key={index} className="drop-file-preview__item">
-                                    <img src={`http://localhost:6868/${item.url}`} alt="" style={{
-                                        objectFit: 'cover', backgroundSize: 'cover', backgroundPosition: 'center',
+                            <div key={index} className="drop-file-preview__item">
+                                <img src={`http://localhost:6868/${item.url}`} alt="" style={{
+                                    objectFit: 'cover', backgroundSize: 'cover', backgroundPosition: 'center',
 
-                                    }}/>
-                                    <div className="drop-file-preview__item__info">
-                                        <p className="drop-file-preview__item__info__name">
-                                            {item.url.split('/').pop()}
-                                        </p>
-                                    </div>
-                                    <span className="drop-file-preview__item__check">
+                                }}/>
+                                <div className="drop-file-preview__item__info">
+                                    <p className="drop-file-preview__item__info__name">
+                                        {item.url.split('/').pop()}
+                                    </p>
+                                </div>
+                                <span className="drop-file-preview__item__check">
                                         <input
                                             type="checkbox"
                                             checked={item.thumbnail}
+                                            readOnly
                                         />
 </span>
 
-                                    <span className="drop-file-preview__item__del">x</span>
-                                </div>))}
-                        </div>) : null}
-                    </div>
+                                <span className="drop-file-preview__item__del"
+                                      onClick={() => deleteImage(item.id)}>x</span>
+                            </div>))}
+                    </div>) : null}
                 </div>
             </div>
         </div>
-    </div>);
-};
+    </div>
+</div>);
+}
+;
 
 export default ProductImages;
