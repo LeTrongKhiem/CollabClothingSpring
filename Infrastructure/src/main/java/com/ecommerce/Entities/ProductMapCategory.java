@@ -23,21 +23,20 @@ public class ProductMapCategory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(generator = "uuid-gen")
     @Column(name = "id", columnDefinition = "uniqueidentifier")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @GeneratedValue(generator = "uuid-gen")
     @Getter
     @Setter
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @GeneratedValue(generator = "uuid-gen")
     @Getter
     @Setter
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 }
