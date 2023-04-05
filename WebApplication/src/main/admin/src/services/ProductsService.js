@@ -105,7 +105,7 @@ class ProductsService {
 
     deleteProductImage(id) {
         const token = localStorage.getItem("token");
-        return axios.put(`http://localhost:6868/api/products/image/delete/${id}`, {},{
+        return axios.put(API_URL + `products/image/delete/${id}`, {},{
             headers: {
                 Authorization: `Bearer ${token}`
             }
