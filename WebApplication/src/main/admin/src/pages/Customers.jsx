@@ -4,19 +4,17 @@ import UserService from "../services/UserService";
 import CreateUserModal from "../components/modal/CreateUserModal";
 import {useTranslation} from "react-i18next";
 import i18n from '../locales/i18n';
-const customerTableHead = [
-    { key: "number", label: "#" },
-    { key: "email", label: "customers.email" },
-    { key: "lastName", label: "customers.lastName" },
-    { key: "firstName", label: "customers.firstName" },
-    { key: "dob", label: "customers.dob" },
-    { key: "gender", label: "customers.gender" },
-    { key: "phoneNumber", label:"customers.phone" },
-    { key: "address", label: "customers.address" },
-    { key: "emailVerified", label: "customers.emailVerified"},
-    { key: "role", label: "customers.role" },
-];
 
+const customerTableHead = [{key: "number", label: "#"}, {key: "email", label: "customers.email"}, {
+    key: "lastName",
+    label: "customers.lastName"
+}, {key: "firstName", label: "customers.firstName"}, {key: "dob", label: "customers.dob"}, {
+    key: "gender",
+    label: "customers.gender"
+}, {key: "phoneNumber", label: "customers.phone"}, {key: "address", label: "customers.address"}, {
+    key: "emailVerified",
+    label: "customers.emailVerified"
+}, {key: "role", label: "customers.role"},];
 
 
 const renderBody = (item, index) => {
@@ -58,7 +56,6 @@ const Customers = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [pageSize, setPageSize] = useState(2);
-    // const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [showModal, setShowModal] = useState(false);
@@ -74,27 +71,23 @@ const Customers = () => {
     useEffect(() => {
         const getUsers = async () => {
             setLoading(true);
-            const response = await UserService.getAllUsers(currentPage, pageSize, searchTerm,sortOrder,sortColumn);
-            const total = await  UserService.getTotalsUser();
-            setCustomerList(response.data);
+            const response = await UserService.getAllUsers(currentPage, pageSize, searchTerm, sortOrder, sortColumn);
+            setCustomerList(response.data.results);
             setLoading(false);
-            setTotalPages(Math.ceil(total.data.length / pageSize));
-            if(searchTerm !== ''){
-                setTotalPages(Math.ceil(response.data.length / pageSize));
-            }
+            setTotalPages(Math.ceil(response.data.TotalPages / pageSize));
         };
         getUsers();
-    }, [pageSize, currentPage, searchTerm,sortColumn,sortOrder]);
+    }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder]);
 
     const handlePageChange = useCallback((page) => {
-        setCurrentPage(page ); //trừ 1 vì page bắt đầu từ 0
+        setCurrentPage(page); //trừ 1 vì page bắt đầu từ 0
         console.log(page)
     }, []);
     const handleSort = useCallback((column) => {
         setSortColumn(column);
-        if(sortOrder === 'asc'){
+        if (sortOrder === 'asc') {
             setSortOrder('desc')
-        }else {
+        } else {
             setSortOrder('asc')
         }
     }, [sortColumn, sortOrder]);
@@ -110,13 +103,13 @@ const Customers = () => {
 
                     <div className="card">
                         <div className="user-register">
-                        <button onClick={openModal}>
-                            <i className='bx bx-plus'></i>
+                            <button onClick={openModal}>
+                                <i className='bx bx-plus'></i>
 
-                        </button>
+                            </button>
 
 
-                        <CreateUserModal showModal={showModal} closeModal={closeModal}/>
+                            <CreateUserModal showModal={showModal} closeModal={closeModal}/>
                         </div>
                         <div className="card__body">
                             <div className="search-container">
@@ -128,21 +121,19 @@ const Customers = () => {
                                 />
 
                             </div>
-                            {loading ? <div>Loading...</div> : (
-                                <Table
-                                    limit={pageSize}
-                                    headData={customerTableHead}
-                                    data={ customerList}
-                                    renderBody={(item, index) => renderBody(item, index)}
-                                    totalPages={totalPages}
-                                    currentPage={currentPage}
-                                    onChangePage={handlePageChange}
-                                    pageSize={pageSize}
-                                    sortColumn={sortColumn}
-                                    sortOrder={sortOrder}
-                                    onSort={handleSort}
-                                />
-                            )}
+                            {loading ? <div>Loading...</div> : (<Table
+                                limit={pageSize}
+                                headData={customerTableHead}
+                                data={customerList}
+                                renderBody={(item, index) => renderBody(item, index)}
+                                totalPages={totalPages}
+                                currentPage={currentPage}
+                                onChangePage={handlePageChange}
+                                pageSize={pageSize}
+                                sortColumn={sortColumn}
+                                sortOrder={sortOrder}
+                                onSort={handleSort}
+                            />)}
 
                         </div>
                     </div>
