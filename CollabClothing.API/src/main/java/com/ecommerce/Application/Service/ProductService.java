@@ -41,6 +41,8 @@ public class ProductService implements IProductService {
     private ProductImageRepository productImageRepository;
     @Autowired
     private IFileStorageService fileStorageService;
+    @Autowired
+    private IStringResourceService stringResourceService;
 
     @Override
     public Product AddProduct(Product product) {
