@@ -9,22 +9,22 @@ import Categories from "../constants/Categories";
 import Brands from "../constants/Brands";
 import Select from "react-select";
 
-const customerTableHead = [
-    {key: "number", label: "#"}, {key: "name", label: "products.name"},
-    {key: "categoryNames", label: "products.categoryNames"},
-    {key: "brandName", label: "products.brandName"},
-    {key: "priceOld", label: "products.priceOld"},
-    {key: "priceCurrent", label: "products.priceCurrent"},
-    {key: "sale_off", label: "products.sale_off"},
-    {key: "consumer", label: "products.consumer"},
-    {key: "cotton", label: "products.cotton"},
-    {key: "form", label: "products.form"},
-    {key: "type", label: "products.type"},
-    {key: "made_in", label: "products.made_in"},
-    {key: "description", label: "products.description"},
-    {key: "isDeleted", label: "products.isDeleted"},
-    {key: "action", label: "products.action"}
-];
+const customerTableHead = [{key: "number", label: "#"}, {key: "name", label: "products.name"}, {
+    key: "categoryNames",
+    label: "products.categoryNames"
+}, {key: "brandName", label: "products.brandName"}, {key: "priceOld", label: "products.priceOld"}, {
+    key: "priceCurrent",
+    label: "products.priceCurrent"
+}, {key: "sale_off", label: "products.sale_off"}, {key: "consumer", label: "products.consumer"}, {
+    key: "cotton",
+    label: "products.cotton"
+}, {key: "form", label: "products.form"}, {key: "type", label: "products.type"}, {
+    key: "made_in",
+    label: "products.made_in"
+}, {key: "description", label: "products.description"}, {key: "isDeleted", label: "products.isDeleted"}, {
+    key: "action",
+    label: "products.action"
+}];
 const renderBody = (item, index) => {
     const {
         name,
@@ -68,15 +68,13 @@ const renderBody = (item, index) => {
                 <i className='bx bxs-image'></i>
             </Link>
             <div className="btn btn-danger">
-                <i className='bx bx-trash' onClick={
-                    () => {
-                        if (window.confirm('Are you sure you wish to delete this item?')) {
-                            productsService.deleteProduct(item.id).then((res) => {
-                                window.location.reload();
-                            })
-                        }
+                <i className='bx bx-trash' onClick={() => {
+                    if (window.confirm('Are you sure you wish to delete this item?')) {
+                        productsService.deleteProduct(item.id).then((res) => {
+                            window.location.reload();
+                        })
                     }
-                }></i>
+                }}></i>
             </div>
 
         </td>
@@ -189,13 +187,10 @@ const Products = () => {
                                         <div className="catalog__filter__widget__content">
                                             <Select
                                                 options={categories}
-                                                onChange={(selectedOptions) => {
-                                                    const selectedValues = selectedOptions.map(option => option.value);
-                                                    setCategoryId(selectedValues);
-
+                                                onChange={(e) => {
+                                                    setCategoryId(e.value);
                                                 }
                                                 }
-                                                isMulti
                                             />
                                         </div>
                                     </div>
@@ -206,11 +201,7 @@ const Products = () => {
                                         <div className="catalog__filter__widget__content">
                                             <Select
                                                 options={brands}
-                                                onChange={(selectedOptions) => {
-                                                    const selectedValues = selectedOptions.map(option => option.value);
-                                                    setBrandId(selectedValues);
-                                                }
-                                                }
+                                                onChange={(e)=> setBrandId(e.value)}
                                             />
                                         </div>
                                     </div>
@@ -223,7 +214,7 @@ const Products = () => {
                                     </div>
                                 </div>
                                 <div className="catalog__filter__toggle">
-                                    <button  className="btn-toggle" onClick={() => showHideFilter()}>
+                                    <button className="btn-toggle" onClick={() => showHideFilter()}>
                                         <i className='bx bx-filter-alt'></i>
                                     </button>
                                 </div>
@@ -238,22 +229,21 @@ const Products = () => {
                                 />
 
                             </div>
-                            {loading ? <div>Loading...</div> : (
-                                <Table
-                                    limit={pageSize}
-                                    headData={customerTableHead}
-                                    data={productList}
-                                    renderBody={(item, index) => renderBody(item, index)}
-                                    totalPages={totalPages}
-                                    currentPage={currentPage}
-                                    onChangePage={handlePageChange}
-                                    pageSize={pageSize}
-                                    sortColumn={sortColumn}
-                                    sortOrder={sortOrder}
-                                    onSort={handleSort}
+                            {loading ? <div>Loading...</div> : (<Table
+                                limit={pageSize}
+                                headData={customerTableHead}
+                                data={productList}
+                                renderBody={(item, index) => renderBody(item, index)}
+                                totalPages={totalPages}
+                                currentPage={currentPage}
+                                onChangePage={handlePageChange}
+                                pageSize={pageSize}
+                                sortColumn={sortColumn}
+                                sortOrder={sortOrder}
+                                onSort={handleSort}
 
 
-                                />)}
+                            />)}
 
                         </div>
 

@@ -83,7 +83,6 @@ return (<div>
     <h2 className="page-header">
         Ảnh sản phẩm
     </h2>
-    <button className="btn-submit" onClick={() => deleteImage("C81CD1FD-FBDA-467B-B8A6-4B13E8338D32")}>Xoá</button>
     <div className="row">
         <div className="col-12">
 
