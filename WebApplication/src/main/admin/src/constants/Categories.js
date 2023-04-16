@@ -10,6 +10,9 @@ const fetchCategories = async () => {
         slug: category.slug,
         sortOrder: category.sortOrder,
         level: category.level,
+        pathIcon: category.pathIcon,
+        parentId: category.parentId,
+        showWeb: category.showWeb,
     }));
     return categories;
 };
