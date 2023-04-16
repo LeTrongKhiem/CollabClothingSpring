@@ -6,36 +6,36 @@ import SelectField from "../../custom-fields/SelectField";
 import "./createUserModal.css";
 import UserService from "../../services/UserService";
 import {toast} from "react-toastify";
+import Categories from "../../services/Categories";
 
 function AddCategories({showModal, closeModal}) {
     const [modal, setModal] = useState(showModal);
     console.log(modal)
     const [formData, setFormData] = useState({
-        name: '', email: '', message: ''
+        name: "", sortOrder: "", level: "",  file: "", parentId: "", showWeb: "",
     });
 
     const initialState = {
-        userName: "", firstName: "", lastName: "", dob: "", phoneNumber: "", address: "", email: "", gender: "",
+        name: "", sortOrder: "", level: "",  file: "", parentId: "", showWeb: "",
     };
 
 
     const handleSubmit = (values,{resetForm}) => {
         try {
-            UserService.createUser(values).then((res) => {
-                console.log(res)
+            Categories.addCategory(values).then((res) => {
                 if (res.status === 200) {
                     resetForm({
                         values: initialState
                     });
                     closeModal();
-                    toast.success("Tạo tài khoản thành công", {
+                    toast.success("Thêm thành công", {
                         position: toast.POSITION.TOP_CENTER
                     });
 
                 }
             }).catch((err) => {
 
-                toast.error("Tạo tài khoản thất bại", {
+                toast.error("Thêm thất bại", {
                     position: toast.POSITION.TOP_CENTER
                 });
 
@@ -48,45 +48,13 @@ function AddCategories({showModal, closeModal}) {
 
     };
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string().required("Vui lòng nhập tên"),
-        lastName: Yup.string().required("Vui lòng nhập họ"), // check day of birth
-        dob: Yup.date()
-            .nullable()
-            .test("dob", "Khách hàng phải trên 14 tuổi", function (value, ctx) {
-                const dob = new Date(value);
-                const validDate = new Date();
-                const valid = validDate.getFullYear() - dob.getFullYear() >= 13;
-                return !valid ? ctx.createError() : valid;
-            })
-            .test("dob", "Năm sinh phải lớn hơn 1930 ", function (value, ctx) {
-                const dob = new Date(value);
-                const valid = dob.getFullYear() >= 1930;
-                return !valid ? ctx.createError() : valid;
-            })
-            .required("Vui lòng nhập ngày sinh"),
-
-        phoneNumber: Yup.string().required("Vui lòng nhập số điện thoại").matches(/^(?:\+84|0)[3-9]\d{8}$/, "Số điện thoại không hợp lệ"),
-        address: Yup.string().required("Vui lòng nhập địa chỉ"),
-        email: Yup.string()
-            .required('Vui lòng nhập email').email('Email không hợp lệ').matches(/@[^.]*\./)
-            .test('Unique Email', 'Email đã tồn tại', async function (value) {
-
-                return await UserService.checkEmailExist(value)
-                    .then((res) => {
-                        console.log(res)
-                        if (res.data) {
-                            return false;
-                        }
-                        return true;
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                        return true;
-                    });
-            }),
-
-
-        gender: Yup.number().required("Vui lòng chọn giới tính").nullable(),
+        name: Yup.string().required("Vui lòng nhập tên"),
+        sortOrder: Yup.string().required("Vui lòng nhập sortOrder"),
+        level: Yup.string().required("Vui lòng nhập level"),
+        file: Yup.string().required("Vui lòng nhập file"),
+        parentId: Yup.string().required("Vui lòng nhập parentId"),
+        showWeb: Yup.string().required("Vui lòng nhập showWeb"),
+        
     });
 
 
