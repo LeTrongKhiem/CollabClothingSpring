@@ -9,7 +9,7 @@ import Categories from "../constants/Categories";
 import Brands from "../constants/Brands";
 import Select from "react-select";
 
-const customerTableHead = [{key: "number", label: "#"}, {key: "name", label: "products.name"}, {
+const customerTableHead = [{key: "number", label: "#"}, {key: "name", label: "products.name"},{key: "", label: "products.image"}, {
     key: "categoryNames",
     label: "products.categoryNames"
 }, {key: "brandName", label: "products.brandName"}, {key: "priceOld", label: "products.priceOld"}, {
@@ -28,6 +28,7 @@ const customerTableHead = [{key: "number", label: "#"}, {key: "name", label: "pr
 const renderBody = (item, index) => {
     const {
         name,
+        productImages,
         brandName,
         categoryNames,
         consumer,
@@ -41,6 +42,9 @@ const renderBody = (item, index) => {
         made_in,
         _deleted
     } = item;
+    console.log(productImages)
+    const thumbnail = productImages.filter((item) => item.thumbnail === true && item.deleted === false).map((item) => item.url)[0]
+    console.log(thumbnail)
     const isDeleted = _deleted ? "Deleted" : "Active";
     const category = categoryNames.map((item, index) => {
         return <div key={index}>{item}</div>
@@ -48,6 +52,9 @@ const renderBody = (item, index) => {
     return (<tr key={index}>
         <td>{index + 1}</td>
         <td>{name}</td>
+        <td>
+            <img src={`http://localhost:6868/${thumbnail}`} alt={name} width="60px"/>
+        </td>
         <td>{category}</td>
         <td>{brandName}</td>
         <td>{priceOld}</td>

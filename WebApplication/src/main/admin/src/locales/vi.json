@@ -44,5 +44,13 @@
     "status": "Trạng thái",
     "action": "Hành động",
     "isDeleted": "Đã xóa"
+  },
+  "categories": {
+    "title": "Danh mục",
+    "name": "Tên",
+    "slug": "Slug",
+    "level": "Cấp",
+    "parentId": "Danh mục cha",
+    "pathIcon": "Đường dẫn icon"
   }
 }

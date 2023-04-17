@@ -44,5 +44,13 @@
     "status": "Trạng thái",
     "action": "Action",
     "isDeleted": "Deleted"
+  },
+  "categories": {
+    "title": "Categories",
+    "name": "Name",
+    "slug": "Slug",
+    "level": "Level",
+    "parentId": "Parent Id",
+    "pathIcon": "Path Icon"
   }
 }
