@@ -78,4 +78,14 @@ public class BrandController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Brand> getBrandById(@PathVariable UUID id) {
+        try {
+            Brand brand = brandService.findById(id);
+            return ResponseEntity.ok(brand);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

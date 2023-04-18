@@ -75,4 +75,14 @@ public class CategoryController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<CategoryModel> getCategory(@PathVariable UUID categoryId) {
+        try {
+            var result = categoryService.getCategory(categoryId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

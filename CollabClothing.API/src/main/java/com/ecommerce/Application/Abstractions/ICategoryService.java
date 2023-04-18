@@ -1,5 +1,6 @@
 package com.ecommerce.Application.Abstractions;
 
+import com.ecommerce.Application.Mappings.CategoryMapping;
 import com.ecommerce.Entities.Category;
 import com.ecommerce.Model.Categories.CategoryCreateModel;
 import com.ecommerce.Model.Categories.CategoryModel;
@@ -17,4 +18,5 @@ public interface ICategoryService {
     boolean updateCategory(UUID categoryId, UUID userId, CategoryCreateModel categoryModel);
     boolean deleteCategory(UUID id, UUID userId);
     List<Integer> getSortOrderByLevel(int level);
+    CategoryModel getCategory(UUID id);
 }
