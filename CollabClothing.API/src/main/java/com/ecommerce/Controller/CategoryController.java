@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/categories")
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:4000/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:4000/"})
 public class CategoryController {
     @Autowired
     ICategoryService categoryService;
@@ -26,11 +26,11 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<PagingModel<CategoryModel>> getAll( @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int pageSize,
-                                                              @RequestParam(defaultValue = "") String search,
-                                                              @RequestParam(defaultValue = "name") String sortBy,
-                                                              @RequestParam(defaultValue = "asc") String sortDirection) {
+    public ResponseEntity<PagingModel<CategoryModel>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int pageSize,
+                                                             @RequestParam(defaultValue = "") String search,
+                                                             @RequestParam(defaultValue = "name") String sortBy,
+                                                             @RequestParam(defaultValue = "asc") String sortDirection) {
         PagingRequest request = new PagingRequest(page, pageSize, sortBy, sortDirection, search);
         try {
             var result = categoryService.getAll(request);
@@ -42,7 +42,7 @@ public class CategoryController {
 
     @PostMapping("/add")
     @StaffRole
-    public ResponseEntity<Boolean> addCategory(@ModelAttribute CategoryCreateModel model) {
+    public ResponseEntity<Boolean> addCategory(@RequestBody CategoryCreateModel model) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();
             var result = categoryService.addCategory(userId, model);
@@ -54,10 +54,10 @@ public class CategoryController {
 
     @PutMapping("/update/{categoryId}")
     @StaffRole
-    public ResponseEntity<Boolean> updateCategory(@PathVariable UUID categoryId, @ModelAttribute CategoryCreateModel model) {
+    public ResponseEntity<Boolean> updateCategory(@PathVariable UUID categoryId, @RequestBody CategoryCreateModel model) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();
-            var result = categoryService.updateCategory(userId, categoryId, model);
+            var result = categoryService.updateCategory(categoryId, userId, model);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

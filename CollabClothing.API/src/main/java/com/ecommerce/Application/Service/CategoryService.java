@@ -56,15 +56,9 @@ public class CategoryService implements ICategoryService {
     @Override
     public boolean addCategory(UUID userId, CategoryCreateModel categoryModel) {
         Category category = CategoryMapping.mapCategoryFromModel(userId, categoryModel);
-        if (categoryModel.getFile() != null) {
-            String fileName = fileStorageService.saveFile(categoryModel.getFile(), categoryFile);
-            category.setPathIcon(fileName);
-            categoryRepository.save(category);
-            return true;
-        }
         category.setPathIcon("no-image");
         categoryRepository.save(category);
-        return false;
+        return true;
     }
 
     @Override
@@ -73,13 +67,8 @@ public class CategoryService implements ICategoryService {
         if (category == null)
             throw new RuntimeException("Category not found");
         Category updateCategory = CategoryMapping.updateCategory(userId, category, categoryModel);
-        if (categoryModel.getFile() != null) {
-            fileStorageService.deleteFilePath(category.getPathIcon());
-            String fileName = fileStorageService.saveFile(categoryModel.getFile(), categoryFile);
-            updateCategory.setPathIcon(fileName);
-            return true;
-        }
-        return false;
+        categoryRepository.save(updateCategory);
+        return true;
     }
 
     @Override

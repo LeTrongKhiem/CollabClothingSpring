@@ -48,6 +48,7 @@ public class CategoryMapping {
         category.setShowWeb(model.isShowWeb());
         category.setSortOrder(model.getSortOrder());
         category.setModifiedBy(userId);
+        category.setSlug(SlugExtensions.toSlug(model.getName()));
         category.setModifiedDate(new Date(System.currentTimeMillis()));
 
         return category;

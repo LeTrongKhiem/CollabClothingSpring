@@ -12,6 +12,7 @@ import org.hibernate.annotations.Where;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "colors")
@@ -27,4 +28,10 @@ public class Color extends BaseEntity implements Serializable {
 
     @OneToMany(mappedBy = "color")
     private Set<ProductMapColor> productMapColors;
+
+    public Color(UUID id, String name, boolean isDeleted) {
+        this.setId(id);
+        this.name = name;
+        this.isDeleted = isDeleted;
+    }
 }
