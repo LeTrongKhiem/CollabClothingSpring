@@ -9,12 +9,9 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CategoryCreateModel {
-//    UUID id;
     boolean isShowWeb;
     String name;
     int sortOrder;
     int level;
-//    String pathIcon;
     UUID parentId;
-    MultipartFile file;
 }

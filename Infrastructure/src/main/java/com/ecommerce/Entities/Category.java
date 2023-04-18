@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "categories")
-//@Where(clause = "is_deleted = false")
+@Where(clause = "is_deleted = false")
 @Getter
 @Setter
 @NoArgsConstructor
