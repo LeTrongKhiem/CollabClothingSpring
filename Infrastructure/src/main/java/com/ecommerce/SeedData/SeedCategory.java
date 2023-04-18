@@ -26,28 +26,28 @@ public class SeedCategory implements CommandLineRunner {
         if (categoryRepository.count() == 0) {
             Category men = CategoryMapping.mapToCategoryModel(CategoriesConstant.MEN_ID, CategoriesConstant.MEN,
                     null, "no-image", 1
-            , true, CategoriesConstant.MEN_SLUG, 1);
+            , true, CategoriesConstant.MEN_SLUG, 1, false);
             Category woman = CategoryMapping.mapToCategoryModel(CategoriesConstant.WOMEN_ID, CategoriesConstant.WOMEN,
                     null, "no-image", 1
-                    , true, CategoriesConstant.WOMEN_SLUG, 2);
+                    , true, CategoriesConstant.WOMEN_SLUG, 2, false);
             Category kids = CategoryMapping.mapToCategoryModel(CategoriesConstant.KIDS_ID, CategoriesConstant.KIDS,
                     null, "no-image", 1
-                    , true, CategoriesConstant.KIDS_SLUG, 3);
+                    , true, CategoriesConstant.KIDS_SLUG, 3, false);
             Category shoes = CategoryMapping.mapToCategoryModel(CategoriesConstant.SHOES_ID, CategoriesConstant.SHOES,
                     null, "no-image", 1
-                    , true, CategoriesConstant.SHOES_SLUG, 4);
+                    , true, CategoriesConstant.SHOES_SLUG, 4, false);
             Category sports = CategoryMapping.mapToCategoryModel(CategoriesConstant.SPORTS_ID, CategoriesConstant.SPORTS,
                     null, "no-image", 1
-                    , true, CategoriesConstant.SPORTS_SLUG, 5);
+                    , true, CategoriesConstant.SPORTS_SLUG, 5, false);
             Category clock = CategoryMapping.mapToCategoryModel(CategoriesConstant.CLOCK_ID, CategoriesConstant.CLOCK,
                     null, "no-image", 1
-                    , true, CategoriesConstant.CLOCK_SLUG, 6);
+                    , true, CategoriesConstant.CLOCK_SLUG, 6, false);
             Category discharge = CategoryMapping.mapToCategoryModel(CategoriesConstant.DISCHARGE_ID, CategoriesConstant.DISCHARGE,
                     null, "no-image", 1
-                    , true, CategoriesConstant.DISCHARGE_SLUG, 7);
+                    , true, CategoriesConstant.DISCHARGE_SLUG, 7, false);
             Category accessories = CategoryMapping.mapToCategoryModel(CategoriesConstant.ACCESSORIES_ID, CategoriesConstant.ACCESSORIES,
                     null, "no-image", 1
-                    , true, CategoriesConstant.ACCESSORIES_SLUG, 8);
+                    , true, CategoriesConstant.ACCESSORIES_SLUG, 8, false);
 
             List<Category> categories = Arrays.asList(men, woman, kids, shoes, sports, clock, discharge, accessories);
             categoryRepository.saveAll(categories);

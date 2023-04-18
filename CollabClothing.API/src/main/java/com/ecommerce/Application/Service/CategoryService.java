@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -85,6 +86,15 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public List<Integer> getSortOrderByLevel(int level) {
+        return null;
+    }
+
+    @Override
+    public CategoryModel getCategory(UUID id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if (category.isPresent()) {
+            return CategoryMapping.mapCategory(category.get());
+        }
         return null;
     }
 }

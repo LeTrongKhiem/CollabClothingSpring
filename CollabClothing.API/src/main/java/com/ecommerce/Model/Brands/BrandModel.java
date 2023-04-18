@@ -9,8 +9,6 @@ import java.util.UUID;
 
 @Getter
 public class BrandModel {
-    private UUID modifiedBy;
-    private Date modifiedDate;
     @NotEmpty
     private String name;
     @Nullable
