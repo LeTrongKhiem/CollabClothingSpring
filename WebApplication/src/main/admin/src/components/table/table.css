@@ -32,6 +32,9 @@ tbody > tr:hover {
     background-color: var(--main-color);
     color: var(--txt-white);
 }
+tbody > tr:hover  i{
+    color: var(--txt-white);
+}
 
 .table__pagination {
     display: flex;

@@ -69,7 +69,7 @@ public class CategoryController {
     public ResponseEntity<Boolean> deleteCategory(@PathVariable UUID categoryId) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();
-            var result = categoryService.deleteCategory(userId, categoryId);
+            var result = categoryService.deleteCategory(categoryId, userId);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

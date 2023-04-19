@@ -2,33 +2,35 @@ import React, {useEffect, useState} from "react";
 import {FastField, Form, Formik} from "formik";
 import * as Yup from "yup";
 import InputField from "../../custom-fields/InputField";
-import SelectField from "../../custom-fields/SelectField";
-import "./createUserModal.css";
-import UserService from "../../services/UserService";
+import "./categoriesEdit.css";
 import {toast} from "react-toastify";
 import CategoriesService from "../../services/CategoriesService";
 import Select from "react-select";
 import Categories from "../../constants/Categories";
-function AddCategories({showModal, closeModal, setChanges}) {
-    const [modal, setModal] = useState(showModal);
+
+function EditCategories({showModalEdit, closeModalEdit, setChanges, categoryId}) {
+    const initialState = {
+            id: "",
+            level: "",
+            name: "",
+            parentId: null,
+            pathIcon: "",
+            showWeb: "",
+            sortOrder: "",
+        }
+    ;
+    const [modal, setModal] = useState(showModalEdit);
     const [category, setCategory] = useState([]);
+    const [categoryEdit, setCategoryEdit] = useState(initialState);
     const [loading, setLoading] = useState(true);
 
-    const initialState = {
-        name: "", sortOrder: "", level: "", parentId: null, showWeb: true,
-    };
-
-
-    const handleSubmit = (values,{resetForm}) => {
+    const handleSubmit = (values) => {
         try {
-            CategoriesService.addCategory(values).then((res) => {
+            CategoriesService.updateCategory(categoryId,values).then((res) => {
                 if (res.status === 200) {
                     setChanges(true)
-                    resetForm({
-                        values: initialState
-                    });
-                    closeModal();
-                    toast.success("Thêm thành công", {
+                    closeModalEdit();
+                    toast.success("Sửa thành công", {
                         position: toast.POSITION.TOP_CENTER
                     });
 
@@ -40,11 +42,9 @@ function AddCategories({showModal, closeModal, setChanges}) {
                 });
 
             })
-        }
-        catch (e) {
+        } catch (e) {
             toast.error(e.errors)
         }
-        // Xử lý gửi form tại đây
 
     };
     const validationSchema = Yup.object().shape({
@@ -71,40 +71,68 @@ function AddCategories({showModal, closeModal, setChanges}) {
         }
     })
 
+    useEffect(() => {
+        if (categoryId === null) {
+            setLoading(false)
+            return;
+        }
+        async function fetchCategory() {
+            const response = await CategoriesService.getCategoryById(categoryId);
+            setCategoryEdit(response.data)
+            setLoading(false)
+        }
 
+        fetchCategory().then(r => {
+            setLoading(false)
+        });
+    }, [categoryId])
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
 
 
-        <div className={`product-view__modal ${showModal ? "active" : ""}`}>
+        <div className={`product-view__modal ${showModalEdit ? "active" : ""}`}>
 
             <div className="product-view__modal__content auth">
                 <div className="form">
                     <Formik
-                        initialValues={initialState}
+                        initialValues={categoryEdit}
                         validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
+                        enableReinitialize={true}
                         validateOnChange={true}
+                        onSubmit={handleSubmit}
 
                     >
                         {({
-                                values,
+                              values,
+                              handleBlur,
+                              setFieldValue,
+                              setFieldTouched,
+                              setFieldError
                           }) => {
+
                             console.log(values)
                             return (<Form>
-                                <label htmlFor="name">Tên: </label>
+                                <label htmlFor="name">Tên Danh Mục: </label>
                                 <FastField
                                     name="name"
                                     component={InputField}
-                                    placeholder="Tên"
-                                    type="text"
+                                    placeholder="Tên danh mục"
+                                    value={values.name}
+                                    htmlFor="name"
 
                                 />
+
                                 <label htmlFor="sortOrder">SortOrder: </label>
                                 <FastField
                                     name="sortOrder"
                                     component={InputField}
                                     placeholder="sortOrder"
+                                    value={values.sortOrder}
+                                    htmlFor="sortOrder"
 
                                 />
                                 <label htmlFor="level">Level: </label>
@@ -112,17 +140,16 @@ function AddCategories({showModal, closeModal, setChanges}) {
                                     name="level"
                                     component={InputField}
                                     placeholder="Level"
-
+                                    value={values.level}
+                                    htmlFor="level"
                                 />
-                                <label htmlFor="parentId">Chọn danh mục : </label>
+                                <label htmlFor="parentId">Danh mục cha : </label>
                                 <Select
                                     name="parentId"
                                     options={categories}
-                                    placeholder="Chọn danh mục"
-                                    onChange={(e) => {
-                                        values.parentId = e.value;
-                                    }
-                                    }
+                                    placeholder="Danh mục cha "
+                                    value={categories.find(obj => obj.value === values.parentId)}
+                                    htmlFor="parentId"
                                 />
                                 <div className="category-form-group">
                                     <label htmlFor="showWeb">Hiển thị trên web: </label>
@@ -131,10 +158,8 @@ function AddCategories({showModal, closeModal, setChanges}) {
                                         component={InputField}
                                         placeholder="showWeb"
                                         type="checkbox"
-                                        onChange={(e) => {
-                                            values.showWeb = e.target.checked;
-                                        }
-                                        }
+                                        isChecked={values.showWeb}
+                                        htmlFor="showWeb"
                                     />
                                 </div>
 
@@ -142,7 +167,7 @@ function AddCategories({showModal, closeModal, setChanges}) {
                                     type="submit"
                                     className="btn-register"
                                 >
-                                    Thêm
+                                    Xác nhận
                                 </button>
                             </Form>);
                         }}
@@ -150,7 +175,7 @@ function AddCategories({showModal, closeModal, setChanges}) {
 
 
                     <div className="product-view__modal__content__close">
-                        <button onClick={closeModal}>
+                        <button onClick={closeModalEdit}>
                             <i className="fas fa-times"></i>
                             Đóng
                         </button>
@@ -163,4 +188,4 @@ function AddCategories({showModal, closeModal, setChanges}) {
 
 }
 
-export default AddCategories;
+export default EditCategories;

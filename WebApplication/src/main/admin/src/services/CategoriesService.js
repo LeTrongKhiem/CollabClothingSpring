@@ -26,23 +26,32 @@ class CategoriesService {
         const token = localStorage.getItem("token");
         return axios.post(API_URL + "/add", category, {
             headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`
             }
         });
 
     }
-    updateCategory(category) {
-        const token = localStorage.getItem("token");
-        return axios.put(API_URL + "/update", category, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-    }
     deleteCategory(id) {
         const token = localStorage.getItem("token");
         return axios.put(API_URL + "/delete/" + id, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }
+        );
+    }
+    getCategoryById(id) {
+        const token = localStorage.getItem("token");
+        return axios.get(API_URL + `/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }
+        );
+    }
+    updateCategory(id, category) {
+        const token  = localStorage.getItem("token");
+        return axios.put(API_URL + "/update/" + id, category, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
