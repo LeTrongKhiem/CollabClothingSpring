@@ -3,10 +3,11 @@ import Table from "../components/table/Table";
 import {useTranslation} from "react-i18next";
 import i18n from '../locales/i18n';
 import fetchCategories from "../constants/Categories";
-import Categories from "../services/Categories";
 import CreateUserModal from "../components/modal/CreateUserModal";
 import AddCategories from "../components/modal/AddCategories";
-
+import CategoriesService from "../services/CategoriesService";
+import EditCategories from "../components/modal/EditCategories";
+import {toast} from "react-toastify";
 const customerTableHead = [
     {key: "number", label: "#"},
     {key: "name", label: "categories.name"},
@@ -23,33 +24,22 @@ const customerTableHead = [
 ]
 
 
-const renderBody = (item, index) => {
-    const {id, name, slug, sortOrder, level, pathIcon, parentId, showWeb} = item;
-    return (<tr key={index}>
-        <td>{index + 1}</td>
-        <td>{name}</td>
-        <td>{slug}</td>
-        <td>{level}</td>
-        <td>{parentId}</td>
-        <td>{pathIcon}</td>
-        <td>
-        </td>
-
-    </tr>)
-
-}
 
 
-const Customers = () => {
+
+const Categories = () => {
     const [categories, setCategories] = useState([]);
+    const [changes, setChanges] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [showModal, setShowModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
     const [sortColumn, setSortColumn] = useState("name");
     const [sortOrder, setSortOrder] = useState('asc');
+    const [categoryId, setCategoryId] = useState(null);
     const openModal = () => {
         setShowModal(true);
     };
@@ -57,15 +47,87 @@ const Customers = () => {
     const closeModal = () => {
         setShowModal(false);
     };
+    const openEditModal = () => {
+        setEditModal(true);
+    }
+    const closeEditModal = () => {
+        setEditModal(false);
+    }
+    const renderBody = (item, index) => {
+
+        const {id, name, slug, sortOrder, level, pathIcon, parentId, showWeb} = item;
+        const handleEditClick = () => {
+            setCategoryId(id);
+            openEditModal();
+        };
+        return (<tr key={index}>
+            <td>{index + 1}</td>
+            <td>{name}</td>
+            <td>{slug}</td>
+            <td>{level}</td>
+            <td>{parentId}</td>
+            <td>{pathIcon}</td>
+            <td>
+                <button className="btn" style={
+                    {
+                        outline: "none",
+                        border: "none",
+                        backgroundColor: "transparent",
+                        fontSize: "1rem",
+
+                    }
+                } onClick={handleEditClick}>
+                    <i className='bx bx-edit'></i>
+                </button>
+
+                <button className="btn btn-danger btn-sm"
+                        style={
+                            {
+                                outline: "none",
+                                border: "none",
+                                backgroundColor: "transparent",
+                                fontSize: "1rem",
+                                margin:"0 5px"
+
+                            }
+                        }
+                        onClick={ () =>{
+                    if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
+                        CategoriesService.deleteCategory(id).then((res) => {
+                            if (res.status === 200) {
+                                setChanges(true)
+                                toast.success("Xóa thành công", {
+                                    position: toast.POSITION.TOP_CENTER
+                                });
+
+                            }
+                        }).catch((err) => {
+                            toast.error("Xóa thất bại", {
+                                position: toast.POSITION.TOP_CENTER
+                            });
+                        })
+                    }
+
+                    }
+                }
+                >
+                    <i className='bx bx-trash'></i>
+                </button>
+
+            </td>
+
+        </tr>)
+
+    }
     useEffect(() => {
         const getCategories = async () => {
             setLoading(true);
-            const response = await Categories.getAllCategories(currentPage, pageSize, searchTerm, sortOrder, sortColumn);
+            const response = await CategoriesService.getAllCategories(currentPage, pageSize, searchTerm, sortOrder, sortColumn);
             setCategories(response.data.results);
             setLoading(false);
         };
         getCategories();
-    }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder]);
+    }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder, changes]);
 
     const handlePageChange = useCallback((page) => {
         setCurrentPage(page); //trừ 1 vì page bắt đầu từ 0
@@ -94,8 +156,8 @@ const Customers = () => {
                             <button onClick={openModal}>
                                 <i className='bx bx-plus'></i>
                             </button>
-
-                            <AddCategories showModal={showModal} closeModal={closeModal}/>
+                            <EditCategories showModalEdit={editModal} closeModalEdit={closeEditModal} categoryId={categoryId} setChanges={setChanges}/>
+                            <AddCategories showModal={showModal} closeModal={closeModal} setChanges={setChanges}/>
                         </div>
                         <div className="card__body">
                             <div className="search-container">
@@ -129,4 +191,4 @@ const Customers = () => {
     </>)
 };
 
-export default Customers;
+export default Categories;
