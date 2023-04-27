@@ -1,20 +1,25 @@
 import React, {useCallback, useEffect, useState} from "react";
 import Table from "../components/table/Table";
 import {useTranslation} from "react-i18next";
-import AddCategories from "../components/modal/AddCategories";
-import CategoriesService from "../services/CategoriesService";
-import EditCategories from "../components/modal/EditCategories";
+import BrandsService from "../services/BrandsService";
 import {toast} from "react-toastify";
+import AddBrands from "../components/modal/brands/AddBrands";
+import EditBrands from "../components/modal/brands/EditBrands";
 const customerTableHead = [
     {key: "number", label: "#"},
-    {key: "name", label: "categories.name"},
+    {key: "name", label: "brands.name"},
     {
         key: "slug",
-        label: "categories.slug"
-    }, {key: "level", label: "categories.level"}, {key: "parentId", label: "categories.parentId"}, {
-        key: "pathIcon",
-        label: "categories.pathIcon"
+        label: "brands.slug"
     }, {
+        key: "pathLogo",
+        label: "brands.pathLogo"
+    },
+    {
+        key: "description",
+        label: "brands.description"
+    },
+    {
         key: "action",
         label: "products.action"
     }
@@ -24,19 +29,16 @@ const customerTableHead = [
 
 
 
-const Categories = () => {
-    const [categories, setCategories] = useState([]);
+const Brands = () => {
+    const [brands, setBrands] = useState([]);
     const [changes, setChanges] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
-    const [sortColumn, setSortColumn] = useState("name");
-    const [sortOrder, setSortOrder] = useState('asc');
-    const [categoryId, setCategoryId] = useState(null);
+    const [brandId, setBrandId] = useState(null);
     const openModal = () => {
         setShowModal(true);
     };
@@ -52,18 +54,18 @@ const Categories = () => {
     }
     const renderBody = (item, index) => {
 
-        const {id, name, slug, sortOrder, level, pathIcon, parentId, showWeb} = item;
+        const {id, name, slug,  description,pathLogo } = item;
         const handleEditClick = () => {
-            setCategoryId(id);
+            setBrandId(id);
             openEditModal();
         };
         return (<tr key={index}>
             <td>{index + 1}</td>
             <td>{name}</td>
-            <td>{slug}</td>
-            <td>{level}</td>
-            <td>{parentId}</td>
-            <td>{pathIcon}</td>
+            <td>{slug}
+            </td>
+            <td>{pathLogo}</td>
+            <td>{description}</td>
             <td>
                 <button className="btn" style={
                     {
@@ -89,24 +91,24 @@ const Categories = () => {
                             }
                         }
                         onClick={ () =>{
-                    if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
-                        CategoriesService.deleteCategory(id).then((res) => {
-                            if (res.status === 200) {
-                                setChanges(true)
-                                toast.success("Xóa thành công", {
-                                    position: toast.POSITION.TOP_CENTER
-                                });
+                            if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
+                                BrandsService.deleteBrand(id).then((res) => {
+                                    if (res.status === 200) {
+                                        setChanges(true)
+                                        toast.success("Xóa thành công", {
+                                            position: toast.POSITION.TOP_CENTER
+                                        });
 
+                                    }
+                                }).catch((err) => {
+                                    toast.error("Xóa thất bại", {
+                                        position: toast.POSITION.TOP_CENTER
+                                    });
+                                })
                             }
-                        }).catch((err) => {
-                            toast.error("Xóa thất bại", {
-                                position: toast.POSITION.TOP_CENTER
-                            });
-                        })
-                    }
 
-                    }
-                }
+                        }
+                        }
                 >
                     <i className='bx bx-trash'></i>
                 </button>
@@ -117,34 +119,23 @@ const Categories = () => {
 
     }
     useEffect(() => {
-        const getCategories = async () => {
+        const getBrands = async () => {
             setLoading(true);
-            const response = await CategoriesService.getAllCategories(currentPage, pageSize, searchTerm, sortOrder, sortColumn);
-            setCategories(response.data.results);
+            const response = await BrandsService.getAllbrands()
+            setBrands(response.data);
             setLoading(false);
-            setChanges(false);
+            setChanges(false)
         };
-        getCategories();
-    }, [pageSize, currentPage, searchTerm, sortColumn, sortOrder, changes]);
+        getBrands();
+    }, [pageSize, searchTerm, changes]);
 
-    const handlePageChange = useCallback((page) => {
-        setCurrentPage(page); //trừ 1 vì page bắt đầu từ 0
-        console.log(page)
-    }, []);
-    const handleSort = useCallback((column) => {
-        setSortColumn(column);
-        if (sortOrder === 'asc') {
-            setSortOrder('desc')
-        } else {
-            setSortOrder('asc')
-        }
-    }, [sortColumn, sortOrder]);
+
     const {t} = useTranslation();
     return (<>
 
         <div>
             <h2 className="page-header">
-                {t('categories.title')}
+                {t('brands.title')}
             </h2>
             <div className="row">
                 <div className="col-12">
@@ -154,8 +145,8 @@ const Categories = () => {
                             <button onClick={openModal}>
                                 <i className='bx bx-plus'></i>
                             </button>
-                            <EditCategories showModalEdit={editModal} closeModalEdit={closeEditModal} categoryId={categoryId} setChanges={setChanges}/>
-                            <AddCategories showModal={showModal} closeModal={closeModal} setChanges={setChanges}/>
+                            <EditBrands showModalEdit={editModal} closeModalEdit={closeEditModal} brandId={brandId} setChanges={setChanges}/>
+                            <AddBrands showModal={showModal} closeModal={closeModal} setChanges={setChanges}/>
                         </div>
                         <div className="card__body">
                             <div className="search-container">
@@ -170,15 +161,8 @@ const Categories = () => {
                             {loading ? <div>Loading...</div> : (<Table
                                 limit={pageSize}
                                 headData={customerTableHead}
-                                data={categories}
+                                data={brands}
                                 renderBody={(item, index) => renderBody(item, index)}
-                                totalPages={totalPages}
-                                currentPage={currentPage}
-                                onChangePage={handlePageChange}
-                                pageSize={pageSize}
-                                sortColumn={sortColumn}
-                                sortOrder={sortOrder}
-                                onSort={handleSort}
                             />)}
 
                         </div>
@@ -189,4 +173,4 @@ const Categories = () => {
     </>)
 };
 
-export default Categories;
+export default Brands;
