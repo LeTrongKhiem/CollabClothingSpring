@@ -6,6 +6,7 @@
     "orders": "Orders",
     "analytics": "Analytics",
     "categories": "Categories",
+    "brands": "Brands",
     "discount": "Discount",
     "inventory": "Inventory",
     "settings": "Settings"
@@ -52,5 +53,12 @@
     "level": "Level",
     "parentId": "Parent Id",
     "pathIcon": "Path Icon"
-  }
+  },
+    "brands": {
+        "title": "Brands",
+        "name": "Name",
+        "slug": "Slug",
+        "pathLogo": "Path Logo",
+        "description": "Description"
+    }
 }

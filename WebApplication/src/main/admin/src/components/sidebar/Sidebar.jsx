@@ -38,6 +38,11 @@ const sidebarItems = [
     route: "/categories",
     icon: "bx bx-list-ol",
   },
+    {
+        displayNameKey: "sidebar.brands",
+        route: "/brands",
+        icon:  "bx bxs-grid"
+    },
   {
     displayNameKey: "sidebar.discount",
     route: "/discount",
@@ -77,7 +82,9 @@ const Sidebar = (props) => {
   );
 
   return (
+
     <div className="sidebar">
+
       <div className="sidebar__logo">
         {/* <img src={logo} alt="company logo" /> */}
       </div>

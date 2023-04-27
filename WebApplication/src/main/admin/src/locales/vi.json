@@ -6,6 +6,7 @@
     "orders": "Đơn hàng",
     "analytics": "Phân tích",
     "categories": "Danh mục",
+    "brands": "Thương hiệu",
     "discount": "Giảm giá",
     "inventory": "Kho hàng",
     "settings": "Cài đặt"
@@ -52,5 +53,13 @@
     "level": "Cấp",
     "parentId": "Danh mục cha",
     "pathIcon": "Đường dẫn icon"
+  },
+  "brands": {
+    "title": "Thương hiệu",
+    "name": "Tên",
+    "slug": "Slug",
+    "pathLogo": "Đường dẫn logo",
+    "description": "Mô tả"
   }
+
 }
