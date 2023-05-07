@@ -11,6 +11,7 @@ import UserService from "../../services/UserService";
 import {useDispatch} from "react-redux";
 import {logout} from "../../redux/slice/authSlice";
 import {toast} from "react-toastify";
+import ThemeMenu from "../thememenu/ThemeMenu";
 
 const notifications = [
     {
@@ -147,6 +148,9 @@ const Topnav = () => {
                         renderFooter={() => <Link to='/'>View All</Link>}
                     />
                     {/* dropdown here */}
+                </div>
+                <div className="topnav__right-item">
+                    <ThemeMenu/>
                 </div>
                 <div className="topnav__right-item">
                     <div>
