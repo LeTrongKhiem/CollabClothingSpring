@@ -21,5 +21,9 @@ public class OrderDetail implements Serializable {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-
+    private UUID productId;
+    private int quantity;
+    private double price;
+    private UUID colorId;
+    private UUID sizeId;
 }
