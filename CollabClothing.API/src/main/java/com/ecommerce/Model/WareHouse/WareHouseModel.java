@@ -12,4 +12,8 @@ public class WareHouseModel {
     UUID colorId;
     UUID sizeId;
     int quantity;
+    UUID productId;
+    String productName;
+    String colorName;
+    String sizeName;
 }
