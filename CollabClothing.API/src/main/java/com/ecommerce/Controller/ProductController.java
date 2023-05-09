@@ -6,8 +6,10 @@ import com.ecommerce.Application.Extensions.FileUploadModelConverter;
 import com.ecommerce.Application.PreAuthorizes.AdminOnly;
 import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
+import com.ecommerce.Entities.Color;
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductImage;
+import com.ecommerce.Entities.Size;
 import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.*;
 import jakarta.validation.Valid;
@@ -209,5 +211,27 @@ import java.util.stream.Collectors;
         var userId = AuthenticateExtensions.getUserId();
         boolean result = productService.deleteImage(imageId, userId);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/color/getall")
+    public ResponseEntity<List<Color>> getAllColors() {
+        try {
+            List<Color> colors = productService.getAllColor();
+            return new ResponseEntity<>(colors, HttpStatus.OK);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/size/getall")
+    public ResponseEntity<List<Size>> getAllSizes() {
+        try {
+            List<Size> sizes = productService.getAllSize();
+            return new ResponseEntity<>(sizes, HttpStatus.OK);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

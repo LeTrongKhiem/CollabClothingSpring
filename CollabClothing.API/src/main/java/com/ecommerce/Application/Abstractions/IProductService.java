@@ -1,7 +1,9 @@
 package com.ecommerce.Application.Abstractions;
 
+import com.ecommerce.Entities.Color;
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductImage;
+import com.ecommerce.Entities.Size;
 import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.*;
 import org.springframework.data.domain.Page;
@@ -24,4 +26,6 @@ public interface IProductService {
     PagingModel<ImageModel> getImages(UUID productId, int page, int size);
     PagingModel<ProductModel> getAll(SearchProductItems items);
     boolean deleteImage(UUID imageId, UUID userId);
+    List<Color> getAllColor();
+    List<Size>  getAllSize();
 }

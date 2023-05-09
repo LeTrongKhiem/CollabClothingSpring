@@ -43,6 +43,10 @@ public class ProductService implements IProductService {
     private IFileStorageService fileStorageService;
     @Autowired
     private IStringResourceService stringResourceService;
+    @Autowired
+    private SizeRepository sizeRepository;
+    @Autowired
+    private ColorRepository colorRepository;
 
     @Override
     public Product AddProduct(Product product) {
@@ -203,6 +207,16 @@ public class ProductService implements IProductService {
         softDeleteImage(productImage.get(), userId);
         productImageRepository.save(productImage.get());
         return true;
+    }
+
+    @Override
+    public List<Color> getAllColor() {
+        return colorRepository.findAll();
+    }
+
+    @Override
+    public List<Size> getAllSize() {
+        return sizeRepository.findAll();
     }
 
     private void softDeleteImage(ProductImage productImage, UUID userId) {
