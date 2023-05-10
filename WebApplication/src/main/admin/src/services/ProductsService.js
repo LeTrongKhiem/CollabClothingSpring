@@ -111,6 +111,27 @@ class ProductsService {
             }
         });
     }
+    addWarehouse(productId, warehouse) {
+        const token = localStorage.getItem("token");
+        return axios.post(API_URL + `warehouses/create/${productId}`, warehouse, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+    getQuantityByWarehouseId(id, colorId, sizeId) {
+        const token = localStorage.getItem("token");
+        return axios.get(API_URL + `warehouses/getQuantity/${id}`, {
+            params: {
+                colorId: colorId,
+                sizeId: sizeId
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+    }
 }
 
 export default new ProductsService();

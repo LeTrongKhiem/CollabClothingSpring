@@ -4,10 +4,11 @@ import Table from "../components/table/Table";
 import "./products.css"
 import productsService from "../services/ProductsService";
 import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Categories from "../constants/Categories";
 import Brands from "../constants/Brands";
 import Select from "react-select";
+import InventoryModal from "../components/modal/InventoryModal";
 
 const customerTableHead = [{key: "number", label: "#"}, {key: "name", label: "products.name"},{key: "", label: "products.image"}, {
     key: "categoryNames",
@@ -25,71 +26,7 @@ const customerTableHead = [{key: "number", label: "#"}, {key: "name", label: "pr
     key: "action",
     label: "products.action"
 }];
-const renderBody = (item, index) => {
-    const {
-        name,
-        productImages,
-        brandName,
-        categoryNames,
-        consumer,
-        cotton,
-        form,
-        description,
-        priceCurrent,
-        priceOld,
-        sale_off,
-        type,
-        made_in,
-        _deleted
-    } = item;
-    console.log(productImages)
-    const thumbnail = productImages.filter((item) => item.thumbnail === true && item.deleted === false).map((item) => item.url)[0]
-    console.log(thumbnail)
-    const isDeleted = _deleted ? "Deleted" : "Active";
-    const category = categoryNames.map((item, index) => {
-        return <div key={index}>{item}</div>
-    })
-    return (<tr key={index}>
-        <td>{index + 1}</td>
-        <td>{name}</td>
-        <td>
-            <img src={`http://localhost:6868/${thumbnail}`} alt={name} width="60px"/>
-        </td>
-        <td>{category}</td>
-        <td>{brandName}</td>
-        <td>{priceOld}</td>
-        <td>{priceCurrent}</td>
-        <td>{sale_off}%</td>
-        <td>{consumer}</td>
-        <td>{cotton}%</td>
-        <td>{form}</td>
-        <td>{type}</td>
-        <td>{made_in}</td>
-        <td>{description}</td>
-        <td>{isDeleted}</td>
-        <td>
-            <Link to={`/products/${item.id}`} className="btn btn-primary">
-                <i className='bx bxs-edit-alt'></i>
-            </Link>
-            <Link to={`/products/images/${item.id}`} className="btn btn-primary">
-                <i className='bx bxs-image'></i>
-            </Link>
-            <div className="btn btn-danger">
-                <i className='bx bx-trash' onClick={() => {
-                    if (window.confirm('Are you sure you wish to delete this item?')) {
-                        productsService.deleteProduct(item.id).then((res) => {
-                            window.location.reload();
-                        })
-                    }
-                }}></i>
-            </div>
 
-        </td>
-
-
-    </tr>)
-
-}
 
 
 const Products = () => {
@@ -105,7 +42,86 @@ const Products = () => {
     const [sortOrder, setSortOrder] = useState('asc');
     const [categoryId, setCategoryId] = useState(null);
     const [brandId, setBrandId] = useState(null);
+    const [inventoryModal, setInventoryModal] = useState(false);
+    const [productId, setProductId] = useState(null);
     const filterRef = useRef(null);
+    const navigate = useNavigate();
+    const renderBody = (item, index) => {
+        const {
+            name,
+            productImages,
+            brandName,
+            categoryNames,
+            consumer,
+            cotton,
+            form,
+            description,
+            priceCurrent,
+            priceOld,
+            sale_off,
+            type,
+            made_in,
+            _deleted
+        } = item;
+
+        const thumbnail = productImages.filter((item) => item.thumbnail === true && item.deleted === false).map((item) => item.url)[0]
+
+        const isDeleted = _deleted ? "Deleted" : "Active";
+        const category = categoryNames.map((item, index) => {
+            return <div key={index}>{item}</div>
+        })
+        return (<tr key={index}>
+            <td>{index + 1}</td>
+            <td>{name}</td>
+            <td>
+                <img src={`http://localhost:6868/${thumbnail}`} alt={name} width="60px"/>
+            </td>
+            <td>{category}</td>
+            <td>{brandName}</td>
+            <td>{priceOld}</td>
+            <td>{priceCurrent}</td>
+            <td>{sale_off}%</td>
+            <td>{consumer}</td>
+            <td>{cotton}%</td>
+            <td>{form}</td>
+            <td>{type}</td>
+            <td>{made_in}</td>
+            <td>{description}</td>
+            <td>{isDeleted}</td>
+            <td>
+                <Link to={`/products/${item.id}`} className="btn btn-primary">
+                    <i className='bx bxs-edit-alt'></i>
+                </Link>
+                <Link to={`/products/images/${item.id}`} className="btn btn-primary">
+                    <i className='bx bxs-image'></i>
+                </Link>
+                <div className="btn btn-danger">
+                    <i className='bx bx-trash' onClick={() => {
+                        if (window.confirm('Are you sure you wish to delete this item?')) {
+                            productsService.deleteProduct(item.id).then((res) => {
+                                window.location.reload();
+                            })
+                        }
+                    }}></i>
+                </div>
+                <div className="">
+                    <i className='bx bx-store-alt' onClick={() => {
+                        setProductId(item.id)
+                        setInventoryModal(true)
+                    }}></i>
+
+                </div>
+
+
+
+
+
+            </td>
+
+
+        </tr>)
+
+    }
     useEffect(() => {
         const getProducts = async () => {
             setLoading(true);
@@ -172,6 +188,13 @@ const Products = () => {
                         <div className="card__body">
                             <div className="header__form">
                                 <div className="user-register">
+                                 <InventoryModal
+                                    show={inventoryModal}
+                                    onHide={() => setInventoryModal(false)}
+                                    productId={productId}
+                                />
+
+
                                     <button style={{
                                         margin: "10px 0px",
                                     }}>

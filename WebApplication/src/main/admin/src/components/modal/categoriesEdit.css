@@ -87,6 +87,8 @@
 .auth .form form input[type=text],
 .auth .form form input[type=email],
 .auth .form form input[type=password],
+.auth .form form input[type=number],
+
 .auth .form form input[type=date]{
     display: block;
     font-size: 1rem;
