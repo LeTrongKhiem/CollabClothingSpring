@@ -44,7 +44,7 @@ public class WareHouseService implements IWareHouseService {
             throw new RuntimeException("Product not found");
         }
         UUID id = UUID.randomUUID();
-        WareHouse wareHouse = WareHouseMapping.mapToWareHouseModel(userId, id, model);
+        WareHouse wareHouse = WareHouseMapping.mapToWareHouseModel(userId, id, productId, model);
         List<WareHouse> wareHouses = wareHouseRepository.findAll();
         var checkExistsColorAndSize = wareHouses.stream().filter(x -> x.getColorId().equals(model.getColorId()) && x.getSizeId().equals(model.getSizeId())).findFirst();
 
