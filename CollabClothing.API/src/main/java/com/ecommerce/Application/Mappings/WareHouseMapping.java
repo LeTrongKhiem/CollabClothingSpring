@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class WareHouseMapping {
-    public static WareHouse mapToWareHouseModel(UUID userId, UUID id, WareHouseModel model) {
+    public static WareHouse mapToWareHouseModel(UUID userId, UUID id, UUID productId, WareHouseModel model) {
         WareHouse wareHouse = new WareHouse();
         wareHouse.setId(id);
         wareHouse.setCreatedBy(userId);
@@ -21,6 +21,7 @@ public class WareHouseMapping {
         wareHouse.setColorId(model.getColorId());
         wareHouse.setSizeId(model.getSizeId());
         wareHouse.setQuantity(model.getQuantity());
+        wareHouse.setProductId(productId);
         return wareHouse;
     }
 
