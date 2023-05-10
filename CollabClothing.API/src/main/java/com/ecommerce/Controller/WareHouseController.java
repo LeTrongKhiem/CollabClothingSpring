@@ -28,7 +28,7 @@ public class WareHouseController {
     public ResponseEntity<PagingModel<WareHouseModel>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "productId") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType) {
         SearchProductItems searchProductItems = new SearchProductItems(null, null, null, page, pageSize, sortBy, sortType);
         try {
