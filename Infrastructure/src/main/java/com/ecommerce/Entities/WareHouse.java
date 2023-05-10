@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Where;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.LastModifiedBy;
 
 import java.io.Serial;
@@ -26,6 +28,7 @@ public class WareHouse extends BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Column(columnDefinition = "uniqueidentifier")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
 
     private UUID productId;
     private int quantity;
