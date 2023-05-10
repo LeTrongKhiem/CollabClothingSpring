@@ -20,9 +20,14 @@ public class WareHouseController {
     @Autowired
     private IWareHouseService wareHouseService;
 
-    @GetMapping("/product/{productId}")
-    public int getQuantity(@PathVariable UUID productId, UUID colorId, UUID sizeId) {
-        return wareHouseService.getQuantity(productId, colorId, sizeId);
+    @GetMapping("/getQuantity/{productId}")
+    public ResponseEntity<Integer> getQuantity(@PathVariable UUID productId, @RequestParam UUID colorId, @RequestParam UUID sizeId) {
+        try {
+            int result = wareHouseService.getQuantity(productId, colorId, sizeId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/getall")
     public ResponseEntity<PagingModel<WareHouseModel>> getAllProducts(

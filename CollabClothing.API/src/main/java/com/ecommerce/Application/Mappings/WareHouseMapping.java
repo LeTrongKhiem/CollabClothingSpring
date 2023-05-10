@@ -33,6 +33,14 @@ public class WareHouseMapping {
         return model;
     }
 
+    public static WareHouseModel toWareHouseModel(WareHouse wareHouse) {
+        WareHouseModel model = new WareHouseModel();
+        model.setColorId(wareHouse.getColorId());
+        model.setSizeId(wareHouse.getSizeId());
+        model.setQuantity(wareHouse.getQuantity());
+        return model;
+    }
+
     public static WareHouseModel mapWareHouse(WareHouse wareHouse, Product product, Color color, Size size) {
         WareHouseModel model = new WareHouseModel();
         model.setColorId(wareHouse.getColorId());
@@ -46,5 +54,9 @@ public class WareHouseMapping {
 
     public static List<WareHouseModel> getListProduct(List<WareHouse> products) {
         return products.stream().map(WareHouseMapping::mapWareHouse).toList();
+    }
+
+    public static List<WareHouseModel> getListProduct(List<WareHouse> products, List<Product> product, List<Color> color, List<Size> size) {
+        return products.stream().map(x -> mapWareHouse(x, product.stream().filter(y -> y.getId().equals(x.getProductId())).findFirst().get(), color.stream().filter(y -> y.getId().equals(x.getColorId())).findFirst().get(), size.stream().filter(y -> y.getId().equals(x.getSizeId())).findFirst().get())).toList();
     }
 }

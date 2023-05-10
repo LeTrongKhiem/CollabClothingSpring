@@ -36,6 +36,7 @@ public class WareHouseService implements IWareHouseService {
     private SizeRepository sizeRepository;
     @Autowired
     private WareHouseRepository wareHouseRepository;
+
     @Transactional
     @Override
     public boolean wareHouse(UUID productId, UUID userId, WareHouseModel model) {
@@ -46,15 +47,15 @@ public class WareHouseService implements IWareHouseService {
         UUID id = UUID.randomUUID();
         WareHouse wareHouse = WareHouseMapping.mapToWareHouseModel(userId, id, productId, model);
         List<WareHouse> wareHouses = wareHouseRepository.findAll();
-        var checkExistsColorAndSize = wareHouses.stream().filter(x -> x.getColorId().equals(model.getColorId()) && x.getSizeId().equals(model.getSizeId())).findFirst();
+        var checkExistsColorAndSize = wareHouses.stream().filter(x -> x.getColorId().equals(model.getColorId()) && x.getSizeId().equals(model.getSizeId())
+                && x.getProductId().equals(productId)).findFirst();
 
         if (model.getQuantity() >= 0) {
             if (checkExistsColorAndSize.isPresent()) {
                 checkExistsColorAndSize.get().setQuantity(model.getQuantity());
                 wareHouseRepository.save(checkExistsColorAndSize.get());
                 return true;
-            }
-            else {
+            } else {
                 wareHouseRepository.save(wareHouse);
                 return true;
             }
@@ -80,9 +81,9 @@ public class WareHouseService implements IWareHouseService {
     public PagingModel<WareHouseModel> getAll(SearchProductItems items) {
         Sort sort;
         if (items.getSortType() != null && items.getSortType().equals("desc")) {
-            sort =  Sort.by(Sort.Order.desc(items.getSortBy()));
+            sort = Sort.by(Sort.Order.desc(items.getSortBy()));
         } else {
-            sort =  Sort.by(Sort.Order.asc(items.getSortBy()));
+            sort = Sort.by(Sort.Order.asc(items.getSortBy()));
         }
         Pageable pageable = PageRequest.of(items.getPage(), items.getSize(), sort);
 
@@ -93,7 +94,7 @@ public class WareHouseService implements IWareHouseService {
 //                                    product.getBrand().getName().toLowerCase().contains(items.getKeyword().toLowerCase()))
 //                    .toList();
 //        }
-        final int start = (int)pageable.getOffset();
+        final int start = (int) pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), listProducts.size());
         final Page<WareHouse> page = new PageImpl<>(listProducts.subList(start, end), pageable, listProducts.size());
         var result = WareHouseMapping.getListProduct(page.getContent());
