@@ -21,7 +21,6 @@ public class WareHouseMapping {
         wareHouse.setColorId(model.getColorId());
         wareHouse.setSizeId(model.getSizeId());
         wareHouse.setQuantity(model.getQuantity());
-        wareHouse.setProductId(model.getProductId());
         return wareHouse;
     }
 
@@ -30,7 +29,6 @@ public class WareHouseMapping {
         model.setColorId(wareHouse.getColorId());
         model.setSizeId(wareHouse.getSizeId());
         model.setQuantity(wareHouse.getQuantity());
-        model.setProductId(wareHouse.getProductId());
         return model;
     }
 
@@ -39,7 +37,6 @@ public class WareHouseMapping {
         model.setColorId(wareHouse.getColorId());
         model.setSizeId(wareHouse.getSizeId());
         model.setQuantity(wareHouse.getQuantity());
-        model.setProductId(wareHouse.getProductId());
         model.setProductName(product.getName());
         model.setColorName(color.getName());
         model.setSizeName(size.getName());
