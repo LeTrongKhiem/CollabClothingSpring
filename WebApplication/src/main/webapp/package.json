@@ -47,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2"
   }
 }
