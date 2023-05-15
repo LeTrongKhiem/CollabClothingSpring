@@ -1,12 +1,16 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Helmet from "../../components/Helmet";
 import HeroSlider from "../../components/HeroSlider";
 import img1 from "../../assets/images/slider/slide_1.png"
 import img2 from "../../assets/images/slider/slide_2.png"
 import img3 from "../../assets/images/slider/slide_3.png"
-import Section, {SectionBody} from "../../components/UI/Section";
+import Section, {SectionBody, SectionTitle} from "../../components/UI/Section";
 import Grid from "../../components/UI/Grid";
 import PolicyCard from "../../components/PolicyCard";
+import ProductCard from "../../components/ProductCard";
+import {getProductLatest, getProducts} from "../../customHooks/ProductsAPI";
+import {Link} from "react-router-dom";
+import banner from "../../assets/images/banner.png";
 const heroSliderData = [
     {
         title: "Polo nữ Pima cao cấp",
@@ -57,11 +61,24 @@ const policy = [
 ]
 
 const Home = () => {
+    const [pageSize, setPageSize] = useState(10);
+    const [isLoading, setIsLoading] = useState(true);
+    const [products, setProducts] = useState([]);
+    const [productNew, setProductNew] = useState([]);
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    console.log(heroSliderData)
-
+    useEffect(() => {
+        getProducts(4).then((res) => {
+            setProducts(res.results);
+            setIsLoading(false);
+        });
+        getProductLatest(10).then((res) => {
+            setProductNew(res.results);
+            setIsLoading(false);
+        }
+        )
+    },[]);
     return (
         <Helmet title="Trang chủ">
             <HeroSlider
@@ -81,6 +98,71 @@ const Home = () => {
                                 icon={item.icon}
                             />
                         ))}
+                    </Grid>
+                </SectionBody>
+            </Section>
+            <Section>
+                <SectionTitle> Top sản phẩm bán chạy</SectionTitle>
+                <SectionBody>
+                    {isLoading ? (
+                        <div>Loading...</div>
+                    ) : (
+                        <Grid col={4} mdCol={2} smCol={1} gap={20}>
+                            {
+                                products.map((item, index) => {
+
+                                const thumbnailImage = item.productImages.find(
+                                (image) => image.thumbnail === true
+                                );
+                                return (
+                                    <ProductCard
+                                        key={index}
+                                        img01={thumbnailImage.url ? thumbnailImage.url:item.productImages[0].url }
+                                        img02={item.productImages.length > 1 ? item.productImages[1].url : null}
+                                        name={item.name}
+                                        price={Number(item.priceCurrent)}
+                                        priceOld={Number(item.priceOld)}
+                                    />
+                                )}
+
+                                )
+                            }
+
+
+                        </Grid>
+                    )}
+                </SectionBody>
+            </Section>
+            <Section>
+                <SectionBody>
+                    <Link to="/catalog">
+                        <img src={banner} alt="" />
+                    </Link>
+                </SectionBody>
+            </Section>
+            <Section>
+                <SectionTitle>Top 10 sản phẩm mới nhất</SectionTitle>
+                <SectionBody>
+                    <Grid col={4} mdCol={2} smCol={1} gap={20}>
+                        {
+                            productNew.map((item, index) => {
+
+                                const thumbnailImage = item.productImages.find(
+                                    (image) => image.thumbnail === true
+                                );
+                                return (
+                                    <ProductCard
+                                        key={index}
+                                        img01={thumbnailImage.url ? thumbnailImage.url:item.productImages[0].url }
+                                        img02={item.productImages.length > 1 ? item.productImages[1].url : item.productImages[0].url}
+                                        name={item.name}
+                                        price={Number(item.priceCurrent)}
+                                        priceOld={Number(item.priceOld)}
+                                    />
+                                )}
+
+                            )
+                        }
                     </Grid>
                 </SectionBody>
             </Section>

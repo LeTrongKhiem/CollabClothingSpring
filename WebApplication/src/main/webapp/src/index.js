@@ -13,7 +13,7 @@ import {
   UserProfile,
 } from "./pages";
 //components
-import { Header } from "./components";
+import {Footer, Header} from "./components";
 import { ToastContainer } from "react-toastify";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
@@ -40,6 +40,7 @@ root.render(
             </Routes>
           </div>
         </div>
+        <Footer />
       </BrowserRouter>
       <ToastContainer />
     </Provider>
