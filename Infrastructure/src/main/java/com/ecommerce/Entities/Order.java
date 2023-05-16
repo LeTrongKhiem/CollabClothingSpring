@@ -30,8 +30,9 @@ public class Order extends BaseEntity implements Serializable {
     private String shipAddress;
     private String shipEmail;
     private String shipPhoneNumber;
-    private boolean status; //trang thai cua don hang
+    private int status; //trang thai cua don hang
     private int paymentMethod; //phuong thuc thanh toan
+    private double totalMoney;
     @OneToMany(mappedBy = "order")
     private Set<OrderDetail> orderDetail;
 }
