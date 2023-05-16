@@ -11,6 +11,7 @@ import ProductCard from "../../components/ProductCard";
 import {getProductLatest, getProducts} from "../../customHooks/ProductsAPI";
 import {Link} from "react-router-dom";
 import banner from "../../assets/images/banner.png";
+
 const heroSliderData = [
     {
         title: "Polo nữ Pima cao cấp",
@@ -64,6 +65,7 @@ const Home = () => {
     const [pageSize, setPageSize] = useState(10);
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState([]);
+    console.log(products)
     const [productNew, setProductNew] = useState([]);
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -71,14 +73,15 @@ const Home = () => {
     useEffect(() => {
         getProducts(4).then((res) => {
             setProducts(res.results);
-            setIsLoading(false);
+
         });
         getProductLatest(10).then((res) => {
-            setProductNew(res.results);
-            setIsLoading(false);
-        }
+                setProductNew(res.results);
+
+            }
         )
-    },[]);
+        setIsLoading(false);
+    }, []);
     return (
         <Helmet title="Trang chủ">
             <HeroSlider
@@ -111,20 +114,21 @@ const Home = () => {
                             {
                                 products.map((item, index) => {
 
-                                const thumbnailImage = item.productImages.find(
-                                (image) => image.thumbnail === true
-                                );
-                                return (
-                                    <ProductCard
-                                        key={index}
-                                        img01={thumbnailImage.url ? thumbnailImage.url:item.productImages[0].url }
-                                        img02={item.productImages.length > 1 ? item.productImages[1].url : null}
-                                        name={item.name}
-                                        price={Number(item.priceCurrent)}
-                                        priceOld={Number(item.priceOld)}
-                                    />
-                                )}
-
+                                        const thumbnailImage = item.productImages.find(
+                                            (image) => image.thumbnail === true
+                                        );
+                                        return (
+                                            <ProductCard
+                                                key={index}
+                                                img01={thumbnailImage.url ? thumbnailImage.url : item.productImages[0].url}
+                                                img02={item.productImages.length > 1 ? item.productImages[1].url : null}
+                                                name={item.name}
+                                                price={Number(item.priceCurrent)}
+                                                priceOld={Number(item.priceOld)}
+                                                id={item.id}
+                                            />
+                                        )
+                                    }
                                 )
                             }
 
@@ -136,34 +140,39 @@ const Home = () => {
             <Section>
                 <SectionBody>
                     <Link to="/catalog">
-                        <img src={banner} alt="" />
+                        <img src={banner} alt=""/>
                     </Link>
                 </SectionBody>
             </Section>
             <Section>
                 <SectionTitle>Top 10 sản phẩm mới nhất</SectionTitle>
                 <SectionBody>
-                    <Grid col={4} mdCol={2} smCol={1} gap={20}>
+                    {isLoading ? (
+                        <div>Loading...</div>
+                    ) : (<Grid col={4} mdCol={2} smCol={1} gap={20}>
                         {
                             productNew.map((item, index) => {
 
-                                const thumbnailImage = item.productImages.find(
-                                    (image) => image.thumbnail === true
-                                );
-                                return (
-                                    <ProductCard
-                                        key={index}
-                                        img01={thumbnailImage.url ? thumbnailImage.url:item.productImages[0].url }
-                                        img02={item.productImages.length > 1 ? item.productImages[1].url : item.productImages[0].url}
-                                        name={item.name}
-                                        price={Number(item.priceCurrent)}
-                                        priceOld={Number(item.priceOld)}
-                                    />
-                                )}
-
+                                    const thumbnailImage = item.productImages.find(
+                                        (image) => image.thumbnail === true
+                                    );
+                                    return (
+                                        <ProductCard
+                                            key={index}
+                                            img01={thumbnailImage.url ? thumbnailImage.url : item.productImages[0].url}
+                                            img02={item.productImages.length > 1 ? item.productImages[1].url : item.productImages[0].url}
+                                            name={item.name}
+                                            price={Number(item.priceCurrent)}
+                                            priceOld={Number(item.priceOld)}
+                                            id={item.id}
+                                        />
+                                    )
+                                }
                             )
                         }
-                    </Grid>
+                    </Grid>)
+                    }
+
                 </SectionBody>
             </Section>
         </Helmet>
