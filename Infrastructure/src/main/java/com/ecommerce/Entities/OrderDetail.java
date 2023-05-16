@@ -23,7 +23,6 @@ public class OrderDetail implements Serializable {
     private Order order;
     private UUID productId;
     private int quantity;
-    private double price;
     private UUID colorId;
     private UUID sizeId;
 }
