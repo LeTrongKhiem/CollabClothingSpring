@@ -47,6 +47,10 @@ public class ProductService implements IProductService {
     private SizeRepository sizeRepository;
     @Autowired
     private ColorRepository colorRepository;
+    @Autowired
+    private IWareHouseService wareHouseService;
+    @Autowired
+    private WareHouseRepository wareHouseRepository;
 
     @Override
     public Product AddProduct(Product product) {
@@ -78,7 +82,12 @@ public class ProductService implements IProductService {
         if (!product.isPresent()) {
             throw new NotFoundException("Product not found");
         }
-        return ProductMapping.getProduct(product.get());
+        List<WareHouse> wareHouseList = wareHouseRepository.findAllByProductId(id);
+        List<UUID> sizeList = wareHouseList.stream().map(x -> x.getSizeId()).toList();
+        List<UUID> colorList = wareHouseList.stream().map(x -> x.getColorId()).toList();
+        List<Size> sizes = sizeRepository.findAllById(sizeList);
+        List<Color> colors = colorRepository.findAllById(colorList);
+        return ProductMapping.getProduct(product.get(), sizes, colors);
     }
 
     @Override

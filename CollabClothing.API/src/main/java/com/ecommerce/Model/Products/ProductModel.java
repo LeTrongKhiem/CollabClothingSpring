@@ -1,5 +1,7 @@
 package com.ecommerce.Model.Products;
 
+import com.ecommerce.Entities.Color;
+import com.ecommerce.Entities.Size;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -40,4 +42,6 @@ public class ProductModel {
     private String type;
     List<PartFileModel> images;
     List<ImageModel> productImages;
+    List<Size> listSize;
+    List<Color> listColor;
 }
