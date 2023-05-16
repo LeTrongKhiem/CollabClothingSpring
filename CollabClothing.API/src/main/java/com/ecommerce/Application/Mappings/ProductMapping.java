@@ -1,9 +1,7 @@
 package com.ecommerce.Application.Mappings;
 
 import com.ecommerce.Application.Extensions.SlugExtensions;
-import com.ecommerce.Entities.Brand;
-import com.ecommerce.Entities.Product;
-import com.ecommerce.Entities.ProductDetail;
+import com.ecommerce.Entities.*;
 import com.ecommerce.Model.Products.PartFileModel;
 import com.ecommerce.Model.Products.ProductDetailModel;
 import com.ecommerce.Model.Products.ProductModel;
@@ -104,6 +102,39 @@ public class ProductMapping {
         productModel.setCategory_id(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getId()).collect(Collectors.toList())));
         productModel.setCategoryNames(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getName()).collect(Collectors.toList())));
         productModel.setProductImages(ProductImageMapping.mapToImageModel(new ArrayList<>(product.getProductImages())));
+        return productModel;
+    }
+
+    public static ProductModel getProduct(Product product, List<Size> sizes, List<Color> colors) {
+        ProductModel productModel = new ProductModel();
+        ProductDetail productDetail = product.getProductDetail();
+        if (productDetail == null) {
+            productDetail = new ProductDetail();
+        }
+        productModel.setId(product.getId());
+        productModel.setName(product.getName());
+        productModel.setBrand_id(product.getBrand().getId());
+        productModel.setBrandName(product.getBrand().getName());
+        productModel.setConsumer(productDetail.getConsumer());
+        productModel.setCotton(productDetail.getCotton());
+        productModel.setDescription(productDetail.getDescription());
+        productModel.setForm(productDetail.getForm());
+        productModel.setMade_in(productDetail.getMadeIn());
+        productModel.setPriceCurrent(productDetail.getPriceCurrent());
+        productModel.setPriceOld(productDetail.getPriceOld());
+        productModel.setSale_off(productDetail.getSaleOff());
+        productModel.setType(productDetail.getType());
+        productModel.setSold_out(product.isSoldOut());
+        productModel.setCreated_date(product.getCreatedDate());
+        productModel.setCreated_by(product.getCreatedBy());
+        productModel.setUpdated_date(product.getModifiedDate());
+        productModel.setUpdated_by(product.getModifiedBy());
+        productModel.set_deleted(product.getIsDeleted());
+        productModel.setCategory_id(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getId()).collect(Collectors.toList())));
+        productModel.setCategoryNames(new ArrayList<>(product.getProductMapCategories().stream().map(x -> x.getCategory().getName()).collect(Collectors.toList())));
+        productModel.setProductImages(ProductImageMapping.mapToImageModel(new ArrayList<>(product.getProductImages())));
+        productModel.setListSize(sizes);
+        productModel.setListColor(colors);
         return productModel;
     }
 
