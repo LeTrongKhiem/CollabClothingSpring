@@ -1,5 +1,7 @@
 package com.ecommerce.Controller;
 
+import com.ecommerce.Application.PreAuthorizes.AdminOnly;
+import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Service.CartService;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Model.Orders.OrderDetailModel;
@@ -85,6 +87,7 @@ public class CartController {
     }
 
     @PutMapping("/changestatusorder/{orderId}")
+    @StaffRole
     public ResponseEntity<Boolean> changeStatusOrder(@PathVariable UUID orderId, @RequestBody int status) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();
