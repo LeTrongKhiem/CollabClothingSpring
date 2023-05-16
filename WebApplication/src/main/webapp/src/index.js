@@ -10,7 +10,7 @@ import {
   Login,
   ResetPassword,
   Reset,
-  UserProfile,
+  UserProfile, ProductDetails,
 } from "./pages";
 //components
 import {Footer, Header} from "./components";
@@ -20,6 +20,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProductViewModal from "./components/ProductViewModal";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -37,10 +38,13 @@ root.render(
               <Route path={"/reset"} element={<Reset />} />
               <Route path={"/changePassword"} element={<ResetPassword />} />
               <Route path={"/user-profile"} element={<UserProfile />} />
+              <Route path={"/product/:id"} element={<ProductDetails/>} />
             </Routes>
           </div>
+          <ProductViewModal />
+          <Footer />
         </div>
-        <Footer />
+
       </BrowserRouter>
       <ToastContainer />
     </Provider>

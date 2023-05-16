@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Button from "./UI/ButtonUI";
 import numberWithCommas from "../utils/numberWithCommas";
+import {set} from "../redux/slice/productModalSlice";
 
 const ProductCard = (props) => {
     const dispatch = useDispatch();
-    console.log(props.img01);
     return (
         <div className="product-card">
-            <Link to={`/catalog/${props.slug}`}>
+            <Link to={`/product/${props.id}`}>
                 <div className="product-card__image">
                     <img src={props.img01} alt="" />
                     <img src={props.img02} alt="" />
@@ -28,7 +28,7 @@ const ProductCard = (props) => {
                     size="sm"
                     icon="bx bx-cart"
                     animate={true}
-
+                    onClick={() => dispatch(set(props.id))}
                 >
                     chọn mua
                 </Button>

@@ -16,13 +16,20 @@ $header-shrink-height: 70px;
 $box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 $colors: (
-  "blue": #4267b2,
-  "orange": #fbb96b,
-  "pink": #fe7e73,
-  "white": #fff,
-  "black": #000,
-  "main": $main-color,
-  "red": #ff0000,
+        "Xanhdương": #4267b2,
+        "blue": #4267b2,
+        "pink": #f28b82,
+        "orange": #fbb96b,
+        "Hồng": #fe7e73,
+        "Trắng": #fff,
+        "black": #000,
+        "main": $main-color,
+        "Đỏ": #ff0000,
+        "Tím": #800080,
+        "Vàng": #ffff00,
+        "Xanhlá": #008000,
+        "Nâu": brown,
+        "Cam": orange,
 );
 
 $mobile-width: 600px;
@@ -42,9 +49,11 @@ $numbers: (0, 1, 2, 3, 4, 5, 6, 7, 8);
   padding: 6px 8px;
   transition: all 0.3s;
 }
+
 .--btn-block {
   width: 100%;
 }
+
 .--btn-primary {
   background: $main-color;
   color: #fff;
