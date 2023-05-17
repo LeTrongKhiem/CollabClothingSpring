@@ -27,6 +27,15 @@ class ProductService {
     getProductByCategory(id) {
         return axios.get(API_URL + "/products/category/" + id);
     }
+    getQuantityByWarehouseId(id, colorId, sizeId) {
+        return axios.get(API_URL + `/warehouses/getQuantity/${id}`, {
+            params: {
+                colorId: colorId,
+                sizeId: sizeId
+            }
+        });
+
+    }
 
 }
 

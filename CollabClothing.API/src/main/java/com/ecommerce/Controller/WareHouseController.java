@@ -1,6 +1,7 @@
 package com.ecommerce.Controller;
 
 import com.ecommerce.Application.Abstractions.IWareHouseService;
+import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.ProductModel;
@@ -30,6 +31,7 @@ public class WareHouseController {
         }
     }
     @GetMapping("/getall")
+    @StaffRole
     public ResponseEntity<PagingModel<WareHouseModel>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
@@ -46,6 +48,7 @@ public class WareHouseController {
     }
 
     @GetMapping("/{wareHouseId}")
+    @StaffRole
     public ResponseEntity<WareHouseModel> getWareHouse(@PathVariable UUID wareHouseId) {
         try {
             var result = wareHouseService.getWareHouse(wareHouseId);
@@ -55,6 +58,7 @@ public class WareHouseController {
         }
     }
     @PostMapping("/create/{productId}")
+    @StaffRole
     public ResponseEntity<Boolean> createWareHouse(@PathVariable UUID productId, @RequestBody WareHouseModel model) {
         var userId = AuthenticateExtensions.getUserId();
         try {

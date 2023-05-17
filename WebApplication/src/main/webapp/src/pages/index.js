@@ -6,3 +6,4 @@ export { default as Reset } from "./auth/Reset";
 export { default as ResetPassword } from "./auth/ResetPassword";
 export { default as UserProfile } from "./userProfile/UserProfile";
 export { default as ProductDetails } from "./product/ProductDetails";
+export { default as Cart } from "./cart/Cart";

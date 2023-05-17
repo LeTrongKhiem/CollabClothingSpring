@@ -10,11 +10,15 @@ import { toast } from "react-toastify";
 import Button from "./UI/ButtonUI";
 
 import numberWithCommas from "../utils/numberWithCommas";
+import ProductService from "../services/ProductService";
+import {addItem} from "../redux/slice/cartItemsSlice";
+import {remove} from "../redux/slice/productModalSlice";
 
 const ProductView = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     let product = props.product;
+    console.log(product)
     if(product === undefined){
         product = {
             productImages: [
@@ -50,15 +54,19 @@ const ProductView = (props) => {
     const [previewImg, setPreviewImg] = useState(product.productImages[0].url);
     const [descriptionExpand, setDescriptionExpand] = useState(false);
 
-    const [color, setColor] = useState(undefined);
+    const [color, setColor] = useState(null);
 
-    const [size, setSize] = useState(undefined);
+    const [size, setSize] = useState(null);
 
     const [quantity, setQuantity] = useState(1);
-
+    const [quantityInStock,setQuantityInStock] = useState(0)
     const updateQuantity = (type) => {
         if (type === "plus") {
-            setQuantity(quantity + 1);
+            if(quantity >= quantityInStock){
+                setQuantity(quantityInStock);
+            }else {
+                setQuantity(quantity + 1);
+            }
         } else {
             setQuantity(quantity - 1 < 1 ? 1 : quantity - 1);
         }
@@ -68,12 +76,28 @@ const ProductView = (props) => {
     useEffect(() => {
         setPreviewImg(product.productImages[0].url);
         setQuantity(1);
-        setColor(undefined);
-        setSize(undefined);
+        setColor(null);
+        setSize(null);
     }, [product]);
+  const  checkInventory = () => {
+      if(color === null  ||  size === null){
+          return false;
+      }
+      return true;
+  }
+  useEffect(() =>{
+      if(checkInventory()){
+          const  getQuantity = async  () =>{
+              const  res = await ProductService.getQuantityByWarehouseId(product.id,color,size)
+              console.log(res.data)
+              setQuantityInStock(res.data);
+          }
+          getQuantity()
+      }
 
+  },[color,size, product.id])
     const check = () => {
-        if (color === undefined) {
+        if (color === null) {
             toast.error("Vui lòng chọn màu", {
                 position: "top-right",
                 autoClose: 5000,
@@ -98,14 +122,20 @@ const ProductView = (props) => {
     const addToCart = () => {
         if (check()) {
             let newItem = {
-                slug: product.slug,
                 color: color,
                 size: size,
-                price: product.price,
+                price: product.priceCurrent,
                 quantity: quantity,
-                imageURL: product.imageURL[0].url,
+                imageURL: `/${product.productImages[0].url}`,
                 id: product.id,
             };
+            console.log(newItem)
+            if(dispatch(addItem(newItem))){
+                toast.success("Thêm giỏ hàng thành công")
+            }
+            else{
+                toast.error("Có lỗ xảy ra")
+            }
 
         }
     };
@@ -113,12 +143,19 @@ const ProductView = (props) => {
     const goToCart = () => {
         if (check()) {
             let newItem = {
-                slug: product.slug,
                 color: color,
                 size: size,
-                price: product.price,
+                price: product.priceCurrent,
                 quantity: quantity,
+                imageURL: `/${product.productImages[0].url}`,
+                id: product.id,
             };
+            if (dispatch(addItem(newItem))) {
+                dispatch(remove());
+                navigate("/cart");
+            } else {
+                toast.error("Thêm vào giỏ hàng thất bại");
+            }
 
         }
     };
@@ -175,7 +212,7 @@ const ProductView = (props) => {
                             <div
                                 key={index}
                                 className={`product__info__item__list__item ${
-                                    color === item.name ? "active" : ""
+                                    color === item.id ? "active" : ""
                                 }`}
                                 onClick={() => setColor(item.id)}
                             >
@@ -191,9 +228,9 @@ const ProductView = (props) => {
                             <div
                                 key={index}
                                 className={`product__info__item__list__item ${
-                                    size === item.name ? "active" : ""
+                                    size === item.id ? "active" : ""
                                 }`}
-                                onClick={() => setSize(item.value)}
+                                onClick={() => setSize(item.id)}
                             >
                 <span className="product__info__item__list__item__size">
                   {item.name}
