@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ICartService {
-    boolean createOrder(UUID userId, OrderModel orderModel, List<OrderDetailModel> orderDetailModel);
+    boolean createOrder(UUID userId, OrderModel orderModel);
     boolean updateOrder(UUID orderId, UUID userId, OrderModel orderModel);
     boolean changeStatusOrder(UUID orderId, UUID userId, int status);
     PagingModel<OrderModel> getAll(SearchModel items, int status, String phone);

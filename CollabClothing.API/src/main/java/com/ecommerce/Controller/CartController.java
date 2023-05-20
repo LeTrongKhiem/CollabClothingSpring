@@ -1,5 +1,6 @@
 package com.ecommerce.Controller;
 
+import com.ecommerce.Application.Abstractions.ICartService;
 import com.ecommerce.Application.PreAuthorizes.AdminOnly;
 import com.ecommerce.Application.PreAuthorizes.StaffRole;
 import com.ecommerce.Application.Service.CartService;
@@ -10,9 +11,11 @@ import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.ProductModel;
 import com.ecommerce.Model.Products.SearchProductItems;
 import com.ecommerce.Model.SearchModel;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,16 +26,16 @@ import java.util.UUID;
 @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:4000/"})
 public class CartController {
     @Autowired
-    private CartService cartService;
+    private ICartService cartService;
 
     @GetMapping("/getall")
     public ResponseEntity<PagingModel<OrderModel>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "") String search,
-            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "shipName") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
-            @RequestParam(defaultValue = "") int status,
+            @RequestParam(defaultValue = "1") int status,
             @RequestParam(defaultValue = "") String phone) {
         SearchModel searchProductItems = new SearchModel(search, page, pageSize, sortBy, sortType);
         try {
@@ -55,10 +58,14 @@ public class CartController {
     }
 
     @PostMapping("/createorder")
-    public ResponseEntity<Boolean> createOrder(@RequestBody OrderModel orderModel, @RequestBody List<OrderDetailModel> orderDetailModel) {
+    public ResponseEntity<Boolean> createOrder(@Valid @RequestBody OrderModel orderModel, BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
         try {
             UUID userId = AuthenticateExtensions.getUserId();
-            return new ResponseEntity<>(cartService.createOrder(userId, orderModel, orderDetailModel), HttpStatus.OK);
+            var resultCreate = cartService.createOrder(userId, orderModel);
+            return new ResponseEntity<>(resultCreate, HttpStatus.OK);
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

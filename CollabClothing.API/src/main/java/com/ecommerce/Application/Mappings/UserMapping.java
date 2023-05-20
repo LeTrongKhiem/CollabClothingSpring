@@ -29,7 +29,7 @@ public class UserMapping {
         user.setGender(request.getGender());
         user.setIsDeleted(false);
         user.setBlock(false);
-        user.setEmailVerified(true);
+        user.setEmailVerified(false);
         user.setUserType(2);
         user.setCreatedDate(new Date(System.currentTimeMillis()));
         user.setCreatedBy(user.getId());
