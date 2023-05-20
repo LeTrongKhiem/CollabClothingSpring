@@ -6,6 +6,7 @@ import com.ecommerce.Model.Orders.OrderDetailModel;
 import com.ecommerce.Model.Orders.OrderModel;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,12 +29,14 @@ public class CartMapping {
     }
 
     public static List<OrderDetail> mapOrderDetailModel(List<OrderDetailModel> orderDetailModel, Order order) {
-        List<OrderDetail> orderDetails = null;
+        List<OrderDetail> orderDetails = new ArrayList<>();
         for (OrderDetailModel model : orderDetailModel) {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
             orderDetail.setProductId(model.getProductId());
             orderDetail.setQuantity(model.getQuantity());
+            orderDetail.setColorId(model.getColorId());
+            orderDetail.setSizeId(model.getSizeId());
             orderDetails.add(orderDetail);
         }
         return orderDetails;

@@ -35,9 +35,9 @@ public class CartService implements ICartService {
     @Autowired
     private ProductRepository productRepository;
     @Override
-    public boolean createOrder(UUID userId, OrderModel orderModel, List<OrderDetailModel> orderDetailModel) {
+    public boolean createOrder(UUID userId, OrderModel orderModel) {
         double totalPrice = 0;
-        for (OrderDetailModel model : orderDetailModel) {
+        for (OrderDetailModel model : orderModel.getOrderDetails()) {
             Optional<Product> product = productRepository.findById(model.getProductId());
             if (product.isEmpty()) {
                 throw new NotFoundException("Product not found");
@@ -45,7 +45,7 @@ public class CartService implements ICartService {
             totalPrice += product.get().getProductDetail().getPriceCurrent() * model.getQuantity();
         }
         Order order = CartMapping.mapOrderModel(orderModel, userId, 1, totalPrice);
-        List<OrderDetail> orderDetail = CartMapping.mapOrderDetailModel(orderDetailModel, order);
+        List<OrderDetail> orderDetail = CartMapping.mapOrderDetailModel(orderModel.getOrderDetails(), order);
         if (orderDetail != null) {
             orderRepository.save(order);
             orderDetailRepository.saveAll(orderDetail);
@@ -102,13 +102,13 @@ public class CartService implements ICartService {
         Pageable pageable = PageRequest.of(items.getPage(), items.getSize(), sort);
 
         List<Order> listProducts = orderRepository.findAll(sort);
-        if (phone != null) {
+        if (!phone.isEmpty()) {
             listProducts = listProducts.stream().filter(product -> product.getShipPhoneNumber().equals(phone)).toList();
         }
         if (status != 0) {
             listProducts = listProducts.stream().filter(product -> product.getStatus() == status).toList();
         }
-        if (items.getKeyword() != null) {
+        if (!items.getKeyword().isEmpty()) {
             listProducts = listProducts.stream().filter(product ->
                             product.getShipAddress().toLowerCase().contains(items.getKeyword().toLowerCase()) ||
                                     product.getShipEmail().toLowerCase().contains(items.getKeyword().toLowerCase()))
