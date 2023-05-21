@@ -5,18 +5,42 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import numberWithCommas from "../utils/numberWithCommas";
 import { removeItem, updateItem } from "../redux/slice/cartItemsSlice";
+import ProductService from "../services/ProductService";
+import {toast} from "react-toastify";
 const CartItem = (props) => {
   const dispatch = useDispatch();
   const [item, setItem] = useState(props.item);
-  console.log(item);
   const [quantity, setQuantity] = useState(props.item.quantity);
+  const [quantityInStock,setQuantityInStock] = useState(0)
+  const  checkInventory = () => {
+    if(item.color === null  ||  item.size === null){
+      return false;
+    }
+    return true;
+  }
+  useEffect(() =>{
+    if(checkInventory()){
+      const  getQuantity = async  () =>{
+        const  res = await ProductService.getQuantityByWarehouseId(item.id,item.color.id,item.size.id)
+        console.log(res.data)
+        setQuantityInStock(res.data);
+      }
+      getQuantity()
+    }
+
+  },[item.color,item.size, item.id])
   useEffect(() => {
     setItem(props.item);
     setQuantity(props.item.quantity);
   }, [props.item]);
   const updateQuantity = (type) => {
     if (type === "plus") {
-      dispatch(updateItem({ ...item, quantity: Number(item.quantity) + 1 }));
+        if(quantity >= quantityInStock){
+          toast.error("Đã dư đủ số lượng sản phẩm trong kho")
+        }
+        else{
+          dispatch(updateItem({ ...item, quantity: Number(item.quantity) + 1 }));
+        }
     } else {
       dispatch(
         updateItem({
@@ -37,12 +61,16 @@ const CartItem = (props) => {
       ) : (
         <div className="cart__item">
           <div className="cart__item__image">
-            <img src={`/${item.product.productImages[0].url}`} alt="" />
+            <img src={`${item.imageURL}`} alt="" />
           </div>
           <div className="cart__item__info">
             <div className="cart__item__info__name">
               <Link to={`/product/${item.id}`}>
-                {`${item.product.name} - ${item.color} - ${item.size}`}
+                {`${item.product.name}`}
+                <br />
+                Màu: {`${item.color.name}`}
+                <br />
+                Size: {`${item.size.name}`}
               </Link>
             </div>
             <div className="cart__item__info__price">

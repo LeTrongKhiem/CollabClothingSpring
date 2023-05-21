@@ -55,6 +55,7 @@ const ProductView = (props) => {
     const [descriptionExpand, setDescriptionExpand] = useState(false);
 
     const [color, setColor] = useState(null);
+    console.log(color === null ? null : color.id)
 
     const [size, setSize] = useState(null);
 
@@ -88,7 +89,7 @@ const ProductView = (props) => {
   useEffect(() =>{
       if(checkInventory()){
           const  getQuantity = async  () =>{
-              const  res = await ProductService.getQuantityByWarehouseId(product.id,color,size)
+              const  res = await ProductService.getQuantityByWarehouseId(product.id,color.id,size.id)
               console.log(res.data)
               setQuantityInStock(res.data);
           }
@@ -212,9 +213,9 @@ const ProductView = (props) => {
                             <div
                                 key={index}
                                 className={`product__info__item__list__item ${
-                                    color === item.id ? "active" : ""
+                                    color === item ? "active" : ""
                                 }`}
-                                onClick={() => setColor(item.id)}
+                                onClick={() => setColor(item)}
                             >
                                 <div className={`circle bg-${item.name.replace(" ", "")}`}></div>
                             </div>
@@ -228,9 +229,9 @@ const ProductView = (props) => {
                             <div
                                 key={index}
                                 className={`product__info__item__list__item ${
-                                    size === item.id ? "active" : ""
+                                    size === item ? "active" : ""
                                 }`}
-                                onClick={() => setSize(item.id)}
+                                onClick={() => setSize(item)}
                             >
                 <span className="product__info__item__list__item__size">
                   {item.name}
