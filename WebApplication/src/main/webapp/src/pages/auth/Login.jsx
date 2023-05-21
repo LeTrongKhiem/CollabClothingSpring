@@ -10,10 +10,11 @@ import {toast} from "react-toastify";
 import {FastField, Form, Formik} from "formik";
 import InputField from "../../custom-fields/InputField";
 import * as Yup from "yup" ;
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginSuccess} from "../../redux/slice/authSlice";
 import Button from "../../components/UI/Button";
 import jwtDecode from 'jwt-decode';
+import {selectPreviousURL} from "../../redux/slice/cartItemsSlice";
 
 
 const Login = () => {
@@ -31,7 +32,14 @@ const Login = () => {
 
 
     const navigate = useNavigate();
-
+    const prevURL = useSelector(selectPreviousURL);
+    const redirectUser = () => {
+        if (prevURL.includes("cart")) {
+            navigate("/cart");
+        } else {
+            navigate("/");
+        }
+    }
     const loginUser = (value) => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -52,7 +60,7 @@ const Login = () => {
                 if (res.status === 200) {
                     toast.success("Đăng nhập thành công");
                     localStorage.setItem("token", res.data.token);
-                    navigate("/");
+                    redirectUser()
                     dispatch(loginSuccess(res.data));
                 }
             })

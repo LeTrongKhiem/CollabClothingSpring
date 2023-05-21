@@ -6,11 +6,10 @@ import UserService from "../../services/UserService";
 import axios from "axios";
 import {loginSuccess, logoutSuccess} from "../../redux/slice/authSlice";
 // import logo from "../assets/images/Logo-2.png";
-// import { auth } from "../firebase/config";
 // import { REMOVE_ACTIVE_USER, SET_ACTIVE_USER } from "../redux/auth/authSlice";
 import {ShowOnLogin, ShowOnLogout} from "../hiddenLink/hiddenLink";
-// import productData from "../assets/fake-data/products";
 import jwt_decode from "jwt-decode";
+import {selectCartItems} from "../../redux/slice/cartItemsSlice";
 const mainNav = [
     {
         display: "Trang chủ",
@@ -34,7 +33,7 @@ const Header = () => {
     const {pathname} = useLocation();
     const [displayName, setdisplayName] = useState("");
     const activeNav = mainNav.findIndex((e) => e.path === pathname);
-    const cartItems = "";
+    const cartItems = useSelector(selectCartItems);
     const headerRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -144,7 +143,7 @@ const Header = () => {
                                 <Link to="/cart">
                                     <i className="bx bx-shopping-bag"></i>
                                 </Link>
-                                <span className="header__card-notice">{}</span>
+                                <span className="header__card-notice">{cartItems.length}</span>
 
                             </div>
                         </div>
