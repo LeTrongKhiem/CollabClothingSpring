@@ -19,6 +19,24 @@ class ProductService {
             }
         });
     }
+    getAllProducts(page, pageSize, searchTerm, sortOrder, sortBy, categoryId, brand_id, color_id, size_id) {
+        const token = localStorage.getItem("token");
+        return axios.get(API_URL + "/products/getall", {
+            params: {
+                page: page,
+                pageSize: pageSize,
+                search: searchTerm,
+                sortBy: sortBy,
+                sortType: sortOrder,
+                categoryId: categoryId,
+                brandId: brand_id,
+                colorId: color_id,
+                sizeId: size_id
+
+
+            }
+        });
+    }
 
     getProductById(id) {
         return axios.get(API_URL + "/products/" + id);

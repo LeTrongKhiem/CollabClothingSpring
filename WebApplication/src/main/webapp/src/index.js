@@ -10,7 +10,7 @@ import {
   Login,
   ResetPassword,
   Reset,
-  UserProfile, ProductDetails, Cart,
+  UserProfile, ProductDetails, Cart, Products,
 } from "./pages";
 //components
 import {Footer, Header} from "./components";
@@ -39,6 +39,7 @@ root.render(
               <Route path={"/changePassword"} element={<ResetPassword />} />
               <Route path={"/user-profile"} element={<UserProfile />} />
               <Route path={"/product/:id"} element={<ProductDetails/>} />
+              <Route path={"/products"} element={<Products />} />
               <Route path="/cart" element={<Cart />} />
             </Routes>
           </div>
