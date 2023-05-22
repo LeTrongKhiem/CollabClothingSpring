@@ -192,6 +192,16 @@ public class ProductService implements IProductService {
         if (items.getCategoryId() != null) {
             listProducts = listProducts.stream().filter(product -> product.getProductMapCategories().stream().anyMatch(productMapCategory -> productMapCategory.getCategory().getId().equals(items.getCategoryId()))).toList();
         }
+        if (items.getColorId() != null) {
+            List<WareHouse> colorList = wareHouseRepository.findAllByColorId(items.getColorId());
+            List<UUID> productIds = colorList.stream().map(x -> x.getProductId()).toList();
+            listProducts = listProducts.stream().filter(product -> productIds.contains(product.getId())).toList();
+        }
+        if (items.getSizeId() != null) {
+            List<WareHouse> sizeList = wareHouseRepository.findAllBySizeId(items.getSizeId());
+            List<UUID> productIds = sizeList.stream().map(x -> x.getProductId()).toList();
+            listProducts = listProducts.stream().filter(product -> productIds.contains(product.getId())).toList();
+        }
         if (items.getKeyword() != null) {
             listProducts = listProducts.stream().filter(product ->
                             product.getName().toLowerCase().contains(items.getKeyword().toLowerCase()) ||

@@ -37,7 +37,7 @@ public class WareHouseController {
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "productId") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType) {
-        SearchProductItems searchProductItems = new SearchProductItems(null, null, null, page, pageSize, sortBy, sortType);
+        SearchProductItems searchProductItems = new SearchProductItems(null, null, null, null, null, page, pageSize, sortBy, sortType);
         try {
             PagingModel<WareHouseModel> products = wareHouseService.getAll(searchProductItems);
             return new ResponseEntity<>(products, HttpStatus.OK);

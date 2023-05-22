@@ -163,8 +163,10 @@ import java.util.stream.Collectors;
             @RequestParam(defaultValue = "name") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(defaultValue = "") UUID categoryId,
-            @RequestParam(defaultValue = "") UUID brandId) {
-        SearchProductItems searchProductItems = new SearchProductItems(search, brandId, categoryId, page, pageSize, sortBy, sortType);
+            @RequestParam(defaultValue = "") UUID brandId,
+            @RequestParam(defaultValue = "") UUID colorId,
+            @RequestParam(defaultValue = "") UUID sizeId) {
+        SearchProductItems searchProductItems = new SearchProductItems(search, brandId, categoryId, colorId, sizeId, page, pageSize, sortBy, sortType);
         try {
             PagingModel<ProductModel> products = productService.getAll(searchProductItems);
             return new ResponseEntity<>(products, HttpStatus.OK);

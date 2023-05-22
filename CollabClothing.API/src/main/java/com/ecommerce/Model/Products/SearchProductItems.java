@@ -15,6 +15,8 @@ public class SearchProductItems {
     private String keyword;
     private UUID brandId;
     private UUID categoryId;
+    private UUID colorId;
+    private UUID sizeId;
     private int page;
     private int size;
     private String sortBy;
