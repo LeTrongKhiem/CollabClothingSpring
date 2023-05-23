@@ -63,7 +63,7 @@ const Cart = () => {
     const url= window.location.href;
     const checkout = () => {
         if (isLoggin) {
-            navigate("/checkout-details");
+            navigate("/checkout");
         } else {
             dispatch(save_url(url))
             toast.error("Bạn cần đăng nhập để tiếp tục")
