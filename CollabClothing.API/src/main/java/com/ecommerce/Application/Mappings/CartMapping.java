@@ -33,6 +33,7 @@ public class CartMapping {
         for (OrderDetailModel model : orderDetailModel) {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
+            orderDetail.setId(UUID.randomUUID());
             orderDetail.setProductId(model.getProductId());
             orderDetail.setQuantity(model.getQuantity());
             orderDetail.setColorId(model.getColorId());
