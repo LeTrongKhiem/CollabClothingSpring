@@ -17,4 +17,5 @@ public interface ICartService {
     PagingModel<OrderModel> getAll(SearchModel items, int status, String phone);
     List<OrderDetailModel> getOrderDetail(UUID orderId);
     OrderModel getOrder(UUID orderId);
+    PagingModel<OrderModel> getAll(UUID userId, SearchModel items, int status, String phone);
 }

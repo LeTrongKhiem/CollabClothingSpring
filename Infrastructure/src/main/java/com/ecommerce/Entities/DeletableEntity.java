@@ -6,7 +6,9 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Where;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Date;
 import java.util.UUID;
@@ -20,6 +22,7 @@ public abstract class DeletableEntity {
     @Getter
     @Setter
     @Column(columnDefinition = "uniqueidentifier")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     protected UUID deletedBy;
     @Nullable
     @Getter

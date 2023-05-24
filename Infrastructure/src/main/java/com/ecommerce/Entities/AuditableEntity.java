@@ -6,6 +6,8 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,6 +21,7 @@ public abstract class AuditableEntity extends DeletableEntity {
     @Nullable
     @LastModifiedBy
     @Column(columnDefinition = "uniqueidentifier")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Getter
     @Setter
     protected UUID modifiedBy;
@@ -30,6 +33,7 @@ public abstract class AuditableEntity extends DeletableEntity {
     @Nullable
     @CreatedBy
     @Column(columnDefinition = "uniqueidentifier")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Getter
     @Setter
     protected UUID createdBy;
