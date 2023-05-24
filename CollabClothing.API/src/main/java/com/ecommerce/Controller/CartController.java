@@ -37,7 +37,7 @@ public class CartController {
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "shipName") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
-            @RequestParam(defaultValue = "1") int status,
+            @RequestParam(defaultValue = "0") int status,
             @RequestParam(defaultValue = "") String phone) {
         SearchModel searchProductItems = new SearchModel(search, page, pageSize, sortBy, sortType);
         try {
@@ -57,7 +57,7 @@ public class CartController {
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "shipName") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
-            @RequestParam(defaultValue = "1") int status,
+            @RequestParam(defaultValue = "0") int status,
             @RequestParam(defaultValue = "") String phone) {
         SearchModel searchProductItems = new SearchModel(search, page, pageSize, sortBy, sortType);
         try {
