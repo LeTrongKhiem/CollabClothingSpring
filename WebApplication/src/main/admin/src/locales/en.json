@@ -54,11 +54,29 @@
     "parentId": "Parent Id",
     "pathIcon": "Path Icon"
   },
-    "brands": {
-        "title": "Brands",
-        "name": "Name",
-        "slug": "Slug",
-        "pathLogo": "Path Logo",
-        "description": "Description"
-    }
+  "brands": {
+    "title": "Brands",
+    "name": "Name",
+    "slug": "Slug",
+    "pathLogo": "Path Logo",
+    "description": "Description"
+  },
+  "orders": {
+    "status": "Status",
+    "title": "Orders",
+    "shipName": "Name",
+    "customer": "Customer",
+    "totalMoney": "Total",
+    "orderDate": "Date",
+    "action": "Action",
+    "detail": "Detail",
+    "order": "Order",
+    "product": "Product",
+    "quantity": "Quantity",
+    "price": "Price",
+    "shipAddress": "Address",
+    "shipPhone": "Phone",
+    "shipEmail": "Email",
+    "paymentMethod": "Payment Method"
+  }
 }

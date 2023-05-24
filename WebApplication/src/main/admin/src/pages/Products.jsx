@@ -9,24 +9,22 @@ import Categories from "../constants/Categories";
 import Brands from "../constants/Brands";
 import Select from "react-select";
 import InventoryModal from "../components/modal/InventoryModal";
+import EditOrder from "../components/modal/EditOrder";
+import ProductModal from "../components/modal/ProductModal";
 
-const customerTableHead = [{key: "number", label: "#"}, {key: "name", label: "products.name"},{key: "", label: "products.image"}, {
-    key: "categoryNames",
+const customerTableHead = [{key: "", label: "#"}, {key: "name", label: "products.name"}, {
+    key: "",
+    label: "products.image"
+}, {
+    key: "",
     label: "products.categoryNames"
 }, {key: "brandName", label: "products.brandName"}, {key: "priceOld", label: "products.priceOld"}, {
     key: "priceCurrent",
     label: "products.priceCurrent"
-}, {key: "sale_off", label: "products.sale_off"}, {key: "consumer", label: "products.consumer"}, {
-    key: "cotton",
-    label: "products.cotton"
-}, {key: "form", label: "products.form"}, {key: "type", label: "products.type"}, {
-    key: "made_in",
-    label: "products.made_in"
-}, {key: "description", label: "products.description"}, {key: "isDeleted", label: "products.isDeleted"}, {
+}, {key: "isDeleted", label: "products.isDeleted"}, {
     key: "action",
     label: "products.action"
 }];
-
 
 
 const Products = () => {
@@ -45,7 +43,18 @@ const Products = () => {
     const [inventoryModal, setInventoryModal] = useState(false);
     const [productId, setProductId] = useState(null);
     const filterRef = useRef(null);
+    const [productModalDetail, setProductModalDetail] = useState(false);
     const navigate = useNavigate();
+    const openModal = () => {
+        setProductModalDetail(true);
+    }
+    const closeModal = () => {
+        setProductModalDetail(false);
+    }
+    const handleOpenModal = (id) => {
+        setProductId(id);
+        setProductModalDetail(true);
+    }
     const renderBody = (item, index) => {
         const {
             name,
@@ -70,24 +79,19 @@ const Products = () => {
         const category = categoryNames.map((item, index) => {
             return <div key={index}>{item}</div>
         })
-        return (<tr key={index}>
+        const API_URL = "http://localhost:6868";
+        return (<tr key={index} onClick={() => handleOpenModal(item.id)}>
             <td>{index + 1}</td>
             <td>{name}</td>
             <td>
-                <img src={`http://localhost:6868/${thumbnail}`} alt={name} width="60px"/>
+                <img src={`${API_URL}/${thumbnail}`} alt={name} width="60px"/>
             </td>
             <td>{category}</td>
             <td>{brandName}</td>
             <td>{priceOld}</td>
             <td>{priceCurrent}</td>
-            <td>{sale_off}%</td>
-            <td>{consumer}</td>
-            <td>{cotton}%</td>
-            <td>{form}</td>
-            <td>{type}</td>
-            <td>{made_in}</td>
-            <td>{description}</td>
             <td>{isDeleted}</td>
+
             <td>
                 <Link to={`/products/${item.id}`} className="btn btn-primary">
                     <i className='bx bxs-edit-alt'></i>
@@ -111,9 +115,6 @@ const Products = () => {
                     }}></i>
 
                 </div>
-
-
-
 
 
             </td>
@@ -176,6 +177,7 @@ const Products = () => {
     }, [sortColumn, sortOrder]);
     const showHideFilter = () => filterRef.current.classList.toggle("active");
     const {t} = useTranslation();
+
     return (<>
         <div>
             <h2 className="page-header">
@@ -188,11 +190,13 @@ const Products = () => {
                         <div className="card__body">
                             <div className="header__form">
                                 <div className="user-register">
-                                 <InventoryModal
-                                    show={inventoryModal}
-                                    onHide={() => setInventoryModal(false)}
-                                    productId={productId}
-                                />
+                                    <InventoryModal
+                                        show={inventoryModal}
+                                        onHide={() => setInventoryModal(false)}
+                                        productId={productId}
+                                    />
+                                    <ProductModal showModal={productModalDetail} closeModal={closeModal}
+                                                  productId={productId ? productId : null}/>
 
 
                                     <button style={{
@@ -231,7 +235,7 @@ const Products = () => {
                                         <div className="catalog__filter__widget__content">
                                             <Select
                                                 options={brands}
-                                                onChange={(e)=> setBrandId(e.value)}
+                                                onChange={(e) => setBrandId(e.value)}
                                             />
                                         </div>
                                     </div>

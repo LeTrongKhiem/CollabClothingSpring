@@ -6,27 +6,24 @@ import "./categoriesEdit.css";
 import {toast} from "react-toastify";
 import CategoriesService from "../../services/CategoriesService";
 import Select from "react-select";
-import Categories from "../../constants/Categories";
+import OrderService from "../../services/OrderService";
 
-function EditCategories({showModalEdit, closeModalEdit, setChanges, categoryId}) {
+function EditOrder({showModalEdit, closeModalEdit, setChanges, orderId}) {
     const initialState = {
             id: "",
-            level: "",
-            name: "",
-            parentId: null,
-            pathIcon: "",
-            showWeb: "",
-            sortOrder: "",
+            shipName: "",
+            shipAddress: "",
+            shipPhoneNumber: "",
+            shipEmail: "",
         }
     ;
     const [modal, setModal] = useState(showModalEdit);
-    const [category, setCategory] = useState([]);
-    const [categoryEdit, setCategoryEdit] = useState(initialState);
+    const [orderEdit, setOrđerEdit] = useState(initialState);
     const [loading, setLoading] = useState(true);
 
     const handleSubmit = (values) => {
         try {
-            CategoriesService.updateCategory(categoryId,values).then((res) => {
+            OrderService.updateOrder(orderId,values).then((res) => {
                 if (res.status === 200) {
                     setChanges(true)
                     closeModalEdit();
@@ -48,44 +45,30 @@ function EditCategories({showModalEdit, closeModalEdit, setChanges, categoryId})
 
     };
     const validationSchema = Yup.object().shape({
-        name: Yup.string().required("Vui lòng nhập tên"),
-        sortOrder: Yup.string().required("Vui lòng nhập sortOrder"),
-        level: Yup.string().required("Vui lòng nhập level"),
-        parentId: Yup.string().required("Vui lòng nhập parentId").nullable(),
-        showWeb: Yup.string().required("Vui lòng nhập showWeb"),
+        shipName: Yup.string().required("Vui lòng nhập tên"),
+        shipAddress: Yup.string().required("Vui lòng nhập địa chỉ"),
+        shipPhoneNumber: Yup.string().required("Vui lòng nhập số điện thoại"),
+        shipEmail: Yup.string().required("Vui lòng nhập email"),
+
 
     });
-    useEffect(() => {
-        async function fetchCategories() {
-            const data = await Categories();
-            setCategory(data)
-        }
-
-        fetchCategories().then(r => {
-            setLoading(false)
-        });
-    }, []);
-    const categories = category.map((item) => {
-        return {
-            label: item.name, value: item.id
-        }
-    })
 
     useEffect(() => {
-        if (categoryId === null) {
+        if (orderId === null) {
             setLoading(false)
             return;
         }
-        async function fetchCategory() {
-            const response = await CategoriesService.getCategoryById(categoryId);
-            setCategoryEdit(response.data)
+
+        async function fetchOrderById() {
+            const response = await OrderService.getOrderById(orderId);
+            setOrđerEdit(response.data)
             setLoading(false)
         }
 
-        fetchCategory().then(r => {
+        fetchOrderById().then(r => {
             setLoading(false)
         });
-    }, [categoryId])
+    }, [orderId])
 
     if (loading) {
         return <div>Loading...</div>;
@@ -99,12 +82,11 @@ function EditCategories({showModalEdit, closeModalEdit, setChanges, categoryId})
             <div className="product-view__modal__content auth">
                 <div className="form">
                     <Formik
-                        initialValues={categoryEdit}
+                        initialValues={orderEdit}
                         validationSchema={validationSchema}
                         enableReinitialize={true}
                         validateOnChange={true}
                         onSubmit={handleSubmit}
-
                     >
                         {({
                               values,
@@ -115,52 +97,42 @@ function EditCategories({showModalEdit, closeModalEdit, setChanges, categoryId})
                           }) => {
 
                             return (<Form>
-                                <label htmlFor="name">Tên Danh Mục: </label>
+                                <label htmlFor="shipName">Tên nguười nhận: </label>
                                 <FastField
-                                    name="name"
+                                    name="shipName"
                                     component={InputField}
                                     placeholder="Tên danh mục"
-                                    value={values.name}
+                                    value={values.shipName}
                                     htmlFor="name"
 
                                 />
 
-                                <label htmlFor="sortOrder">SortOrder: </label>
+                                <label htmlFor="shipAddress">Địa chỉ: </label>
                                 <FastField
-                                    name="sortOrder"
+                                    name="shipAddress"
                                     component={InputField}
-                                    placeholder="sortOrder"
-                                    value={values.sortOrder}
+                                    placeholder="shipAddress"
+                                    value={values.shipAddress}
                                     htmlFor="sortOrder"
 
                                 />
-                                <label htmlFor="level">Level: </label>
+                                <label htmlFor="shipPhoneNumber">Số điện thoại: </label>
                                 <FastField
-                                    name="level"
+                                    name="shipPhoneNumber"
                                     component={InputField}
-                                    placeholder="Level"
-                                    value={values.level}
+                                    placeholder="shipPhoneNumber"
+                                    value={values.shipPhoneNumber}
                                     htmlFor="level"
                                 />
-                                <label htmlFor="parentId">Danh mục cha : </label>
-                                <Select
-                                    name="parentId"
-                                    options={categories}
-                                    placeholder="Danh mục cha "
-                                    value={categories.find(obj => obj.value === values.parentId)}
-                                    htmlFor="parentId"
+                                <label htmlFor="shipEmail">Email : </label>
+                                <FastField
+                                    name="shipEmail"
+                                    component={InputField}
+                                    placeholder="shipEmail"
+                                    value={values.shipEmail}
+                                    htmlFor="shipEmail"
                                 />
-                                <div className="category-form-group">
-                                    <label htmlFor="showWeb">Hiển thị trên web: </label>
-                                    <FastField
-                                        name="showWeb"
-                                        component={InputField}
-                                        placeholder="showWeb"
-                                        type="checkbox"
-                                        isChecked={values.showWeb}
-                                        htmlFor="showWeb"
-                                    />
-                                </div>
+
 
                                 <button
                                     type="submit"
@@ -187,4 +159,4 @@ function EditCategories({showModalEdit, closeModalEdit, setChanges, categoryId})
 
 }
 
-export default EditCategories;
+export default EditOrder;
