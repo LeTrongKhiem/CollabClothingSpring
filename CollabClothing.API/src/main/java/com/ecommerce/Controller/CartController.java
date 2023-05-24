@@ -3,6 +3,7 @@ package com.ecommerce.Controller;
 import com.ecommerce.Application.Abstractions.ICartService;
 import com.ecommerce.Application.PreAuthorizes.AdminOnly;
 import com.ecommerce.Application.PreAuthorizes.StaffRole;
+import com.ecommerce.Application.PreAuthorizes.UserRole;
 import com.ecommerce.Application.Service.CartService;
 import com.ecommerce.Application.Setup.Auth.Extensions.AuthenticateExtensions;
 import com.ecommerce.Model.Orders.OrderDetailModel;
@@ -29,6 +30,7 @@ public class CartController {
     private ICartService cartService;
 
     @GetMapping("/getall")
+    @StaffRole
     public ResponseEntity<PagingModel<OrderModel>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
@@ -40,6 +42,27 @@ public class CartController {
         SearchModel searchProductItems = new SearchModel(search, page, pageSize, sortBy, sortType);
         try {
             PagingModel<OrderModel> products = cartService.getAll(searchProductItems, status, phone);
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getOrderHistory")
+    @UserRole
+    public ResponseEntity<PagingModel<OrderModel>> orderHistory(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "shipName") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortType,
+            @RequestParam(defaultValue = "1") int status,
+            @RequestParam(defaultValue = "") String phone) {
+        SearchModel searchProductItems = new SearchModel(search, page, pageSize, sortBy, sortType);
+        try {
+            UUID userId = AuthenticateExtensions.getUserId();
+            PagingModel<OrderModel> products = cartService.getAll(userId, searchProductItems, status, phone);
             return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
