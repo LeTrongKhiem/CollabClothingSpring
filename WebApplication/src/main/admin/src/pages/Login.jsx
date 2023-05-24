@@ -5,7 +5,7 @@ import "./Login.css";
 import {Form, Formik} from "formik";
 import UserService from "../services/UserService";
 import {toast} from "react-toastify";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import * as Yup from "yup" ;
 
 function Login() {
@@ -13,6 +13,10 @@ function Login() {
     const [inputType, setInputType] = useState("password");
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    // const isLogin = localStorage.getItem("isLoginAdmin") ==="true" ;
+    // if (isLogin) {
+    //     return <Navigate to="/"/>
+    // }
     const handleToggle = (e) => {
         setToggleEye(!toggleEye);
         setInputType(inputType === "password" ? "text" : "password");
@@ -23,6 +27,7 @@ function Login() {
             .required("Vui lòng nhập mật khẩu")
             .matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"),
     });
+
     const loginUser = (value) => {
 
 
@@ -36,9 +41,7 @@ function Login() {
                         if (res.data.role === "ADMIN" || res.data.role === "EMPLOYEE") {
                             toast.success("Đăng nhập thành công");
                             dispatch(login(value));
-                            localStorage.setItem("isLogin", "true")
                             navigate("/");
-
                         } else {
                             toast.error("Bạn không có quyền truy cập");
                         }

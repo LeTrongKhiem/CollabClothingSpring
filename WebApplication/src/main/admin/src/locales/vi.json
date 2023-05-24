@@ -60,6 +60,21 @@
     "slug": "Slug",
     "pathLogo": "Đường dẫn logo",
     "description": "Mô tả"
+  },
+  "orders": {
+    "title": "Đơn hàng",
+    "status": "Trạng thái",
+    "shipName": "Tên người nhận",
+    "shipPhone": "Số điện thoại",
+    "totalMoney": "Tổng tiền",
+    "orderDate": "Ngày",
+    "action": "Action",
+    "product": "Product",
+    "quantity": "số lượng",
+    "price": "Giá",
+    "shipAddress": "Địa chỉ nhận hàng",
+    "shipEmail": "Email",
+    "paymentMethod": "Phương thức thanh toán"
   }
 
 }

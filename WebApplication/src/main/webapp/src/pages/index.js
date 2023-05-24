@@ -9,3 +9,4 @@ export {default as ProductDetails} from "./product/ProductDetails";
 export {default as Products} from "./product/Products";
 export {default as Cart} from "./cart/Cart";
 export {default as Checkout} from "./checkout/Checkout";
+export {default as OrderHistory} from "./order/OrderHistory";

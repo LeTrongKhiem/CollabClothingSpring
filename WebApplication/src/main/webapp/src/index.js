@@ -4,7 +4,18 @@ import "./sass/index.scss";
 import "./assets/boxicons-2.0.7/css/boxicons.min.css";
 //pages
 import {
-    Home, Register, VerifyEmail, Login, ResetPassword, Reset, UserProfile, ProductDetails, Cart, Products, Checkout,
+    Home,
+    Register,
+    VerifyEmail,
+    Login,
+    ResetPassword,
+    Reset,
+    UserProfile,
+    ProductDetails,
+    Cart,
+    Products,
+    Checkout,
+    OrderHistory,
 } from "./pages";
 //components
 import {Footer, Header} from "./components";
@@ -35,6 +46,7 @@ root.render(<React.StrictMode>
                         <Route path={"/products"} element={<Products/>}/>
                         <Route path="/cart" element={<Cart/>}/>
                         <Route path="/checkout" element={<Checkout/>}/>
+                        <Route path="/order-history" element={<OrderHistory/>}/>
                     </Routes>
                 </div>
                 <ProductViewModal/>
