@@ -5,6 +5,7 @@ import BrandsService from "../services/BrandsService";
 import {toast} from "react-toastify";
 import AddBrands from "../components/modal/brands/AddBrands";
 import EditBrands from "../components/modal/brands/EditBrands";
+import Loading from "../components/loading/Loading";
 const customerTableHead = [
     {key: "number", label: "#"},
     {key: "name", label: "brands.name"},
@@ -158,7 +159,7 @@ const Brands = () => {
                                 />
 
                             </div>
-                            {loading ? <div>Loading...</div> : (<Table
+                            {loading ? <Loading/>: (<Table
                                 limit={pageSize}
                                 headData={customerTableHead}
                                 data={brands}

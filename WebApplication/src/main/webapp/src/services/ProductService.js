@@ -7,7 +7,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const API_URL = 'http://localhost:6868/api';
 
 class ProductService {
-    getAllProducts(page, pageSize, sortBy, sortType, brandId) {
+    getAllProduct(page, pageSize, sortBy, sortType, brandId) {
         return axios.get(API_URL + "/products/getall", {
             params: {
                 page: page,

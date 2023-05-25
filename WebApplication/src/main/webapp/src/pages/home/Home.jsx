@@ -11,6 +11,7 @@ import ProductCard from "../../components/ProductCard";
 import {getProductLatest, getProducts} from "../../customHooks/ProductsAPI";
 import {Link} from "react-router-dom";
 import banner from "../../assets/images/banner.png";
+import Loading from "../../components/loading/Loading";
 
 const heroSliderData = [
     {
@@ -108,7 +109,7 @@ const Home = () => {
                 <SectionTitle> Top sản phẩm bán chạy</SectionTitle>
                 <SectionBody>
                     {isLoading ? (
-                        <div>Loading...</div>
+                       <Loading/>
                     ) : (
                         <Grid col={4} mdCol={2} smCol={1} gap={20}>
                             {

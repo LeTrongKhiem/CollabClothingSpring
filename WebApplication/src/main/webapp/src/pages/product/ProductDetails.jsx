@@ -6,13 +6,13 @@ import {useParams} from "react-router-dom";
 import ProductView from "../../components/ProductView";
 import Grid from "../../components/UI/Grid";
 import ProductCard from "../../components/ProductCard";
+import Loading from "../../components/loading/Loading";
 
 
 const ProductDetails = () => {
     const [product, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [productsBrand, setProductsBrand] = useState([]);
-    console.log(productsBrand)
     const relatedProducts = productsBrand.filter((item) => item.id !== product.id)
     const params = useParams();
     const {id} = params;
@@ -23,6 +23,7 @@ const ProductDetails = () => {
                 const res = await getProductById(id);
                 setProduct(res);
                 const resBrand = await getProductByBrand(10,product.brand_id);
+                console.log("resBarnd",resBrand)
                 setProductsBrand(resBrand.results);
             }
             catch (e) {
@@ -41,7 +42,7 @@ const ProductDetails = () => {
             <Section>
                 <SectionBody>
                     {isLoading ? (
-                        <div>Loading...</div>
+                       <Loading/>
                     ) : (
                         <ProductView product={product}/>
                     )}
@@ -51,7 +52,7 @@ const ProductDetails = () => {
                 <SectionTitle>Sản pẩm cùng thương hiệu</SectionTitle>
                 <SectionBody>
                     {isLoading ? (
-                        <div>Loading...</div>
+                       <Loading/>
                     ) : (
                         <Grid col={4} mdCol={2} smCol={1} gap={20}>
                             {relatedProducts.map((item, index) => {

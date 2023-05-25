@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import SelectField from "../../custom-fields/SelectField";
 import axios from "axios";
 import Button from "../../components/UI/Button";
+import Loading from "../../components/loading/Loading";
 
 const Register = () => {
     const initialState = {

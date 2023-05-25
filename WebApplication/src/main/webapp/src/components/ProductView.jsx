@@ -55,7 +55,6 @@ const ProductView = (props) => {
     const [descriptionExpand, setDescriptionExpand] = useState(false);
 
     const [color, setColor] = useState(null);
-    console.log(color === null ? null : color.id)
 
     const [size, setSize] = useState(null);
 
@@ -165,18 +164,31 @@ const ProductView = (props) => {
         <div className="product">
             <div className="product__images">
                 <div className="product__images__list">
-                    <div
-                        className="product__images__list__item"
-                        onClick={() => setPreviewImg(product.productImages[0].url)}
-                    >
-                        <img src={product.productImages[0].url} alt="" />
-                    </div>
-                    <div
-                        className="product__images__list__item"
-                        onClick={() => setPreviewImg(product.productImages[1].url)}
-                    >
-                        <img src={product.productImages[1]} alt="" />
-                    </div>
+                    {
+                        product.productImages.map((item,index) => {
+                            return (
+                                <div
+                                    className="product__images__list__item"
+                                    onClick={() => setPreviewImg(item.url)}
+                                    key={index}
+                                >
+                                    <img src={`/${item.url}`} alt="" />
+                                </div>
+                            )
+                        })
+                        }
+                    {/*<div*/}
+                    {/*    className="product__images__list__item"*/}
+                    {/*    onClick={() => setPreviewImg(product.productImages[0].url)}*/}
+                    {/*>*/}
+                    {/*    <img src={`/${product.productImages[0].url}`} alt="" />*/}
+                    {/*</div>*/}
+                    {/*<div*/}
+                    {/*    className="product__images__list__item"*/}
+                    {/*    onClick={() => setPreviewImg(product.productImages[1].url)}*/}
+                    {/*>*/}
+                    {/*    <img src={`/${product.productImages[0].url}`} alt="" />*/}
+                    {/*</div>*/}
                 </div>
                 <div className="product__images__main">
                     <img src={`/${previewImg}`} alt="" />

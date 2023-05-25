@@ -15,6 +15,7 @@ import {loginSuccess} from "../../redux/slice/authSlice";
 import Button from "../../components/UI/Button";
 import jwtDecode from 'jwt-decode';
 import {selectPreviousURL} from "../../redux/slice/cartItemsSlice";
+import Loading from "../../components/loading/Loading";
 
 
 const Login = () => {
@@ -57,6 +58,7 @@ const Login = () => {
         // Gửi yêu cầu đăng nhập mới
         UserService.login(value)
             .then((res) => {
+
                 if (res.status === 200) {
                     toast.success("Đăng nhập thành công");
                     localStorage.setItem("token", res.data.token);
@@ -72,6 +74,7 @@ const Login = () => {
 
     return (<>
         <Helmet title={"Đăng nhập"}>
+            {loading && <Loading/>}
             <Section>
                 <section className={` container ${styles.auth}`}>
                     <div className={styles.img}>

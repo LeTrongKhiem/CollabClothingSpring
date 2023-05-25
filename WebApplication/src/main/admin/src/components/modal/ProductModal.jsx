@@ -56,9 +56,10 @@ function ProductModal({showModal, closeModal, productId}) {
                             Mô tả sản phẩm
                         </p>
                         <ul className="product-view__modal__content__features">
-                            <li>Cotton: {product.cotton}%</li>
-                            <li>Form: {product.form}</li>
+                            <li>Cotton: {product !== null ? product.cotton : null}%</li>
+                            <li>Form: {product !== null ? product.form : null}</li>
                             <li>Size: {
+                                product !== null &&
                                 product.listSize.map((size, index) => {
                                         return (
                                             <span key={index}>{size.name} </span>
@@ -68,6 +69,7 @@ function ProductModal({showModal, closeModal, productId}) {
                                 )
                             }</li>
                             <li>Màu sắc: {
+                                product !== null &&
                                 product.listColor.map((color, index) => {
                                         return (
                                             <span key={index}>{color.name} </span>

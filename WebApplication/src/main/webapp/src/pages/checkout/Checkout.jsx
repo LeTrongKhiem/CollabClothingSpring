@@ -105,7 +105,7 @@ const CheckoutDetails = () => {
                     if (response.status === 200) {
                         toast.success("Đặt hàng thành công");
                         dispatch(clearCart());
-                        navigate("/order");
+                        navigate("/order-history");
                     }
                 })
                 .catch((error) => {

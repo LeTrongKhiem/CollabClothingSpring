@@ -5,6 +5,7 @@ import AddCategories from "../components/modal/AddCategories";
 import CategoriesService from "../services/CategoriesService";
 import EditCategories from "../components/modal/EditCategories";
 import {toast} from "react-toastify";
+import Loading from "../components/loading/Loading";
 const customerTableHead = [
     {key: "number", label: "#"},
     {key: "name", label: "categories.name"},
@@ -167,7 +168,7 @@ const Categories = () => {
                                 />
 
                             </div>
-                            {loading ? <div>Loading...</div> : (<Table
+                            {loading ? <Loading/> : (<Table
                                 limit={pageSize}
                                 headData={customerTableHead}
                                 data={categories}

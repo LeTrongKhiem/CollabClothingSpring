@@ -11,6 +11,7 @@ import Select from "react-select";
 import InventoryModal from "../components/modal/InventoryModal";
 import EditOrder from "../components/modal/EditOrder";
 import ProductModal from "../components/modal/ProductModal";
+import Loading from "../components/loading/Loading";
 
 const customerTableHead = [{key: "", label: "#"}, {key: "name", label: "products.name"}, {
     key: "",
@@ -263,7 +264,7 @@ const Products = () => {
                                 />
 
                             </div>
-                            {loading ? <div>Loading...</div> : (<Table
+                            {loading ? <Loading/> : (<Table
                                 limit={pageSize}
                                 headData={customerTableHead}
                                 data={productList}

@@ -13,6 +13,7 @@ import ProductsService from "../services/ProductsService";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
+import Loading from "../components/loading/Loading";
 
 const consumerOptions = [
     {value: 1, label: 'Nam'},
@@ -121,7 +122,9 @@ const AddProduct = () => {
         data.append(`file[${index}]thumbnail`, file.isThumbnail)
         return data;
     });
+
     const saveProduct = async (values) => {
+        setLoading(true)
         const data = new FormData();
         data.append('name', values.name)
         data.append('priceOld', values.priceOld)
@@ -148,6 +151,7 @@ const AddProduct = () => {
                 toast.success("Thêm sản phẩm thành công", {
                     position: toast.POSITION.TOP_CENTER
                 })
+                setLoading(false)
                 navigate('/products')
 
             } else {
@@ -160,6 +164,7 @@ const AddProduct = () => {
             console.log(e)
         }
     }
+    if (loading) return <Loading/>
     return (<div>
         <h2 className="page-header">
             Quản lý sản phẩm
