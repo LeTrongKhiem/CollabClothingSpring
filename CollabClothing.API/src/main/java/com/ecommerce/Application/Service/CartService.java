@@ -174,7 +174,7 @@ public class CartService implements ICartService {
             Product product = productRepository.findById(orderDetail.getProductId()).orElseThrow();
             String size = sizeRepository.findById(orderDetail.getSizeId()).get().getName();
             String color = colorRepository.findById(orderDetail.getColorId()).get().getName();
-            OrderDetailModel orderDetailModel = CartMapping.mapOrderDetail(orderDetail, product, size, color);
+            OrderDetailModel orderDetailModel = CartMapping.mapOrderDetail(orderDetail, product, color, size);
             orderDetailModels.add(orderDetailModel);
         }
         return orderDetailModels;
