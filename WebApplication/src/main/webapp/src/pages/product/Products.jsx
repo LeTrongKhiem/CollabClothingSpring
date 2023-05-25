@@ -10,6 +10,7 @@ import {sizeOptions} from "../../constants/Sizes";
 import {categoryOptions} from "../../constants/Categories";
 import Select from "react-select";
 import {brandOptions} from "../../constants/Brands";
+import Loading from "../../components/loading/Loading";
 
 const Catalog = () => {
     const sortOptions = [
@@ -227,7 +228,7 @@ const Catalog = () => {
                         />
                 </div>
                 </div>
-                {isLoading && <div>Loading</div>}
+                {isLoading && <Loading/>}
                 <InfinityList data={products}/>
             </div>
         </div>

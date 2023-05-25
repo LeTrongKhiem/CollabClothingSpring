@@ -13,6 +13,7 @@ import ProductsService from "../services/ProductsService";
 import {toast} from "react-toastify";
 import {useNavigate, useParams} from "react-router-dom";
 import * as Yup from "yup";
+import Loading from "../components/loading/Loading";
 
 const consumerOptions = [
     {value: 1, label: 'Nam'},
@@ -136,7 +137,7 @@ const EditProduct = () => {
         }
     }
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading/>;
     }
     return (
         <>

@@ -7,6 +7,7 @@ import ProductsService from "../services/ProductsService";
 import {toast} from "react-toastify";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
+import Loading from "../components/loading/Loading";
 
 const ProductImages = () => {
     const [loading, setLoading] = useState(true);
@@ -78,7 +79,9 @@ const saveProductImage = async () => {
     }
 }
 
-
+    if(loading){
+        return <Loading/>
+    }
 return (<div>
     <h2 className="page-header">
         Ảnh sản phẩm

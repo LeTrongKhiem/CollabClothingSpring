@@ -15,6 +15,32 @@ class CartService {
             }
         });
     }
+    orderHistory() {
+        const token = localStorage.getItem("token");
+        return axios.get(API_URL + "/carts/getOrderHistory", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+    getOrderByID(id) {
+        const token = localStorage.getItem("token");
+        return axios.get(API_URL + "/carts/getorderdetail/" + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+    cancelOrder(id, status) {
+        const token = localStorage.getItem("token");
+        return axios.put(API_URL + "/carts/changestatusorder/" + id, status, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+    }
+
 
 
 }

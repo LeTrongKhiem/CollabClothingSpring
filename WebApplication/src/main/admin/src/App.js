@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "./components/sidebar/Sidebar";
 import {Dashboard, Customers, Products, Categories, Brands, Inventory, Orders} from "./pages";
 import Login from "./pages/Login";
-import {selectIsLoggedIn} from "./redux/slice/authSlice";
+import {logout, selectIsLoggedIn} from "./redux/slice/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {ToastContainer} from "react-toastify";
 import Topnav from "./components/topnav/TopNav";
@@ -17,7 +17,8 @@ import ProductImages from "./pages/ProductImages";
 import EditProduct from "./pages/EditProduct";
 import {useEffect, useState} from "react";
 import ThemeAction from "./redux/actions/ThemeAction";
-
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 function App() {
     const themeReducer = useSelector(state => state.theme)
     const dispatch = useDispatch()
@@ -33,7 +34,25 @@ function App() {
         dispatch(ThemeAction.setColor(colorClass))
     }, [dispatch])
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
 
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            const expirationTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
+            const timeUntilExpiration = expirationTime - Date.now();
+
+            const timeoutId = setTimeout(() => {
+                dispatch(logout());
+                localStorage.removeItem("token");
+                delete axios.defaults.headers.common["Authorization"];
+            }, timeUntilExpiration);
+
+            return () => {
+                clearTimeout(timeoutId);
+            };
+        }
+    }, [dispatch]);
     return (<BrowserRouter>
         <Routes>
             {isLoggedIn || localStorage.getItem("isLoginAdmin") ? (<Route

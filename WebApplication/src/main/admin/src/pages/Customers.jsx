@@ -4,6 +4,7 @@ import UserService from "../services/UserService";
 import CreateUserModal from "../components/modal/CreateUserModal";
 import {useTranslation} from "react-i18next";
 import i18n from '../locales/i18n';
+import Loading from "../components/loading/Loading";
 
 const customerTableHead = [{key: "number", label: "#"}, {key: "email", label: "customers.email"}, {
     key: "lastName",
@@ -121,7 +122,7 @@ const Customers = () => {
                                 />
 
                             </div>
-                            {loading ? <div>Loading...</div> : (<Table
+                            {loading ? <Loading/>: (<Table
                                 limit={pageSize}
                                 headData={customerTableHead}
                                 data={customerList}
