@@ -2,6 +2,7 @@ package com.ecommerce.Application.Mappings;
 
 import com.ecommerce.Entities.Order;
 import com.ecommerce.Entities.OrderDetail;
+import com.ecommerce.Entities.Product;
 import com.ecommerce.Model.Orders.OrderDetailModel;
 import com.ecommerce.Model.Orders.OrderModel;
 
@@ -60,22 +61,21 @@ public class CartMapping {
         return orderModel;
     }
 
-    public static List<OrderDetailModel> mapOrderDetail(List<OrderDetail> orderDetail) {
-        List<OrderDetailModel> orderDetailModels = null;
-        for (OrderDetail detail : orderDetail) {
-            OrderDetailModel orderDetailModel = new OrderDetailModel();
-            orderDetailModel.setProductId(detail.getProductId());
-            orderDetailModel.setQuantity(detail.getQuantity());
-            orderDetailModels.add(orderDetailModel);
-        }
-        return orderDetailModels;
+    public static OrderDetailModel mapOrderDetail(OrderDetail orderDetail, Product product, String color, String size) {
+        OrderDetailModel orderDetailModel = new OrderDetailModel();
+        orderDetailModel.setProductName(product.getName());
+        orderDetailModel.setPrice(product.getProductDetail().getPriceCurrent());
+        orderDetailModel.setColor(color);
+        orderDetailModel.setSize(size);
+        orderDetailModel.setImage(product.getProductImages().stream().map(x -> x.getPath()).findFirst().get());
+        orderDetailModel.setProductId(orderDetail.getProductId());
+        orderDetailModel.setQuantity(orderDetail.getQuantity());
+        orderDetailModel.setColorId(orderDetail.getColorId());
+        orderDetailModel.setSizeId(orderDetail.getSizeId());
+        return orderDetailModel;
     }
 
     public static List<OrderModel> mapListOrder(List<Order> orders) {
         return orders.stream().map(CartMapping::mapOrder).toList();
     }
-
-//    public static List<OrderDetailModel> mapListOrderDetail(List<OrderDetail> orderDetails) {
-//        return orderDetails.stream().map(CartMapping::mapOrderDetail).toList();
-//    }
 }

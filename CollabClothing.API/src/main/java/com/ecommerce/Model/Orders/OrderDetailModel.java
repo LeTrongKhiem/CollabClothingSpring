@@ -17,4 +17,5 @@ public class OrderDetailModel {
     private UUID orderId;
     private UUID sizeId;
     private UUID colorId;
+    private String image;
 }
