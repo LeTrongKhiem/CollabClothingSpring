@@ -12,10 +12,7 @@ import com.ecommerce.Model.Orders.OrderModel;
 import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.SearchProductItems;
 import com.ecommerce.Model.SearchModel;
-import com.ecommerce.Repository.OrderDetailRepository;
-import com.ecommerce.Repository.OrderRepository;
-import com.ecommerce.Repository.ProductRepository;
-import com.ecommerce.Repository.UserRepository;
+import com.ecommerce.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
@@ -23,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,6 +34,10 @@ public class CartService implements ICartService {
     private OrderDetailRepository orderDetailRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private SizeRepository sizeRepository;
+    @Autowired
+    private ColorRepository colorRepository;
     @Autowired
     private UserRepository userRepository;
     @Override
@@ -164,10 +166,18 @@ public class CartService implements ICartService {
     public List<OrderDetailModel> getOrderDetail(UUID orderId) {
         Optional<Order> order = orderRepository.findById(orderId);
         List<OrderDetail> orderDetails = orderDetailRepository.findAllByOrderId(orderId);
+        List<OrderDetailModel> orderDetailModels = new ArrayList<>();
         if (!order.isPresent()) {
             return null;
         }
-        return CartMapping.mapOrderDetail(orderDetails);
+        for (OrderDetail orderDetail : orderDetails) {
+            Product product = productRepository.findById(orderDetail.getProductId()).orElseThrow();
+            String size = sizeRepository.findById(orderDetail.getSizeId()).get().getName();
+            String color = colorRepository.findById(orderDetail.getColorId()).get().getName();
+            OrderDetailModel orderDetailModel = CartMapping.mapOrderDetail(orderDetail, product, size, color);
+            orderDetailModels.add(orderDetailModel);
+        }
+        return orderDetailModels;
     }
 
     @Override
