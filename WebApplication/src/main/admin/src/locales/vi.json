@@ -24,6 +24,7 @@
     "role": "Vai trò"
   },
   "products": {
+    "addProduct": "Thêm sản phẩm",
     "title": "Sản phẩm",
     "name": "Tên",
     "categoryNames": "Danh mục",
@@ -62,6 +63,7 @@
     "description": "Mô tả"
   },
   "orders": {
+
     "title": "Đơn hàng",
     "status": "Trạng thái",
     "shipName": "Tên người nhận",
@@ -75,6 +77,10 @@
     "shipAddress": "Địa chỉ nhận hàng",
     "shipEmail": "Email",
     "paymentMethod": "Phương thức thanh toán"
+  },
+  "analytic": {
+    "title": "Thống kê"
+
   }
 
 }

@@ -6,7 +6,7 @@ import "./assets/css/index.css";
 import './assets/css/theme.css'
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "./components/sidebar/Sidebar";
-import {Dashboard, Customers, Products, Categories, Brands, Inventory, Orders} from "./pages";
+import {Dashboard, Customers, Products, Categories, Brands, Inventory, Orders, Analytics} from "./pages";
 import Login from "./pages/Login";
 import {logout, selectIsLoggedIn} from "./redux/slice/authSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -73,6 +73,7 @@ function App() {
                                 <Route path="brands" element={<Brands/>}/>
                                 <Route path="/inventory" element={<Inventory/>}/>
                                 <Route path="/orders" element={<Orders/>}/>
+                                <Route path="/analytics" element={<Analytics/>}/>
                             </Routes>
                         </div>
                     </div>

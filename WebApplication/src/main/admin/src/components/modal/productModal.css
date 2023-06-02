@@ -18,7 +18,7 @@
     visibility: visible;
 }
 
-.product-view__modal__content {
+.product-view__modal__content.detail{
     margin: auto;
     padding: 2rem;
     background-color: #fff;

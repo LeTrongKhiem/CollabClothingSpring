@@ -9,6 +9,7 @@ import OrderService from "../services/OrderService";
 import EditOrder from "../components/modal/EditOrder";
 import Badge from "../components/badge/Badge";
 import ChangeOrderStatus from "../components/modal/ChangeOrderStatus";
+import Loading from "../components/loading/Loading";
 
 const customerTableHead = [{key: "number", label: "#"}, {key: "shipName", label: "orders.shipName"}, {
     key: "", label: "orders.shipAddress"
@@ -77,6 +78,13 @@ const Orders = () => {
             setOrderId(id);
             openStatusModal();
         }
+        const handlePrintReceipt = () => {
+            const response = OrderService.exportReceipt(id);
+            if (response.status === 200) {
+                toast.success("Đã xuất hóa đơn")
+            }
+
+        }
         return (<tr key={index}>
             <td>{index + 1}</td>
             <td>{shipName}</td>
@@ -101,6 +109,14 @@ const Orders = () => {
 
                 }} onClick={handleStatusClick}>
                     <i className='bx bx-reset'></i>
+                </button>
+                <button className="btn" style={{
+                    outline: "none", border: "none", backgroundColor: "transparent", fontSize: "1rem",
+
+                }}
+                        onClick={() =>handlePrintReceipt(id)}
+                >
+                    <i className='bx bx-receipt'></i>
                 </button>
 
             </td>
@@ -160,7 +176,7 @@ const Orders = () => {
                                 />
 
                             </div>
-                            {loading ? <div>Loading...</div> : (<Table
+                            {loading ? <Loading/> : (<Table
                                 limit={pageSize}
                                 headData={customerTableHead}
                                 data={orders}

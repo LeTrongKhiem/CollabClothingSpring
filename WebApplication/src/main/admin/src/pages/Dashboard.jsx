@@ -14,28 +14,7 @@ import Badge from '../components/badge/Badge'
 import productsService from "../services/ProductsService";
 import OrderService from "../services/OrderService";
 
-const statusCards = [
-    {
-        "icon": "bx bx-shopping-bag",
-        "count": "1,995",
-        "title": "Total sales"
-    },
-    {
-        "icon": "bx bx-cart",
-        "count": "2,001",
-        "title": "Daily visits"
-    },
-    {
-        "icon": "bx bx-dollar-circle",
-        "count": "$2,632",
-        "title": "Total income"
-    },
-    {
-        "icon": "bx bx-receipt",
-        "count": "1,711",
-        "title": "Total orders"
-    }
-]
+
 const chartOptions = {
     series: [{
         name: 'Online Customers',
@@ -201,10 +180,12 @@ const renderOrderBody = (item, index) => {
 
 
 const Dashboard = () => {
+
     const [orders, setOrders] = useState([])
     console.log(orders)
     const [loading, setLoading] = useState(false)
     const themeReducer = useSelector(state => state.theme)
+
     useEffect(() => {
         const getProducts = async () => {
             setLoading(true);
@@ -214,6 +195,31 @@ const Dashboard = () => {
         };
         getProducts();
     }, []);
+    const totalOrders = orders.length;
+    const totalSales = orders.reduce((acc, cur) => acc + cur.totalMoney, 0);
+    const totalIncome = orders.reduce((acc, cur) => acc + cur.totalMoney, 0);
+    const statusCards = [
+        {
+            "icon": "bx bx-shopping-bag",
+            "count": totalSales,
+            "title": "Total sales"
+        },
+        {
+            "icon": "bx bx-cart",
+            "count": "2,001",
+            "title": "Daily visits"
+        },
+        {
+            "icon": "bx bx-dollar-circle",
+            "count": totalIncome,
+            "title": "Total income"
+        },
+        {
+            "icon": "bx bx-receipt",
+            "count": totalOrders,
+            "title": "Total orders"
+        }
+    ]
     return (
         <div>
             <h2 className="page-header">Dashboard</h2>
