@@ -6,7 +6,10 @@ import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.ProductModel;
 import com.ecommerce.Model.Products.SearchProductItems;
 import com.ecommerce.Model.SearchModel;
+import com.lowagie.text.pdf.PdfPTable;
+import jakarta.servlet.http.HttpServletResponse;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,4 +21,6 @@ public interface ICartService {
     List<OrderDetailModel> getOrderDetail(UUID orderId);
     OrderModel getOrder(UUID orderId);
     PagingModel<OrderModel> getAll(UUID userId, SearchModel items, int status, String phone);
+    String exportPDF(UUID orderId, UUID userId, HttpServletResponse httpServletResponse);
+    double statistics(Date startDate, Date endDate);
 }
