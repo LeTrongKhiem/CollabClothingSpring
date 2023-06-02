@@ -12,6 +12,7 @@ import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.ProductModel;
 import com.ecommerce.Model.Products.SearchProductItems;
 import com.ecommerce.Model.SearchModel;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/carts")
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:4000/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:4000/"})
 public class CartController {
     @Autowired
     private ICartService cartService;
@@ -125,6 +129,38 @@ public class CartController {
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("export/{orderId}")
+    @StaffRole
+    public void exportOrder(@PathVariable UUID orderId, HttpServletResponse httpServletResponse) {
+        try {
+            UUID userId = AuthenticateExtensions.getUserId();
+            httpServletResponse.setContentType("application/pdf");
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=orders_" + currentDateTime + ".pdf";
+            httpServletResponse.setHeader(headerKey, headerValue);
+            cartService.exportPDF(orderId, userId, httpServletResponse);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @GetMapping("/statistic")
+    @StaffRole
+    public double statistic(String startDate, String endDate) {
+        try {
+            UUID userId = AuthenticateExtensions.getUserId();
+            java.sql.Date start = java.sql.Date.valueOf(startDate);
+            java.sql.Date end = java.sql.Date.valueOf(endDate);
+            return cartService.statistics(start, end);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 }

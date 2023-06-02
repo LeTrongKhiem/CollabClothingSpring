@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**", "/upload_images/**", "/api/products/**","/api/warehouses/**","/api/categories/**","/api/brands/**")
+                .requestMatchers("/api/auth/**", "/upload_images/**", "/api/products/**", "/api/warehouses/**", "/api/categories/**", "/api/brands/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-                 http.cors();
+        http.cors();
 
         return http.build();
     }
