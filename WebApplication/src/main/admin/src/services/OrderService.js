@@ -49,6 +49,14 @@ class OrderService {
             }
         });
     }
+    exportReceipt (id) {
+        const token = localStorage.getItem("token");
+        return axios.get(API_URL + "/carts/export/" + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 }
 
 export default new OrderService();

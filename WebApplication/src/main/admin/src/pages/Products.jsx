@@ -200,11 +200,13 @@ const Products = () => {
                                                   productId={productId ? productId : null}/>
 
 
-                                    <button style={{
+                                    <button className="btn-addProduct" style={{
                                         margin: "10px 0px",
+                                        padding: "10px 20px",
+
                                     }}>
                                         <Link to="/products/addProduct">
-                                            <i className='bx bx-plus'></i>
+                                            {t('products.addProduct')}
                                         </Link>
                                     </button>
                                 </div>

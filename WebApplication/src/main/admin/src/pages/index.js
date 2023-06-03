@@ -5,3 +5,4 @@ export {default as Categories} from "./Categories";
 export {default as Brands} from "./Brands";
 export {default as Inventory} from "./Inventory";
 export {default as Orders} from "./Orders";
+export {default as Analytics} from "./Analytics";

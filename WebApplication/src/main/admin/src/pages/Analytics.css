@@ -1,0 +1,33 @@
+select{
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    height: 40px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background-color: #fff;
+    background-image: none;
+    -webkit-box-shadow: none;
+}
+option{
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    height: 40px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background-color: #fff;
+    background-image: none;
+    -webkit-box-shadow: none;
+
+}

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 
-import "./categoriesEdit.css";
 import "./productModal.css"
 import ProductsService from "../../services/ProductsService";
 
@@ -38,7 +37,7 @@ function ProductModal({showModal, closeModal, productId}) {
 
 
         <div className={`product-view__modal ${showModal ? "active" : ""}`}>
-            <div className="product-view__modal__content auth">
+            <div className="product-view__modal__content detail">
                 <div className="product-view__modal__content__close">
                     <button onClick={closeModal}>
                         <i className="fas fa-times"></i>

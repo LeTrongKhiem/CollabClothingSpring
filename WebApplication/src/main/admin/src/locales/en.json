@@ -24,6 +24,7 @@
     "role": "Role"
   },
   "products": {
+    "addProduct": "Add Product",
     "title": "Products",
     "name": "Name",
     "brandName": "Brand Name",
@@ -78,5 +79,9 @@
     "shipPhone": "Phone",
     "shipEmail": "Email",
     "paymentMethod": "Payment Method"
+  },
+  "analytic": {
+    "title": "Analytic"
+
   }
 }
