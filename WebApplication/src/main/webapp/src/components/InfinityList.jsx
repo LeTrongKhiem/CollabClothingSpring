@@ -4,7 +4,7 @@ import ProductCard from "./ProductCard";
 import Grid from "./UI/Grid";
 
 const InfinityList = (props) => {
-    const perload = 6;
+    const perload = 3;
     const [data, setData] = useState([]);
     const listRef = useRef(null);
     const [load, setLoad] = useState(true);
@@ -42,6 +42,11 @@ const InfinityList = (props) => {
         getItems();
         setLoad(false);
     }, [load, index, data, props.data]);
+    if(data.length === 0){
+        return  <div>
+            <div className="catalog__content__emty">Không có sản phẩm nào</div>
+        </div>
+    }
     return (
         <>
             <div ref={listRef}>

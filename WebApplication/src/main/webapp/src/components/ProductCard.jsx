@@ -5,9 +5,11 @@ import { useDispatch } from "react-redux";
 import Button from "./UI/ButtonUI";
 import numberWithCommas from "../utils/numberWithCommas";
 import {set} from "../redux/slice/productModalSlice";
+import {useTranslation} from "react-i18next";
 
 const ProductCard = (props) => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     return (
         <div className="product-card">
             <Link to={`/product/${props.id}`}>
@@ -17,7 +19,7 @@ const ProductCard = (props) => {
                 </div>
                 <h3 className="product-card__name">{props.name}</h3>
                 <div className="product-card__price">
-                    {numberWithCommas(props.price)}
+                    {numberWithCommas(props.price)}đ
                     <span className="product-card__price__old">
             <del>{numberWithCommas(props.priceOld)}</del>
           </span>
@@ -30,7 +32,7 @@ const ProductCard = (props) => {
                     animate={true}
                     onClick={() => dispatch(set(props.id))}
                 >
-                    chọn mua
+                    {t("catalog.product.add")}
                 </Button>
             </div>
         </div>

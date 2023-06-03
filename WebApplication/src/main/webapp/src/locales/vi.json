@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "products": "Sản phẩm",
+    "accessories": "Phụ kiện",
+    "contact": "Liên hệ",
+    "orders": "Đơn hàng",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất"
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "login": "Đăng nhập",
+      "forgot": "Quên mật khẩu?",
+      "goToRegister": "Bạn chưa có tài khoản?",
+      "loginWith": "Đăng nhập với",
+      "register": "Đăng ký"
+    },
+    "register": {
+      "title": "Đăng ký",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "dob": "Ngày sinh",
+      "register": "Đăng ký",
+      "login": "Đăng nhập",
+      "goToLogin": "Bạn đã có tài khoản?",
+      "lastName": "Họ",
+      "firstName": "Tên",
+      "phone": "Số điện thoại",
+      "gender": {
+        "title": "Giới tính",
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác"
+      },
+      "address": "Địa chỉ",
+      "validate": {
+        "email": "Vui lòng nhập email",
+        "emailInvalid": "Email không hợp lệ",
+        "password": "Vui lòng nhập mật khẩu",
+        "passwordInvalid": "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
+      }
+    },
+    "forgot": {
+      "title": "Quên mật khẩu",
+      "email": "Email",
+      "send": "Gửi",
+      "login": "Đăng nhập"
+    },
+    "reset": {
+      "title": "Đặt lại mật khẩu",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "reset": "Đặt lại mật khẩu",
+      "login": "Đăng nhập",
+      "register": "Đăng ký"
+    },
+    "resetPassword": {
+      "title": "Đặt lại mật khẩu",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "reset": "Đặt lại mật khẩu",
+      "login": "Đăng nhập",
+      "register": "Đăng ký"
+    },
+    "validate": {
+      "email": "Email không hợp lệ",
+      "emailExist": "Email đã tồn tại",
+      "emailNotExist": "Email không tồn tại",
+      "emailInvalid": "Email không hơp lệ",
+      "password": "Mật khẩu phải có ít nhất 8 ký tự",
+      "passwordInvalid": "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt",
+      "confirmPassword": "Mật khẩu không khớp",
+      "confirmPasswordInvalid": "Mật khẩu không khớp",
+      "dob": "Ngày sinh không hợp lệ",
+      "dobOlder": "Năm sinh phải lớn hơn 1930",
+      "dobYounger": "Khách hàng phải trên 14 tuổi",
+      "lastName": "Họ không hợp lệ",
+      "firstName": "Tên không hợp lệ",
+      "phone": "Vui lòng nhập số điện thoại",
+      "phoneInvalid": "Số điện thoại không hợp lệ",
+      "address": "Địa chỉ không hợp lệ",
+      "gender": "Vui lòng chọn giới tính"
+    }
+  },
+  "catalog": {
+    "title": "Sản phẩm",
+    "sort": {
+      "title": "Sắp xếp",
+      "price": "Giá",
+      "name": "Tên",
+      "date": "Ngày"
+    },
+    "filter": {
+      "category": "Danh mục sản phẩm",
+      "brand": "Thương hiệu",
+      "color": "Màu sắc",
+      "size": "Kích cỡ",
+      "title": "Lọc",
+      "price": "Giá",
+      "name": "Tên",
+      "date": "Ngày"
+    },
+    "product": {
+      "color": "Màu sắc",
+      "size": "Kích cỡ",
+      "price": "Giá",
+      "name": "Tên",
+      "date": "Ngày",
+      "description": "Mô tả",
+      "add": "Chọn mua"
+    },
+    "productDetail": {
+      "color": "Màu sắc",
+      "size": "Kích cỡ",
+      "price": "Giá",
+      "name": "Tên",
+      "date": "Ngày",
+      "description": "Mô tả",
+      "quantity": "Số lượng",
+      "add": "Chọn mua",
+      "buy": "Mua ngay",
+      "descriptionTitle": "Chi tiết sản phẩm",
+      "descriptionClose": "Thu gọn",
+      "descriptionOpen": "Xem thêm"
+    }
+  },
+  "userProfile": {
+    "info": {
+      "title": "Thông tin",
+      "info": "Thông tin cá nhân",
+      "edit": "Chỉnh sửa",
+      "lastName": "Họ",
+      "firstName": "Tên",
+      "gender": {
+        "title": "Giới tính",
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác"
+      },
+      "dob": "Ngày sinh",
+      "phone": "Số điện thoại",
+      "address": "Địa chỉ"
+    },
+    "security": {
+      "title": "Bảo mật",
+      "security": "Đôi mật khẩu",
+      "changePassword": "Đổi mật khẩu",
+      "oldPassword": "Mật khẩu cũ",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Nhập lại mật khẩu mới",
+      "change": "Đổi",
+      "validate": {
+        "oldPassword": "Vui lòng nhập mật khẩu cũ",
+        "newPassword": "Vui lòng nhập mật khẩu mới",
+        "confirmPassword": "Vui lòng xác nhận mật khẩu",
+        "confirmPasswordInvalid": "Mật khẩu không khớp",
+        "passwordInvalid": "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
+      }
+    }
+  }
+}

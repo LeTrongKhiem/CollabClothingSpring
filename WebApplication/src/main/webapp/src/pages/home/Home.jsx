@@ -76,7 +76,7 @@ const Home = () => {
             setProducts(res.results);
 
         });
-        getProductLatest(10).then((res) => {
+        getProductLatest(8).then((res) => {
                 setProductNew(res.results);
 
             }
@@ -146,7 +146,7 @@ const Home = () => {
                 </SectionBody>
             </Section>
             <Section>
-                <SectionTitle>Top 10 sản phẩm mới nhất</SectionTitle>
+                <SectionTitle>Top  sản phẩm mới nhất</SectionTitle>
                 <SectionBody>
                     {isLoading ? (
                         <div>Loading...</div>

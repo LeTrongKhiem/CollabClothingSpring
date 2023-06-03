@@ -6,16 +6,19 @@ import Select from "react-select";
 import UserService from "../../services/UserService";
 import {toast} from "react-toastify";
 import * as Yup from "yup";
+import Loading from "../../components/loading/Loading";
+import {useTranslation} from "react-i18next";
 
 const UserProfile = () => {
 
     const [activeTab, setActiveTab] = useState("profile");
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true);
+    const {t} = useTranslation();
     const handleTabChange = (tab) => {
         setActiveTab(tab);
     };
-    const genderOptions = [{label: 'Nam', value: '1'}, {label: 'Nữ', value: '2'}, {label: 'Khác', value: '3'}];
+    const genderOptions = [{label: t("userProfile.info.gender.male"), value: '1'}, {label: t("userProfile.info.gender.female"), value: '2'}, {label: t("userProfile.info.gender.other"), value: '3'}];
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -100,7 +103,7 @@ const UserProfile = () => {
             .oneOf([Yup.ref("newPassword")], "Mật khẩu không khớp"),
     })
 
-    if (loading) return <div>Loading...</div>
+    if (loading) return <Loading/>
     return (<div className={styles.userProfile}>
         <div className={styles.profileHeader}>
             <div className={styles.profileHeader__avatar}>
@@ -116,19 +119,19 @@ const UserProfile = () => {
                 className={`${styles.tab} ${activeTab === "profile" && styles.active}`}
                 onClick={() => setActiveTab("profile")}
             >
-                Thông tin
+                {t("userProfile.info.title")}
             </div>
             <div
                 className={`${styles.tab} ${activeTab === "password" && styles.active}`}
                 onClick={() => setActiveTab("password")}
             >
-                Bảo mật
+                {t("userProfile.security.title")}
             </div>
         </div>
         <div className={styles.profileContent}>
             {activeTab === "profile" && (<>
                 <div className={styles.section}>
-                    <h3>Thông tin cơ bản</h3>
+                    <h3>{t("userProfile.info.info")}</h3>
                     <Formik
                         initialValues={user}
                         onSubmit={saveProfile}
@@ -139,7 +142,7 @@ const UserProfile = () => {
                         {({values, errors, setFieldValue}) => {
                             return (<Form>
                                     <div className={styles.formGroup}>
-                                        <label>Họ</label>
+                                        <label>{t("userProfile.info.lastName")}</label>
                                         <input
                                             type="text"
                                             name="lastName"
@@ -150,7 +153,7 @@ const UserProfile = () => {
                                             <div className={styles.errorMessage}>{errors.lastName}</div>) : null}
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label>Tên</label>
+                                        <label>{t("userProfile.info.firstName")}</label>
                                         <input
                                             type="text"
                                             name="firstName"
@@ -165,7 +168,7 @@ const UserProfile = () => {
                                         <input type="email" name="email" defaultValue={values.email} readOnly/>
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label>Giới tính</label>
+                                        <label>{t("userProfile.info.gender.title")}</label>
                                         <Select
                                             options={genderOptions}
                                             name="gender"
@@ -174,7 +177,7 @@ const UserProfile = () => {
                                         />
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label>Ngày Sinh</label>
+                                        <label>{t("userProfile.info.dob")}</label>
                                         <input
                                             type="date"
                                             name="dob"
@@ -184,7 +187,7 @@ const UserProfile = () => {
                                         {errors.dob && (<div className={styles.errorMessage}>{errors.dob}</div>)}
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label>Điện thoại</label>
+                                        <label>{t("userProfile.info.phone")}</label>
                                         <input
                                             type="text"
                                             name="phoneNumber"
@@ -195,7 +198,7 @@ const UserProfile = () => {
                                             <div className={styles.errorMessage}>{errors.phoneNumber}</div>) : null}
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label>Địa chỉ</label>
+                                        <label>{t("userProfile.info.address")}</label>
                                         <input
                                             type="text"
                                             name="address"
@@ -207,7 +210,7 @@ const UserProfile = () => {
                                     </div>
 
                                     <div className={styles.formGroupButton}>
-                                        <button type="submit">Lưu thay đổi</button>
+                                        <button type="submit">{t("userProfile.info.edit")}</button>
                                     </div>
                                 </Form>);
                         }}
@@ -217,7 +220,7 @@ const UserProfile = () => {
             </>)}
             {activeTab === "password" && (<div className={styles.section}>
                 <div className={styles.section}>
-                    <h3>Đổi mật khẩu</h3>
+                    <h3>{t("userProfile.security.security")}</h3>
                     <Formik
                         initialValues={{
                             oldPassword: '', newPassword: '', confirmPassword: '',
@@ -231,7 +234,7 @@ const UserProfile = () => {
                     >
                         {({values, setFieldValue, errors, touched, handleBlur}) => (<Form>
                                 <div className={styles.formGroup}>
-                                    <label>Mật khẩu hiện tại</label>
+                                    <label>{t("userProfile.security.oldPassword")}</label>
                                     <input
                                         type="password"
                                         name="oldPassword"
@@ -246,7 +249,7 @@ const UserProfile = () => {
                                         <div className={styles.errorMessage}>{errors.oldPassword}</div>) : null}
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Mật khẩu mới</label>
+                                    <label>{t("userProfile.security.newPassword")}</label>
                                     <input
                                         type="password"
                                         name="newPassword"
@@ -261,7 +264,7 @@ const UserProfile = () => {
                                         <div className={styles.errorMessage}>{errors.newPassword}</div>) : null}
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Nhập lại mật khẩu mới</label>
+                                    <label>{t("userProfile.security.confirmPassword")}</label>
                                     <input
                                         type="password"
                                         name="confirmPassword"
@@ -276,7 +279,7 @@ const UserProfile = () => {
                                         <div className={styles.errorMessage}>{errors.confirmPassword}</div>) : null}
                                 </div>
                                 <div className={styles.formGroupButton}>
-                                    <button type="submit">Đổi mật khẩu</button>
+                                    <button type="submit">{t("userProfile.security.change")}</button>
                                 </div>
                             </Form>)}
                     </Formik>

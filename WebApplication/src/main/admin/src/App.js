@@ -46,6 +46,7 @@ function App() {
                 dispatch(logout());
                 localStorage.removeItem("token");
                 delete axios.defaults.headers.common["Authorization"];
+                window.location.href = "/login";
             }, timeUntilExpiration);
 
             return () => {

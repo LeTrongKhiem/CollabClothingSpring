@@ -16,18 +16,20 @@ import Button from "../../components/UI/Button";
 import jwtDecode from 'jwt-decode';
 import {selectPreviousURL} from "../../redux/slice/cartItemsSlice";
 import Loading from "../../components/loading/Loading";
+import {useTranslation} from "react-i18next";
 
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const validationSchema = Yup.object().shape({
-        email: Yup.string().required("Vui lòng nhập email").email("Email không hợp lệ").matches(/@[^.]*\./),
+        email: Yup.string().required(t("auth.login.validate.email")).email(t("auth.login.validate.emailInvalid")).matches(/@[^.]*\./),
         password: Yup.string()
-            .required("Vui lòng nhập mật khẩu")
+            .required(t("auth.login.validate.password"))
             .matches(
                 "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
-                "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
+                t("auth.login.validate.passwordInvalid")
             ),
     });
 
@@ -82,7 +84,7 @@ const Login = () => {
                     </div>
                     <Card>
                         <div className={styles.form}>
-                            <h2>Đăng nhập</h2>
+                            <h2>{t("auth.login.title")}</h2>
                             <Formik initialValues={{
                                 email: "", password: ""
                             }} validationSchema={validationSchema}
@@ -91,18 +93,18 @@ const Login = () => {
                                     }}>
                                 <Form>
                                     <FastField name="email" component={InputField} placeholder="Email"/>
-                                    <FastField name="password" component={InputField} placeholder="Mật khẩu"
+                                    <FastField name="password" component={InputField} placeholder={t("auth.login.password")}
                                                type="password"/>
 
                                     <Button
                                         loading={loading}
                                         type="submit"
                                     >
-                                        {loading ? "" : "Đăng nhập"}
+                                        {loading ? "" : t("auth.login.login")}
 
                                     </Button>
                                     <div className={styles.links}>
-                                        <Link to="/reset">Quên mật khẩu ?</Link>
+                                        <Link to="/reset">{t("auth.login.forgot")}</Link>
                                     </div>
                                     <p>-- or --</p>
                                 </Form>
@@ -114,13 +116,13 @@ const Login = () => {
 
                             >
                                 <i className="bx bxl-google"></i>
-                                Đăng nhập với Google
+                                {t("auth.login.loginWith")} Google
                             </button>
                             <span className={styles.register}>
                 <p>
-                  Bạn chưa có tài khoản ? &nbsp;
+                  {t("auth.login.goToRegister")} &nbsp;
                     <Link to="/register">
-                    <b>Đăng ký</b>
+                    <b>{t("auth.login.register")}</b>
                   </Link>
                 </p>
               </span>
