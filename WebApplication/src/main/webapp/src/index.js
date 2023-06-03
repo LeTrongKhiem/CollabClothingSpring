@@ -26,10 +26,13 @@ import {store} from "./redux/store";
 import "react-toastify/dist/ReactToastify.css";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ProductViewModal from "./components/ProductViewModal";
+import {I18nextProvider} from "react-i18next";
+import i18n from "./locales/i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<React.StrictMode>
     <Provider store={store}>
+        <I18nextProvider i18n={i18n}>
         <BrowserRouter>
             <Header/>
             <div className="container">
@@ -54,6 +57,7 @@ root.render(<React.StrictMode>
             </div>
 
         </BrowserRouter>
+        </I18nextProvider>
         <ToastContainer/>
     </Provider>
 </React.StrictMode>);

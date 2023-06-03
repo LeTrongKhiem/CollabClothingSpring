@@ -14,8 +14,10 @@ import SelectField from "../../custom-fields/SelectField";
 import axios from "axios";
 import Button from "../../components/UI/Button";
 import Loading from "../../components/loading/Loading";
+import {useTranslation} from "react-i18next";
 
 const Register = () => {
+    const {t} = useTranslation();
     const initialState = {
         userName: "",
         firstName: "",
@@ -30,28 +32,28 @@ const Register = () => {
     };
     const [loading, setLoading] = useState(false);
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string().required("Vui lòng nhập tên"),
-        lastName: Yup.string().required("Vui lòng nhập họ"), // check day of birth
+        firstName: Yup.string().required(t("auth.validate.firstName")),
+        lastName: Yup.string().required(t("auth.validate.lastName")), // check day of birth
         dob: Yup.date()
             .nullable()
-            .test("dob", "Khách hàng phải trên 14 tuổi", function (value, ctx) {
+            .test("dob", t("auth.validate.dobYounger"), function (value, ctx) {
                 const dob = new Date(value);
                 const validDate = new Date();
                 const valid = validDate.getFullYear() - dob.getFullYear() >= 13;
                 return !valid ? ctx.createError() : valid;
             })
-            .test("dob", "Năm sinh phải lớn hơn 1930 ", function (value, ctx) {
+            .test("dob", t("auth.validate.dobOlder"), function (value, ctx) {
                 const dob = new Date(value);
                 const valid = dob.getFullYear() >= 1930;
                 return !valid ? ctx.createError() : valid;
             })
-            .required("Vui lòng nhập ngày sinh"),
+            .required(t("auth.validate.dob")),
 
-        phoneNumber: Yup.string().required("Vui lòng nhập số điện thoại").matches(/^(?:\+84|0)[3-9]\d{8}$/, "Số điện thoại không hợp lệ"),
-        address: Yup.string().required("Vui lòng nhập địa chỉ"), // check email exist
+        phoneNumber: Yup.string().required(t("auth.validate.phone")).matches(/^(?:\+84|0)[3-9]\d{8}$/, t("auth.validate.phoneInvalid")),
+        address: Yup.string().required(t("auth.validate.address")),
         email: Yup.string()
-            .required('Vui lòng nhập email').email('Email không hợp lệ').matches(/@[^.]*\./)
-            .test('Unique Email', 'Email đã tồn tại', // <- key, message
+            .required(t("auth.validate.email")).email(t("auth.validate.emailInvalid")).matches(/@[^.]*\./)
+            .test('Unique Email', t("auth.validate.emailExist"), // <- key, message
                 async function (value) {
 
                     return await UserService.checkEmailExist(value)
@@ -70,12 +72,12 @@ const Register = () => {
 
 
         password: Yup.string()
-            .required("Vui lòng nhập mật khẩu")
-            .matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"),
+            .required(t("auth.validate.password"))
+            .matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", t("auth.validate.passwordInvalid")),
         confirmPassword: Yup.string()
-            .required("Vui lòng nhập lại mật khẩu")
-            .oneOf([Yup.ref("password")], "Mật khẩu không khớp"),
-        gender: Yup.number().required("Vui lòng chọn giới tính").nullable(),
+            .required(t("auth.validate.confirmPassword"))
+            .oneOf([Yup.ref("password")], t("auth.validate.confirmPasswordInvalid")),
+        gender: Yup.number().required(t("auth.validate.gender")).nullable(),
     });
     const navigate = useNavigate();
     const registerUser = (values) => {
@@ -94,7 +96,7 @@ const Register = () => {
             <section className={` container ${styles.auth}`}>
                 <Card>
                     <div className={styles.form}>
-                        <h2>Đăng ký</h2>
+                        <h2>{t("auth.register.title")}</h2>
                         <Formik
                             initialValues={initialState}
                             validationSchema={validationSchema}
@@ -117,19 +119,19 @@ const Register = () => {
                                         <FastField
                                             name="firstName"
                                             component={InputField}
-                                            placeholder="Họ"
+                                            placeholder={t("auth.register.firstName")}
 
                                         />
                                         <FastField
                                             name="lastName"
                                             component={InputField}
-                                            placeholder="Tên"
+                                            placeholder={t("auth.register.lastName")}
 
                                         />
                                         <FastField
                                             name="dob"
                                             component={InputField}
-                                            placeholder="Ngày sinh"
+                                            placeholder={t("auth.register.dob")}
                                             isdate={true}
                                             type="text"
                                         />
@@ -144,37 +146,37 @@ const Register = () => {
                                                     fontSize: "16px",
                                                 }),
                                             }}
-                                            placeholder="Giới tính"
-                                            options={[{value: "1", label: "Nam"}, {
+                                            placeholder={t("auth.register.gender.title")}
+                                            options={[{value: "1", label: t("auth.register.gender.male")}, {
                                                 value: "2",
-                                                label: "Nữ"
-                                            }, {value: "3", label: "Khác"},]}
+                                                label: t("auth.register.gender.female")
+                                            }, {value: "3", label: t("auth.register.gender.other")},]}
                                         />
 
                                         <FastField
                                             name="phoneNumber"
                                             component={InputField}
-                                            placeholder="Số điện thoại"
+                                            placeholder={t("auth.register.phone")}
                                             isdate={false}
                                         />
                                         <FastField
                                             name="address"
                                             component={InputField}
-                                            placeholder="Địa chỉ"
+                                            placeholder={t("auth.register.address")}
 
                                         />
 
                                         <FastField
                                             name="password"
                                             component={InputField}
-                                            placeholder="Mật khẩu"
+                                            placeholder={t("auth.register.password")}
                                             type="password"
 
                                         />
                                         <FastField
                                             name="confirmPassword"
                                             component={InputField}
-                                            placeholder="Nhập lại mật khẩu"
+                                            placeholder={t("auth.register.confirmPassword")}
                                             type="password"
 
                                         />
@@ -183,7 +185,7 @@ const Register = () => {
                                             type="button"
                                             loading={loading}
                                         >
-                                            {loading ? "" : "Đăng ký"}
+                                            {loading ? "" : t("auth.register.register")}
                                         </Button>
                                     </Form>);
                             }}
@@ -191,9 +193,9 @@ const Register = () => {
 
                         <span className={styles.register}>
               <p>
-                Bạn đã có tài khoản ?{" "}
+               {t("auth.register.goToLogin")}{" "}
                   <Link to="/login">
-                  <b>Đăng nhập</b>
+                  <b> {t("auth.register.login")}</b>
                 </Link>
               </p>
             </span>

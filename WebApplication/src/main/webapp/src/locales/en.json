@@ -1,0 +1,160 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "accessories": "Accessories",
+    "contact": "Contact",
+    "orders": "Orders",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "login": "Login",
+      "forgot": "Forgot password?",
+      "goToRegister": "Don't have an account?",
+      "loginWith": "Login with",
+      "register": "Register",
+      "validate": {
+        "email": "Email is required",
+        "emailInvalid": "Email is invalid",
+        "password": "Password is required",
+        "passwordInvalid": "password must be at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character"
+      }
+    },
+    "register": {
+      "title": "Register",
+      "email": "Email",
+      "password": "Password",
+      "dob": "Date of birth",
+      "confirmPassword": "Confirm password",
+      "register": "Register",
+      "login": "Login",
+      "goToLogin": "Already have an account?",
+      "lastName": "Last name",
+      "firstName": "First name",
+      "phone": "Phone",
+      "gender": {
+        "title": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "address": "Address"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "email": "Email",
+      "send": "Send",
+      "login": "Login"
+    },
+    "reset": {
+      "title": "Reset password",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "reset": "Reset",
+      "login": "Login",
+      "register": "Register"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "reset": "Reset",
+      "login": "Login",
+      "register": "Register"
+    },
+    "validate": {
+      "email": "Email is required",
+      "emailExist": "Email is exist",
+      "emailNotExist": "Email is not exist",
+      "emailInvalid": "Email is invalid",
+      "password": "Password is required",
+      "passwordInvalid": "password must be at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+      "confirmPassword": "Confirm password is required",
+      "confirmPasswordNotMatch": "Confirm password not match",
+      "dob": "Date of birth is required",
+      "dobOlder": "Date of birth must be older than 1930",
+      "dobYounger": "Customer must be older than 14",
+      "firstName": "First name is required",
+      "lastName": "Last name is required",
+      "phone": "Phone is required",
+      "phoneInvalid": "Phone is invalid",
+      "address": "Address is required",
+      "gender": "gender is required"
+    }
+  },
+  "catalog": {
+    "title": "Sản phẩm",
+    "sort": {
+      "title": "Sắp xếp",
+      "price": "Giá",
+      "name": "Tên",
+      "date": "Ngày"
+    },
+    "filter": {
+      "category": "category",
+      "brand": "brand",
+      "color": "color",
+      "size": "size",
+      "title": "Lọc",
+      "price": "Giá",
+      "name": "Tên",
+      "date": "Ngày"
+    },
+    "product": {
+      "color": "color",
+      "size": "size",
+      "price": "Giá",
+      "name": "Tên",
+      "date": "Ngày",
+      "description": "Mô tả",
+      "add": "Add to cart"
+    },
+    "productDetail": {
+      "color": "Color",
+      "size": "Size",
+      "price": "Price",
+      "name": "Name",
+      "date": "Date",
+      "description": "Description",
+      "quantity": "Quantity",
+      "add": "Add to cart",
+      "buy": "Buy now",
+      "descriptionTitle": "Description",
+      "descriptionClose": "Close",
+      "descriptionOpen": "Open"
+    }
+  },
+  "userProfile": {
+    "info": {
+      "title": "Information",
+      "info": "Information",
+      "edit": "Edit",
+      "lastName": "Last name",
+      "firstName": "First name",
+      "gender": {
+        "title": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "dob": "Date of birth",
+      "phone": "Phone",
+      "address": "Address"
+    },
+    "security": {
+      "title": "Security",
+      "security": "Security",
+      "oldPassword": "Old password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "change": "Change"
+    }
+  }
+}

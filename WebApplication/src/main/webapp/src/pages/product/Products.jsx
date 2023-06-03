@@ -11,14 +11,15 @@ import {categoryOptions} from "../../constants/Categories";
 import Select from "react-select";
 import {brandOptions} from "../../constants/Brands";
 import Loading from "../../components/loading/Loading";
+import {useTranslation} from "react-i18next";
 
 const Catalog = () => {
-    const sortOptions = [
-        {value: "name", label: "Tên sản phẩm"},
-        {value: "price", label: "Giá"},
-        {value: "createdAt", label: "Ngày tạo"},
-    ];
+    const sortOptions = [{value: "name", label: "Tên sản phẩm"}, {value: "price", label: "Giá"}, {
+        value: "createdAt",
+        label: "Ngày tạo"
+    },];
     const [products, setProducts] = useState([]);
+    console.log(products)
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -27,7 +28,7 @@ const Catalog = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(100);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortColumn, setSortColumn] = useState("name");
     const [sortOrder, setSortOrder] = useState('asc');
@@ -35,6 +36,7 @@ const Catalog = () => {
     const [brandId, setBrandId] = useState(null);
     const [colorId, setColorId] = useState(null);
     const [sizeId, setSizeId] = useState(null);
+    const {t} = useTranslation();
 
     const filterRef = useRef(null);
     useEffect(() => {
@@ -130,7 +132,7 @@ const Catalog = () => {
                 </div>
                 <div className="catalog__filter__widget">
                     <div className="catalog__filter__widget__title">
-                        danh mục sản phẩm
+                        {t('catalog.filter.category')}
                     </div>
                     <div className="catalog__filter__widget__content">
                         <Select
@@ -146,7 +148,7 @@ const Catalog = () => {
                 </div>
                 <div className="catalog__filter__widget">
                     <div className="catalog__filter__widget__title">
-                        Thương hiệu
+                        {t('catalog.filter.brand')}
                     </div>
                     <div className="catalog__filter__widget__content">
                         <Select
@@ -161,7 +163,7 @@ const Catalog = () => {
                     </div>
                 </div>
                 <div className="catalog__filter__widget">
-                    <div className="catalog__filter__widget__title">màu sắc</div>
+                    <div className="catalog__filter__widget__title">{t("catalog.filter.color")}</div>
                     <div className="catalog__filter__widget__content">
                         {colors.map((item, index) => (<div
                             key={index}
@@ -178,7 +180,7 @@ const Catalog = () => {
                     </div>
                 </div>
                 <div className="catalog__filter__widget">
-                    <div className="catalog__filter__widget__title">Kích cỡ</div>
+                    <div className="catalog__filter__widget__title">{t("catalog.filter.size")}</div>
                     <div className="catalog__filter__widget__content">
                         {sizes.map((item, index) => (<div
                             key={index}
@@ -213,12 +215,12 @@ const Catalog = () => {
             </div>
             <div className="catalog__content">
                 <div className="catalog__content__action">
-                <div className="catalog__content__search">
-                    <i className='bx bx-search'></i>
-                    <input type="search" placeholder="Tìm kiếm sản phẩm" value={searchTerm}
-                           onChange={(e) => setSearchTerm(e.target.value)}/>
-                </div>
-                <div className="catalog__content__sort">
+                    <div className="catalog__content__search">
+                        <i className='bx bx-search'></i>
+                        <input type="search" placeholder="Tìm kiếm sản phẩm" value={searchTerm}
+                               onChange={(e) => setSearchTerm(e.target.value)}/>
+                    </div>
+                    <div className="catalog__content__sort">
                         <Select
                             options={sortOptions}
                             onChange={handleSortChange}
@@ -226,7 +228,7 @@ const Catalog = () => {
                             isClearable={true}
                             styles={customStyles}
                         />
-                </div>
+                    </div>
                 </div>
                 {isLoading && <Loading/>}
                 <InfinityList data={products}/>

@@ -11,10 +11,12 @@ import UserService from "../../services/UserService";
 import {toast} from "react-toastify";
 import axios from "axios";
 import Button from "../../components/UI/Button";
+import {useTranslation} from "react-i18next";
 
 const Reset = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const {t} = useTranslation();
     const resetPassword = async (value) => {
         try {
             const response = await UserService.resetPassword(value.email);
@@ -29,13 +31,12 @@ const Reset = () => {
     };
     const validationSchema = Yup.object().shape({
         email: Yup.string()
-            .required('Vui lòng nhập email')
-            .email('Email không hợp lệ')
-            .test('check-email-exist', 'Email không tồn tại', async function (value) {
+            .required(t("auth.validate.email"))
+            .email(t("auth.validate.emailInvalid"))
+            .test('check-email-exist', t("auth.validate.emailNotExist"), async function (value) {
                 try {
                     const
                         response = await UserService.checkEmailExist(value);
-                    console.log(response)
                     if (response.data === null) {
                         return false;
                     } else if (!response.data.exists) {
@@ -62,7 +63,7 @@ const Reset = () => {
 
                 <Card>
                     <div className={styles.form}>
-                        <h2>Đặt lại mật khẩu</h2>
+                        <h2>{t("auth.reset.reset")}</h2>
                         <Formik initialValues={
                             {
                                 email: ""
@@ -83,14 +84,14 @@ const Reset = () => {
                                             loading={loading}
                                             type="button"
                                             >
-                                            {loading ? "" : "Xác nhận"}
+                                            {loading ? "" : t("auth.reset.reset")}
                                         </Button>
                                         <div className={styles.links}>
                                             <p>
-                                                <Link to="/login">- Đăng nhập</Link>
+                                                <Link to="/login">- {t("auth.reset.login")}</Link>
                                             </p>
                                             <p>
-                                                <Link to="/register">- Đăng ký</Link>
+                                                <Link to="/register">- {t("auth.reset.register")}</Link>
                                             </p>
                                         </div>
                                     </Form>

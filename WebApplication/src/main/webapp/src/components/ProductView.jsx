@@ -13,10 +13,12 @@ import numberWithCommas from "../utils/numberWithCommas";
 import ProductService from "../services/ProductService";
 import {addItem} from "../redux/slice/cartItemsSlice";
 import {remove} from "../redux/slice/productModalSlice";
+import {useTranslation} from "react-i18next";
 
 const ProductView = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {t} = useTranslation();
     let product = props.product;
     console.log(product)
     if(product === undefined){
@@ -215,11 +217,11 @@ const ProductView = (props) => {
                 <h1 className="product__info__title">{product.name}</h1>
                 <div className="product__info__item">
           <span className="product__info__item__price">
-            {numberWithCommas(product.priceCurrent)}
+            {numberWithCommas(product.priceCurrent)} đ
           </span>
                 </div>
                 <div className="product__info__item">
-                    <div className="product__info__item__title">Màu sắc</div>
+                    <div className="product__info__item__title">{t("catalog.productDetail.color")}</div>
                     <div className="product__info__item__list">
                         {product.listColor.map((item, index) => (
                             <div
@@ -235,7 +237,7 @@ const ProductView = (props) => {
                     </div>
                 </div>
                 <div className="product__info__item">
-                    <div className="product__info__item__title">Kích cỡ</div>
+                    <div className="product__info__item__title">{t("catalog.productDetail.size")}</div>
                     <div className="product__info__item__list">
                         {product.listSize.map((item, index) => (
                             <div
@@ -253,7 +255,7 @@ const ProductView = (props) => {
                     </div>
                 </div>
                 <div className="product__info__item">
-                    <div className="product__info__item__title">Số lượng</div>
+                    <div className="product__info__item__title">{t("catalog.productDetail.quantity")}</div>
                     <div className="product__info__item__quantity">
                         <div
                             className="product__info__item__quantity__btn"
@@ -273,8 +275,8 @@ const ProductView = (props) => {
                     </div>
                 </div>
                 <div className="product__info__item">
-                    <Button onClick={() => addToCart()}>thêm vào giỏ</Button>
-                    <Button onClick={() => goToCart()}>mua ngay</Button>
+                    <Button onClick={() => addToCart()}>{t("catalog.productDetail.add")}</Button>
+                    <Button onClick={() => goToCart()}>{t("catalog.productDetail.buy")}</Button>
                 </div>
             </div>
             <div
@@ -282,7 +284,7 @@ const ProductView = (props) => {
                     descriptionExpand ? "expand" : ""
                 }`}
             >
-                <div className="product-description__title">Chi tiết sản phẩm</div>
+                <div className="product-description__title">{t("catalog.productDetail.descriptionTitle")}</div>
                 <div
                     className="product-description__content"
                     dangerouslySetInnerHTML={{ __html: product.description }}
@@ -292,7 +294,7 @@ const ProductView = (props) => {
                         size="sm"
                         onClick={() => setDescriptionExpand(!descriptionExpand)}
                     >
-                        {descriptionExpand ? "Thu gọn" : "Xem thêm"}
+                        {descriptionExpand ? t("catalog.productDetail.descriptionClose") : t("catalog.productDetail.descriptionOpen")}
                     </Button>
                 </div>
             </div>

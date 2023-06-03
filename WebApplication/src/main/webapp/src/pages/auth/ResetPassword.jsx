@@ -9,9 +9,11 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import UserService from "../../services/UserService";
+import {useTranslation} from "react-i18next";
 
 const ResetPassword = () => {
     const [token, setToken] = useState(null);
+    const {t} = useTranslation();
     const navigate = useNavigate();
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
@@ -43,11 +45,11 @@ const ResetPassword = () => {
             .required("Vui lòng nhập mật khẩu")
             .matches(
                 "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
-                "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
+                t("auth.validate.password")
             ),
         confirmPassword: Yup.string()
-            .required("Vui lòng nhập lại mật khẩu mới")
-            .oneOf([Yup.ref("newPassword")], "Mật khẩu không khớp"),
+            .required( t("auth.validate.confirmPassword") + "")
+            .oneOf([Yup.ref("newPassword")], t("auth.validate.confirmPasswordInvalid") + ""),
     });
 
     return (
@@ -60,7 +62,7 @@ const ResetPassword = () => {
 
                 <Card>
                     <div className={styles.form}>
-                        <h2>Đặt lại mật khẩu</h2>
+                        <h2>{t("auth.resetPassword.title")}</h2>
                         <Formik
                             initialValues={{
                                 newPassword: "",
