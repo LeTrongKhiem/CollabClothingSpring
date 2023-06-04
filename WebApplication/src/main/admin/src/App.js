@@ -35,7 +35,7 @@ function App() {
     }, [dispatch])
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
 
         if (token) {
             const decodedToken = jwt_decode(token);
@@ -44,7 +44,7 @@ function App() {
 
             const timeoutId = setTimeout(() => {
                 dispatch(logout());
-                localStorage.removeItem("token");
+                localStorage.removeItem("adminToken");
                 delete axios.defaults.headers.common["Authorization"];
                 window.location.href = "/login";
             }, timeUntilExpiration);

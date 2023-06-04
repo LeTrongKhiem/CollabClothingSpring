@@ -14,7 +14,7 @@ class UserService {
     }
 
     getCurrentUser() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL_USER + "/userProfile", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -27,7 +27,7 @@ class UserService {
     }
 
     getAllUsers(page, pageSize, searchTerm, sortOrder, sortBy) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL_USER + "/getAllUsers", {
             params: {
                 page: page, pageSize: pageSize, search: searchTerm, sortBy: sortBy, sortType: sortOrder
@@ -39,7 +39,7 @@ class UserService {
     }
 
     getTotalsUser() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL_USER + "/all", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -48,7 +48,7 @@ class UserService {
     }
 
     createUser(user) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.post(API_URL_USER + "/adminCreateAccount", user, {
             headers: {
                 Authorization: `Bearer ${token}`

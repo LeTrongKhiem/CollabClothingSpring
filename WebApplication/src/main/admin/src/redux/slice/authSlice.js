@@ -12,7 +12,7 @@ export const authSlice = createSlice({
             state.isLoggedIn = false;
             state.user = null;
             localStorage.removeItem("isLoginAdmin")
-            localStorage.removeItem("token");
+            localStorage.removeItem("adminToken");
         },
     },
 });

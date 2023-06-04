@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:6868/api';
 
 class OrderService {
     getAllOrders(page, pageSize, searchTerm, sortBy, sortOrder, status, phone) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "/carts/getall", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -25,7 +25,7 @@ class OrderService {
         });
     }
     getOrderById(id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "/carts/getorder/" + id, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -33,7 +33,7 @@ class OrderService {
         });
     }
     updateOrder (id, order) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.put(API_URL + "/carts/updateorder/" + id, order, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -41,7 +41,7 @@ class OrderService {
         });
     }
     changeStatus (id, status) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.put(API_URL + "/carts/changestatusorder/" + id, status, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -50,10 +50,11 @@ class OrderService {
         });
     }
     exportReceipt (id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "/carts/export/" + id, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/pdf"
             }
         });
     }

@@ -79,10 +79,14 @@ const Orders = () => {
             openStatusModal();
         }
         const handlePrintReceipt = () => {
-            const response = OrderService.exportReceipt(id);
-            if (response.status === 200) {
-                toast.success("Đã xuất hóa đơn")
-            }
+            OrderService.exportReceipt(id).then((response) => {
+                if (response.status === 200) {
+                    toast.success("Đã xuất hóa đơn")
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
+
 
         }
         return (<tr key={index}>
@@ -114,7 +118,7 @@ const Orders = () => {
                     outline: "none", border: "none", backgroundColor: "transparent", fontSize: "1rem",
 
                 }}
-                        onClick={() =>handlePrintReceipt(id)}
+                        onClick={() => handlePrintReceipt(id)}
                 >
                     <i className='bx bx-receipt'></i>
                 </button>

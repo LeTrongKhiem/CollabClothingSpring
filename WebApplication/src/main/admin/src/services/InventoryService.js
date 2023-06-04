@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:6868/api';
 
 class InventoryService {
     getAllInventory(page,pageSize, sortType, sortBy) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "/warehouses/getall", {
             headers: {
                 Authorization: `Bearer ${token}`

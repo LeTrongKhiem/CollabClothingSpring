@@ -11,7 +11,7 @@ const API_URL_USER = 'http://localhost:6868/api/users';
 class ProductsService {
 
     getCategory() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "categories/all", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -20,7 +20,7 @@ class ProductsService {
     }
 
     getBrand() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "brands/all", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -30,7 +30,7 @@ class ProductsService {
     }
 
     saveProduct(product) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.post(API_URL + "products/saveProduct", product, {
             headers: {
                 Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data'
@@ -40,7 +40,7 @@ class ProductsService {
     }
 
     getAllProducts(page, pageSize, searchTerm, sortOrder, sortBy, categoryId, brand_id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "products/getall", {
             params: {
                 page: page,
@@ -59,7 +59,7 @@ class ProductsService {
     }
 
     getProductById(id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "products/" + id, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -68,7 +68,7 @@ class ProductsService {
     }
 
     updateProduct(id, product) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.put(API_URL + "products/update/" + id, product, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -77,7 +77,7 @@ class ProductsService {
     }
 
     deleteProduct(id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.put(API_URL + "products/delete/" + id,{}, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -86,7 +86,7 @@ class ProductsService {
     }
 
     saveProductImage(id, image) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.post("http://localhost:6868/api/products/image/upload?productId=" + id, image, {
             headers: {
                 Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data"
@@ -95,7 +95,7 @@ class ProductsService {
     }
 
     getProductImage(id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "products/images/" + id, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -104,7 +104,7 @@ class ProductsService {
     }
 
     deleteProductImage(id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.put(API_URL + `products/image/delete/${id}`, {},{
             headers: {
                 Authorization: `Bearer ${token}`
@@ -112,7 +112,7 @@ class ProductsService {
         });
     }
     addWarehouse(productId, warehouse) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.post(API_URL + `warehouses/create/${productId}`, warehouse, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -120,7 +120,7 @@ class ProductsService {
         });
     }
     getQuantityByWarehouseId(id, colorId, sizeId) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + `warehouses/getQuantity/${id}`, {
             params: {
                 colorId: colorId,
