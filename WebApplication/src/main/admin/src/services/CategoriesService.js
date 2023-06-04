@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:6868/api/categories';
 
 class CategoriesService {
     getAllCategories(page,pageSize, searchTerm, sortDirection, sortBy) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + "/all", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -23,7 +23,7 @@ class CategoriesService {
         });
     }
     addCategory(category) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.post(API_URL + "/add", category, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -32,7 +32,7 @@ class CategoriesService {
 
     }
     deleteCategory(id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.put(API_URL + "/delete/" + id, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ class CategoriesService {
         );
     }
     getCategoryById(id) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         return axios.get(API_URL + `/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ class CategoriesService {
         );
     }
     updateCategory(id, category) {
-        const token  = localStorage.getItem("token");
+        const token  = localStorage.getItem("adminToken");
         return axios.put(API_URL + "/update/" + id, category, {
             headers: {
                 Authorization: `Bearer ${token}`,

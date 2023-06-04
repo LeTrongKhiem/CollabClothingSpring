@@ -35,7 +35,7 @@ function Login() {
         UserService.login(value)
             .then((res) => {
                 if (res.status === 200) {
-                    localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("adminToken", res.data.token);
                     UserService.getCurrentUser().then((res) => {
                         console.log(res.data)
                         if (res.data.role === "ADMIN" || res.data.role === "EMPLOYEE") {
