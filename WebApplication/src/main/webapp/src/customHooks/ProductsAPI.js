@@ -6,7 +6,7 @@ export const getProducts = async (limit) => {
     return res.data;
 }
 export const getProductLatest = async (limit) => {
-    const res = await ProductService.getAllProduct(0, limit, "name", "asc");
+    const res = await ProductService.getAllProduct(0, limit, "createdDate", "desc");
     return res.data;
 }
 export const  getProductById = async (id) => {

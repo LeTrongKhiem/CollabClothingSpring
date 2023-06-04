@@ -14,9 +14,23 @@ import Loading from "../../components/loading/Loading";
 import {useTranslation} from "react-i18next";
 
 const Catalog = () => {
-    const sortOptions = [{value: "name", label: "Tên sản phẩm"}, {value: "price", label: "Giá"}, {
-        value: "createdAt",
-        label: "Ngày tạo"
+    const sortOptions = [{
+        value: {
+            value: "name", type: "asc"
+        }, label: "A - Z"
+    }, {
+        value: {
+            value: "name", type: "desc"
+        }, label: "Z - A"
+
+    }, {
+        value: {
+            value: "productDetail.priceCurrent", type: "asc"
+        }, label: "Giá tăng dần"
+    }, {value: {value: "productDetail.priceCurrent", type: "desc"}, label: "Giá giảm dần"}, {
+        value: {
+            value: "createdDate", type: "desc"
+        }, label: "Ngày tạo"
     },];
     const [products, setProducts] = useState([]);
     console.log(products)
@@ -73,9 +87,18 @@ const Catalog = () => {
         }
     }
     const handleSortChange = (value) => {
-        setSortColumn(value.value);
-
-    }
+        if (value === null) {
+            setSortColumn("name");
+            setSortOrder("asc");
+        }
+        if (value && value.value && value.value.value && value.value.type) {
+            setSortColumn(value.value.value);
+            setSortOrder(value.value.type);
+        } else {
+            setSortColumn("name");
+            setSortOrder("asc");
+        }
+    };
     const handleSortOrderChange = (value) => {
 
     }
@@ -210,7 +233,7 @@ const Catalog = () => {
             </div>
             <div className="catalog__filter__toggle">
                 <Button size="sm" onClick={() => showHideFilter()}>
-                    bộ lọc
+                    {t("catalog.clear")}
                 </Button>
             </div>
             <div className="catalog__content">
