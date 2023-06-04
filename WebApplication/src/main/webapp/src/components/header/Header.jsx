@@ -30,6 +30,7 @@ const Header = () => {
     const [displayName, setdisplayName] = useState("");
     const [language, setLanguage] = useState("vi");
     const [showSearchInput, setShowSearchInput] = useState(false);
+    const [totalProducts, setTotalProducts] = useState(0);
     const activeNav = mainNav.findIndex((e) => e.path === pathname);
     const cartItems = useSelector(selectCartItems);
     const headerRef = useRef(null);
@@ -39,6 +40,11 @@ const Header = () => {
     const handleSearchIconClick = () => {
         setShowSearchInput(true);
     };
+    useEffect(() => {
+        setTotalProducts(
+            cartItems.reduce((total, item) => total + Number(item.quantity), 0)
+        );
+    }, [cartItems]);
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -172,7 +178,7 @@ const Header = () => {
                             <Link to="/cart">
                                 <i className="bx bx-shopping-bag"></i>
                             </Link>
-                            <span className="header__card-notice">{cartItems.length}</span>
+                            <span className="header__card-notice">{totalProducts}</span>
 
                         </div>
                     </div>

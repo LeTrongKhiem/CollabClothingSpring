@@ -12,6 +12,7 @@ import {getProductLatest, getProducts} from "../../customHooks/ProductsAPI";
 import {Link} from "react-router-dom";
 import banner from "../../assets/images/banner.png";
 import Loading from "../../components/loading/Loading";
+import {useTranslation} from "react-i18next";
 
 const heroSliderData = [
     {
@@ -68,6 +69,7 @@ const Home = () => {
     const [products, setProducts] = useState([]);
     console.log(products)
     const [productNew, setProductNew] = useState([]);
+    const {t}   = useTranslation();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -106,7 +108,7 @@ const Home = () => {
                 </SectionBody>
             </Section>
             <Section>
-                <SectionTitle> Top sản phẩm bán chạy</SectionTitle>
+                <SectionTitle> {t("home.topProductsSold")}</SectionTitle>
                 <SectionBody>
                     {isLoading ? (
                        <Loading/>
@@ -146,7 +148,7 @@ const Home = () => {
                 </SectionBody>
             </Section>
             <Section>
-                <SectionTitle>Top  sản phẩm mới nhất</SectionTitle>
+                <SectionTitle>{t("home.topProductsLasted")}</SectionTitle>
                 <SectionBody>
                     {isLoading ? (
                         <div>Loading...</div>

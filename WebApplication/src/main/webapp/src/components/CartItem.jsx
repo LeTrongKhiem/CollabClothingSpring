@@ -7,11 +7,13 @@ import numberWithCommas from "../utils/numberWithCommas";
 import { removeItem, updateItem } from "../redux/slice/cartItemsSlice";
 import ProductService from "../services/ProductService";
 import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
 const CartItem = (props) => {
   const dispatch = useDispatch();
   const [item, setItem] = useState(props.item);
   const [quantity, setQuantity] = useState(props.item.quantity);
   const [quantityInStock,setQuantityInStock] = useState(0)
+  const {t} = useTranslation()
   const  checkInventory = () => {
     if(item.color === null  ||  item.size === null){
       return false;
@@ -66,11 +68,11 @@ const CartItem = (props) => {
           <div className="cart__item__info">
             <div className="cart__item__info__name">
               <Link to={`/product/${item.id}`}>
-                {`${item.product.name}`}
+                {t("cart.name")}: {`${item.product.name}`}
                 <br />
-                Màu: {`${item.color.name}`}
+                {t("cart.color")}: {`${item.color.name}`}
                 <br />
-                Size: {`${item.size.name}`}
+                {t("cart.size")}: {`${item.size.name}`}
               </Link>
             </div>
             <div className="cart__item__info__price">

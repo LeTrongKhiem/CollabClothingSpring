@@ -8,6 +8,12 @@
     "logout": "Logout",
     "login": "Login"
   },
+  "home": {
+     "title": "Home",
+    "topProductsLasted": "Top products lasted",
+    "topProductsSold": "Top products sold"
+  },
+
   "auth": {
     "login": {
       "title": "Login",
@@ -97,6 +103,7 @@
       "name": "Tên",
       "date": "Ngày"
     },
+    "clear": "Clear",
     "filter": {
       "category": "category",
       "brand": "brand",
@@ -156,5 +163,27 @@
       "confirmPassword": "Confirm password",
       "change": "Change"
     }
+  },
+  "orders": {
+    "title": "Orders",
+    "orderHistory": "Order history",
+    "orderId": "Order ID",
+    "date": "Date",
+    "status": "Status",
+    "total": "  Total",
+    "price": "Price",
+    "quantity": "Quantity",
+    "size": "Size",
+    "color": "Color"
+  },
+  "cart": {
+    "name": "Name",
+    "color": "Color",
+    "size": "Size",
+    "total": "Total",
+    "checkout": "Checkout",
+    "goToShop": "Go to shop",
+    "totalProduct": "You have ",
+    "product": " products in cart"
   }
 }

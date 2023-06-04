@@ -11,9 +11,12 @@ import {selectIsLoggedIn} from "../../redux/slice/authSlice";
 import {save_url, selectCartItems} from "../../redux/slice/cartItemsSlice";
 import ProductService from "../../services/ProductService";
 import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
+import Loading from "../../components/loading/Loading";
 
 const Cart = () => {
     const [isLoading, setIsLoading] = useState(true)
+    const {t} = useTranslation()
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cartItems = useSelector(selectCartItems);
@@ -77,7 +80,7 @@ const Cart = () => {
                 <div className="cart">
                     <div className="cart__list">
                         {isLoading ? (
-                            <div>loading</div>
+                            <Loading/>
                         ) : (
                             cartProducts.map((item, index) => (
                                 <CartItem key={index} item={item}/>
@@ -86,18 +89,18 @@ const Cart = () => {
                     </div>
                     <div className="cart__info">
                         <div className="cart__info__txt">
-                            <p>Bạn đang có {totalProducts} sản phẩm trong giỏ hàng</p>
+                            <p>{t("cart.totalProduct")} {totalProducts} {t("cart.product")} </p>
                             <div className="cart__info__txt__price">
-                                <span>Thành tiền:</span>{" "}
+                                <span>{t("cart.total")}:</span>{" "}
                                 <span>{numberWithCommas(Number(totalPrice))}</span>
                             </div>
                         </div>
                         <div className="cart__info__btn">
                             <Button size="block" onClick={checkout}>
-                                Đặt hàng
+                                {t("cart.checkout")}
                             </Button>
                             <Link to="/catalog">
-                                <Button size="block">Tiếp tục mua hàng</Button>
+                                <Button size="block">{t("cart.goToShop")}</Button>
                             </Link>
                         </div>
                     </div>

@@ -8,6 +8,10 @@
     "login": "Đăng nhập",
     "logout": "Đăng xuất"
   },
+  "home": {
+    "topProductsLasted": "Top Sản phẩm mới nhất",
+    "topProductsSold": "Top Sản phẩm bán chạy nhất"
+  },
   "auth": {
     "login": {
       "title": "Đăng nhập",
@@ -17,7 +21,13 @@
       "forgot": "Quên mật khẩu?",
       "goToRegister": "Bạn chưa có tài khoản?",
       "loginWith": "Đăng nhập với",
-      "register": "Đăng ký"
+      "register": "Đăng ký",
+      "validate": {
+        "email": "Vui lòng nhập email",
+        "emailInvalid": "Email không hợp lệ",
+        "password": "Vui lòng nhập mật khẩu",
+        "passwordInvalid": "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
+      }
     },
     "register": {
       "title": "Đăng ký",
@@ -97,6 +107,7 @@
       "name": "Tên",
       "date": "Ngày"
     },
+    "clear": "Xóa bộ lọc",
     "filter": {
       "category": "Danh mục sản phẩm",
       "brand": "Thương hiệu",
@@ -164,5 +175,27 @@
         "passwordInvalid": "Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
       }
     }
+  },
+  "orders": {
+    "title": "Đơn hàng",
+    "orderHistory": "Lịch sử đăt hàng",
+    "orderId": "Mã đơn hàng",
+    "date": "Ngày",
+    "status": "Trạng thái",
+    "total": "Tổng tiền",
+    "price": "Giá",
+    "quantity": "Số lượng",
+    "size": "Kích thước",
+    "color": "Màu sắc"
+  },
+  "cart": {
+    "name": "Tên sản phẩm",
+    "color": "Màu sắc",
+    "size": "Kích thước",
+    "total": "Thành tiền",
+    "checkout": "Đặt hàng",
+    "goToShop": "Tiếp tục mua hàng",
+    "totalProduct": "Ban đang có ",
+    "product": " sản phẩm trong giỏ hàng"
   }
 }
