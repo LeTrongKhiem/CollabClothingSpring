@@ -38,8 +38,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:4000/"})
-    public class ProductController {
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:4000/"})
+public class ProductController {
     @Autowired
     IProductService productService;
     @Autowired
