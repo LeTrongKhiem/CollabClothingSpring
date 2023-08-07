@@ -12,9 +12,3 @@
 
 ### Lectures
 
-
-### Project Members:
-
-* Le Trong Khiem - 19130102
-* Le Hoang An - 19130004
-
