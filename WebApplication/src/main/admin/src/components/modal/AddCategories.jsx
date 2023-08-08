@@ -90,7 +90,6 @@ function AddCategories({showModal, closeModal, setChanges}) {
                         {({
                                 values,
                           }) => {
-                            console.log(values)
                             return (<Form>
                                 <label htmlFor="name">Tên: </label>
                                 <FastField

@@ -74,14 +74,6 @@ const AddProduct = () => {
     const onFileChange = (files) => {
         setFiles(files)
     }
-    const saveProductImage = async () => {
-        try {
-
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     useEffect(() => {
         async function fetchCategories() {
@@ -116,12 +108,7 @@ const AddProduct = () => {
         }
     })
 
-    const formDataList = files.map((file, index) => {
-        const data = new FormData();
-        data.append(`file[${index}]`, file.file)
-        data.append(`file[${index}]thumbnail`, file.isThumbnail)
-        return data;
-    });
+
 
     const saveProduct = async (values) => {
         setLoading(true)

@@ -2,11 +2,9 @@ import React, {useEffect, useState} from 'react'
 
 import './table.css'
 import {useTranslation} from "react-i18next";
-import i18n from '../../locales/i18n';
 const Table = props => {
 
     const {totalPages, onChangePage, data, pageSize, currentPage, sortColumn,sortOrder,onSort} = props;
-    console.log(props.renderBody)
     const [dataShow, setDataShow] = useState([])
     const [range, setRange] = useState([...Array(totalPages).keys()]);
     useEffect(() => {
