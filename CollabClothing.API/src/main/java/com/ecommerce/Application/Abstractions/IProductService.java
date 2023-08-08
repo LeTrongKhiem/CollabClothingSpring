@@ -2,12 +2,10 @@ package com.ecommerce.Application.Abstractions;
 
 import com.ecommerce.Entities.Color;
 import com.ecommerce.Entities.Product;
-import com.ecommerce.Entities.ProductImage;
 import com.ecommerce.Entities.Size;
 import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.Products.*;
-import org.springframework.data.domain.Page;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 import java.util.UUID;

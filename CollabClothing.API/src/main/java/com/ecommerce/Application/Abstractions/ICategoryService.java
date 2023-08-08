@@ -1,12 +1,12 @@
 package com.ecommerce.Application.Abstractions;
 
-import com.ecommerce.Application.Mappings.CategoryMapping;
+
 import com.ecommerce.Entities.Category;
 import com.ecommerce.Model.Categories.CategoryCreateModel;
 import com.ecommerce.Model.Categories.CategoryModel;
 import com.ecommerce.Model.PagingModel;
 import com.ecommerce.Model.PagingRequest;
-import org.springframework.data.domain.Page;
+
 
 import java.util.List;
 import java.util.UUID;
