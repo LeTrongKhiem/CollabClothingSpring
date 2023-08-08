@@ -8,10 +8,10 @@ import {useSelector} from 'react-redux'
 
 import StatusCard from '../components/status-card/StatusCard'
 
+
 import Table from '../components/table/TableDashboard'
 
 import Badge from '../components/badge/Badge'
-import productsService from "../services/ProductsService";
 import OrderService from "../services/OrderService";
 
 
@@ -182,7 +182,6 @@ const renderOrderBody = (item, index) => {
 const Dashboard = () => {
 
     const [orders, setOrders] = useState([])
-    console.log(orders)
     const [loading, setLoading] = useState(false)
     const themeReducer = useSelector(state => state.theme)
 

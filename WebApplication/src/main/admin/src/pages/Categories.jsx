@@ -130,7 +130,6 @@ const Categories = () => {
 
     const handlePageChange = useCallback((page) => {
         setCurrentPage(page); //trừ 1 vì page bắt đầu từ 0
-        console.log(page)
     }, []);
     const handleSort = useCallback((column) => {
         setSortColumn(column);

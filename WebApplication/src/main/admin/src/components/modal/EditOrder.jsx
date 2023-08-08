@@ -4,8 +4,6 @@ import * as Yup from "yup";
 import InputField from "../../custom-fields/InputField";
 import "./categoriesEdit.css";
 import {toast} from "react-toastify";
-import CategoriesService from "../../services/CategoriesService";
-import Select from "react-select";
 import OrderService from "../../services/OrderService";
 
 function EditOrder({showModalEdit, closeModalEdit, setChanges, orderId}) {

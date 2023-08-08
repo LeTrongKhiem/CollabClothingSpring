@@ -101,7 +101,7 @@ function InventoryModal({show, onHide, productId}) {
                         {({
                               values, errors, touched, handleChange, handleBlur, setFieldValue
                           }) => {
-                            console.log(values)
+
                             return (<Form>
 
                                 <div className="form-group">
