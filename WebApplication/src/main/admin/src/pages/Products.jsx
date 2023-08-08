@@ -81,9 +81,11 @@ const Products = () => {
             return <div key={index}>{item}</div>
         })
         const API_URL = "http://localhost:6868";
-        return (<tr key={index} onClick={() => handleOpenModal(item.id)}>
+        return (<tr key={index} >
             <td>{index + 1}</td>
-            <td>{name}</td>
+            <td style={{
+                cursor:"pointer"
+            }} onClick={() => handleOpenModal(item.id)}>{name}</td>
             <td>
                 <img src={`${API_URL}/${thumbnail}`} alt={name} width="60px"/>
             </td>
