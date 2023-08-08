@@ -2,10 +2,8 @@ package com.ecommerce.Application.Service;
 
 import com.ecommerce.Application.Abstractions.IUserService;
 import com.ecommerce.Application.Exceptions.AppException;
-import com.ecommerce.Application.Mappings.ProductMapping;
 import com.ecommerce.Application.Mappings.UserMapping;
 import com.ecommerce.Application.Setup.Auth.Model.RegisterRequest;
-import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.Role;
 import com.ecommerce.Entities.User;
 import com.ecommerce.Entities.UserRole;
@@ -27,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
