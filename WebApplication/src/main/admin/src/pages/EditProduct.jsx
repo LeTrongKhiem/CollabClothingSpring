@@ -14,6 +14,7 @@ import {toast} from "react-toastify";
 import {useNavigate, useParams} from "react-router-dom";
 import * as Yup from "yup";
 import Loading from "../components/loading/Loading";
+import {useTranslation} from "react-i18next";
 
 const consumerOptions = [
     {value: 1, label: 'Nam'},
@@ -30,10 +31,10 @@ const EditProduct = () => {
     const [category, setCategory] = useState([]);
     const [brand, setBrand] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log("loading: ", loading)
     const navigate = useNavigate();
     const params = useParams();
     const {id} = params;
+    const {t} = useTranslation();
 
 
     const initialValues = {
@@ -121,13 +122,13 @@ const EditProduct = () => {
         try {
             const response = await ProductsService.updateProduct(id,values)
             if (response.status === 200) {
-                toast.success("Cập nhật sản phẩm thành công", {
+                toast.success(t("toast.success-edit"), {
                     position: toast.POSITION.TOP_CENTER
                 })
                 navigate('/products')
 
             } else {
-                toast.error("Cập nhật sản phẩm  thất bại", {
+                toast.error(t("toast.error-edit"), {
                     position: toast.POSITION.TOP_CENTER
                 })
             }

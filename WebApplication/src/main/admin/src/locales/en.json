@@ -1,4 +1,10 @@
 {
+  "toast": {
+    "success-add": "Add Success",
+    "error-add": "Error",
+    "success-edit": "Edit Success",
+    "error-edit": "Edit Fail"
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "customers": "Customers",
