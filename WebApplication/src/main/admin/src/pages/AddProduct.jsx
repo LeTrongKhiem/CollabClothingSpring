@@ -14,6 +14,7 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import Loading from "../components/loading/Loading";
+import {useTranslation} from "react-i18next";
 
 const consumerOptions = [
     {value: 1, label: 'Nam'},
@@ -29,7 +30,7 @@ const AddProduct = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate()
     const [files, setFiles] = useState([]);
-    console.log(files)
+   const {t} = useTranslation();
 
     const initialValues = {
         name: '',
@@ -135,14 +136,14 @@ const AddProduct = () => {
         try {
             const response = await ProductsService.saveProduct(data)
             if (response.status === 200) {
-                toast.success("Thêm sản phẩm thành công", {
+                toast.success(t("toast.success-add"), {
                     position: toast.POSITION.TOP_CENTER
                 })
                 setLoading(false)
                 navigate('/products')
 
             } else {
-                toast.error("Thêm sản phẩm thất bại", {
+                toast.error(t("toast.error-add"), {
                     position: toast.POSITION.TOP_CENTER
                 })
             }

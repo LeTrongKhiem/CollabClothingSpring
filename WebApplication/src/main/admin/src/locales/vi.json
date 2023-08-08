@@ -1,4 +1,10 @@
 {
+  "toast": {
+    "success-add": "Thêm thành công",
+    "error-add": "Thêm thất bại",
+    "success-edit": "Cập nhật thành công",
+    "error-edit": "Cập nhật thấ bại"
+  },
   "sidebar": {
     "dashboard": "Bảng điều khiển",
     "customers": "Khách hàng",
