@@ -1,12 +1,11 @@
 package com.ecommerce.Application.Mappings;
 
-import com.ecommerce.Application.Extensions.DateTimeExtensions;
+
 import com.ecommerce.Entities.Product;
 import com.ecommerce.Entities.ProductImage;
 import com.ecommerce.Model.Products.ImageModel;
 import com.ecommerce.Model.Products.ProductImageModel;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
