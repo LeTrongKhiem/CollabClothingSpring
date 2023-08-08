@@ -3,10 +3,9 @@ package com.ecommerce.Application.Abstractions;
 import com.ecommerce.Model.Orders.OrderDetailModel;
 import com.ecommerce.Model.Orders.OrderModel;
 import com.ecommerce.Model.PagingModel;
-import com.ecommerce.Model.Products.ProductModel;
-import com.ecommerce.Model.Products.SearchProductItems;
+
 import com.ecommerce.Model.SearchModel;
-import com.lowagie.text.pdf.PdfPTable;
+
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Date;
