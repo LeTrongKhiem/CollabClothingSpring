@@ -121,7 +121,6 @@ public class CartController {
     }
 
     @PutMapping("/changestatusorder/{orderId}")
-    @StaffRole
     public ResponseEntity<Boolean> changeStatusOrder(@PathVariable UUID orderId, @RequestBody int status) {
         try {
             UUID userId = AuthenticateExtensions.getUserId();

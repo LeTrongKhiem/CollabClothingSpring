@@ -19,8 +19,8 @@ export const cartItemsSlice = createSlice({
             const duplicate = state.value.filter(
                 (e) =>
                     e.id === newItem.id &&
-                    e.color === newItem.color &&
-                    e.size === newItem.size &&
+                    e.color.id === newItem.color.id &&
+                    e.size.id === newItem.size.id &&
                     e.imageURL === newItem.imageURL
             );
 
@@ -28,8 +28,8 @@ export const cartItemsSlice = createSlice({
                 state.value = state.value.filter(
                     (e) =>
                         e.id !== newItem.id ||
-                        e.color !== newItem.color ||
-                        e.size !== newItem.size
+                        e.color.id !== newItem.color.id ||
+                        e.size.id !== newItem.size.id
                 );
                 state.value = [
                     ...state.value,
