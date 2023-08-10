@@ -80,14 +80,13 @@ const Orders = () => {
         }
         const handlePrintReceipt = () => {
             OrderService.exportReceipt(id).then((response) => {
-                if (response.status === 200) {
-                    toast.success("Đã xuất hóa đơn")
-                }
-            }).catch((error) => {
-                console.log(error)
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'receipt.pdf');
+                document.body.appendChild(link);
+                link.click();
             })
-
-
         }
         return (<tr key={index}>
             <td>{index + 1}</td>

@@ -20,7 +20,6 @@ const ProductView = (props) => {
     const navigate = useNavigate();
     const {t} = useTranslation();
     let product = props.product;
-    console.log(product)
     if(product === undefined){
         product = {
             productImages: [
