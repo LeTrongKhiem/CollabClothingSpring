@@ -36,7 +36,7 @@ const OrderHistory = () => {
 
     const handleCancelOrder = async (orderId) => {
         try {
-            const response = await CartService.cancelOrder(orderId, 4);
+            const response = await CartService.cancelOrder(orderId, JSON.parse("4"));
             setCancelledOrder(response.data);
             toast("Đã hủy đơn hàng thành công!", {
                 type: "success",
@@ -106,7 +106,7 @@ const OrderHistory = () => {
                                         {order.status === "Đã giao hàng" && "Đã giao hàng"}
                                         {order.status === "Đã huỷ" && "Đã huỷ"}
                                     </div>
-                                    {order.status === "Đang giao hàng" && (
+                                    {order.status === "Đang xử lý" && "Đang xử lý" && (
                                         <ButtonUI className="btn-cancel" onClick={() => handleCancelOrder(order.id)}>
                                             Cancel Order
                                         </ButtonUI>
